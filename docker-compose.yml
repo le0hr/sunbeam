@@ -28,5 +28,16 @@ services:
       # Прокидаємо папку wp-content локально, щоб редагувати код у VS Code
       - ./wp-content:/var/www/html/wp-content
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+    # Замінити посилання на базове посилання API
+      - NEXT_PUBLIC_WOO_API_URL=https://api.yourstore.com  
+    depends_on:
+      - woo
+
+
 volumes:
   db_data:
