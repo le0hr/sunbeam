@@ -1,17 +1,36 @@
 import requests, time, re
 from bs4 import BeautifulSoup, Comment
-
+from parse_product import start
 urls = ["https://valko.ua/rolety", "https://valko.ua/plise", "https://valko.ua/zhalyuzi", "https://valko.ua/moskitna-sitka",]
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 product_urls = []
 
+ignored_urls = {
+    'https://valko.ua/rolety',
+    'https://valko.ua/plise',
+    'https://valko.ua/zhalyuzi',
+    'https://valko.ua/moskitna-sitka',
+    'https://valko.ua/moskitna-sitka/na-vikno',
+    'https://valko.ua/moskitna-sitka/na-dveri',
+    'https://valko.ua/moskitna-sitka/roletna',
+    'https://valko.ua/moskitna-sitka/antykishka',
+    'https://valko.ua/moskitna-sitka/rozsuvna',
+    'https://valko.ua/moskitna-sitka/plise',
+    'https://valko.ua/rolety/den-nich',
+    'https://valko.ua/rolety/tkanynna',
+    'https://valko.ua/rolety/blackout',
+}
 
 def process_page(url):
     try:
-        time.sleep(1.5)
+        time.sleep(1)
         response = requests.get(url, headers=headers)
+
+        if response.status_code != 200:
+            return None
+
         soup = BeautifulSoup(response.text, "html.parser")
 
         start_comment = soup.find(string=lambda text: isinstance(text, Comment) and text.strip() == "підписатися на розсилку")
@@ -26,6 +45,7 @@ def process_page(url):
         
         if not result_html.strip():
             return None
+        time.sleep(1)
         
         soup = BeautifulSoup(result_html, 'html.parser')
         return soup
@@ -43,23 +63,37 @@ def collect_links(soup):
         href = link.get('href')
         if href:
             # Якщо посилання відносне (/item-1), робимо його абсолютним (https://valko.ua/item-1)
-            full_url = href if href.startswith('http') else f"{"https://valko.ua"}{href}"
+            full_url = href if href.startswith('http') else f"https://valko.ua{href}"
+
+            if "/page-" in full_url:
+                continue
+                
+            # 2. Ігноруємо посилання на самі категорії
+            if full_url in ignored_urls:
+                continue
+
             if full_url not in product_urls:
                 product_urls.append(full_url)
 
 def main():
     for url in urls:
-        soup = process_page(url)
-        collect_links(soup)
+        c=1
+        while True:
+            soup = process_page(url+"/page-"+str(c))
+            if soup == None:
+                break
+            old_num = len(product_urls)
+            collect_links(soup)
+            new_num = len(product_urls)
+            if new_num == old_num:
+                print(".")
+                break
+            c+=1
+            print(len(product_urls))
         
     print(f"\nУсього знайдено посилань: {len(product_urls)}\n")
-    print(product_urls)
-    a = input()
-    for product_url in product_urls:
-        product_soup = process_page(product_url)
-        if product_soup:
-            print(f"Текст зі сторінки {product_url}:")
-            print(product_soup.text.strip())
+    start(product_urls)
+
 
 
 main()
