@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Header } from "../components/Header";
-import { HeroSection } from "../components/HeroSection";
-import { FeaturesSection } from "../components/FeaturesSection";
-import { CategoriesSection } from "../components/CategoriesSection";
-import { LeadCaptureForm } from "../components/LeadCaptureForm";
-import { Footer } from "../components/Footer";
+import { Header } from "../../components/Header";
+import { HeroSection } from "./HeroSection";
+import { FeaturesSection } from "./FeaturesSection";
+import { CategoriesSection } from "./CategoriesSection";
+import { LeadCaptureForm } from "./LeadCaptureForm";
+import { Footer } from "../../components/Footer";
 
 export function HomePage() {
   const scrollToForm = () => {

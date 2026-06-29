@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { Phone, Sun } from 'lucide-react';
-import logoUrl from './icons/logo.png';
+import logoUrl from '../icons/logo.png';
 
 interface HeaderProps {
   onRequestMeasurement?: () => void;
