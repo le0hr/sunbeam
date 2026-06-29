@@ -48,7 +48,7 @@ def parse_rolety(page):
         print(f"\n--- Працюю з типом системи: {s_type_name} ({s_type}) ---")
 
         s_type_el.check()
-        page.wait_for_timeout(300) # Даємо час JS оновити класи тканин
+        page.wait_for_load_state("networkidle") # Даємо час JS оновити класи тканин
         
         class_selector = f"input[name='sys_class_{s_type}']"
         
@@ -65,7 +65,7 @@ def parse_rolety(page):
                 "el => { const label = el.closest('label'); const div = label ? label.querySelector('div[style*=\"text-align: justify\"]') : null; return div ? div.textContent : ''; }"
                 ).strip()
                 s_class_el.check()
-                page.wait_for_timeout(300)
+                page.wait_for_load_state("networkidle")
                 
                 if page.locator("#div_sys_color").is_visible():
                     colors_elements = page.locator(f"input[name='sys_color__{s_class}']").all()
@@ -77,7 +77,7 @@ def parse_rolety(page):
                         s_color_name = s_color_el.evaluate("el => el.parentElement.textContent").replace("\xa0", "").strip()
 
                         s_color_el.check()
-                        page.wait_for_timeout(300)
+                        page.wait_for_load_state("networkidle")
 
                         price_per_m2 = calculate_price_per_m2(page, f"{s_type_name} -> {s_class_name} -> {s_color_name}")
                         '''
@@ -115,14 +115,14 @@ def parse_plise(page):
     raw_title = page.locator("div.item-header-tovar-name").first.inner_text()
     if not raw_title:
         raw_title = "Плісе тканинна"
-
+    page.wait_for_load_state("networkidle")
     s_types_elements = page.locator("input[name=sys_type_radio]").all()
 
     for s_type_el in s_types_elements:
         s_type_name = s_type_el.evaluate("el => el.parentElement.textContent").replace("\xa0", "").strip()
         s_type_description = page.locator("div.sys_type_info:visible").inner_text().strip()
         s_type_el.check(force=True)
-        page.wait_for_timeout(250) # Даємо час на recalculate_price()
+        page.wait_for_load_state("networkidle") # Даємо час на recalculate_price()
 
         s_colors_elements = page.locator("input[name = sys_color]").all()
         for s_color_el in s_colors_elements:
@@ -130,7 +130,7 @@ def parse_plise(page):
                 continue
             s_color_name =s_color_el.evaluate("el => el.parentElement.textContent").replace("\xa0", "").strip()
             s_color_el.check()
-            page.wait_for_timeout(250) # Даємо час на recalculate_price()
+            page.wait_for_load_state("networkidle") # Даємо час на recalculate_price()
             
             price_per_m2 = calculate_price_per_m2(page, f"{s_type_name} -> {s_color_name}")
                             
@@ -161,7 +161,7 @@ def parse_zhalyuzi(page):
         s_type_description = page.locator("div.sys_type_info:visible").inner_text().strip()
         s_type_el.check(force =True)
 
-        page.wait_for_timeout(250) # Даємо час на recalculate_price()
+        page.wait_for_load_state("networkidle") # Даємо час на recalculate_price()
 
         s_zatemn_elements = page.locator("input[name = sys_zatemn]").all()
         for s_zatemn_el in s_zatemn_elements:
@@ -169,9 +169,9 @@ def parse_zhalyuzi(page):
                 continue
             s_zatemn_name = s_zatemn_el.evaluate("el => el.parentElement.textContent").replace("\xa0", "").strip()
             s_zatemn_el.check()
-            page.wait_for_timeout(250) # Даємо час на recalculate_price()
+            page.wait_for_load_state("networkidle") # Даємо час на recalculate_price()
             
-            price_per_m2 = calculate_price_per_m2(page, f"  -> {raw_title} | {s_type_name} | {s_type_description} | -> Затемнення: {s_zatemn_name} -> Ціна: {price_per_m2} грн/м²")
+            price_per_m2 = calculate_price_per_m2(page, f"  -> {raw_title} | {s_type_name} | {s_type_description} | -> Затемнення: {s_zatemn_name} ")
             '''
             Zhalyuzi exists in two versions
             With or without holes
@@ -185,7 +185,6 @@ def parse_zhalyuzi(page):
                     "sys_type": s_zatemn_name,        # "Коричневий"
                     "price": str(price_per_m2)  # "650.00"
                 })
-            print(product_list)
 
     return product_list, None
 
@@ -195,10 +194,10 @@ def parse_moskitna(page):
 
     if not raw_title:
         raw_title = "Москітна"
-    full_raw_text = page.locator("xpath=//div[contains(text(), 'Виробник:')]/ancestor::div[contains(@class, 'col-xs-12')][1]").inner_text().strip()
+    full_raw_text = page.locator("//div[contains(text(), 'Призначення:')]").inner_text()
 
     product_list = []    
-    price_per_m2 = calculate_price_per_m2(page, f"  -> {raw_title} | {full_raw_text} | -> Ціна: {price_per_m2} грн/м²")
+    price_per_m2 = calculate_price_per_m2(page, f"  -> {raw_title} | {full_raw_text} | ")
         
     if price_per_m2:        
         product_list.append({
@@ -212,7 +211,7 @@ def parse_moskitna(page):
 def parse_valko_product(url):
     with sync_playwright() as p:
         # headless=False дозволяє бачити, як робот клікає на сторінці
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         
         print(f"Відкриваю сторінку: {url}")
@@ -222,7 +221,7 @@ def parse_valko_product(url):
         page.fill("#tov_width", "1000")
         page.fill("#tov_height", "1000")
         page.evaluate("jQuery('#tov_width').change(); jQuery('#tov_height').change();")
-        page.wait_for_timeout(300)
+        page.wait_for_load_state("networkidle")
         
         result_data = {
             "url": url,
