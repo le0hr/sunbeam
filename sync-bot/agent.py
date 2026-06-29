@@ -62,6 +62,7 @@ def agent_data(raw_data):
         print(f"Обробка: {product['url']}...")
         ai_data = enrich_product(product)
         
+        
         if ai_data:
             # Склеюємо старі дані (ціни, категорію) з новими даними від ШІ
             enriched_item = {
