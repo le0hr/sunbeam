@@ -1,7 +1,7 @@
 import { useRoletyCalculator } from "../../../hooks/useRoletyCalculator";
 import { Product, TransformedVariableProduct } from "../../../types/product";
 import { SystemClasses } from "../../../types/systemClasses";
-
+import DimensionsInput from "./CustomDimentions";
 
 export function RoletyForm({ product, classesDescription, onClose }: { product: TransformedVariableProduct; classesDescription: Record<string, string>; onClose: () => void; SYSTEM_CLASSES:SystemClasses[]; PRODUCT_TYPES: string[] }) {
   
@@ -114,5 +114,6 @@ export function RoletyForm({ product, classesDescription, onClose }: { product: 
           ))}
         </div>
       </div>
+      <DimensionsInput width={width} height={height} setWidth={setWidth} setHeight={setHeight} finalPrice = {finalPrice} basePrice={0} />
     </div>);
 }

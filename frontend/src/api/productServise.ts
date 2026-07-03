@@ -18,8 +18,8 @@ export const productService = {
       const variationsResponse = await apiClient.get(`/products/${product.id}/variations`, {
         params: { per_page: 100 } // беремо із запасом, щоб зчитати всі комбінації
       });
-
-      // 3. Трансформуємо варіації у зручний для нас формат
+      console.log(variationsResponse);
+      // 3. Трансформуємо варіації у зручний формат
       const variations: ProductVariation[] = variationsResponse.data.map((v: any) => {
         // Витягуємо значення атрибутів (парсер мав записати їх у pa_color, pa_type тощо)
         const color = v.attributes.find((a: any) => a.name === 'pa_color' || a.name === 'color')?.option || '';
@@ -57,5 +57,7 @@ export const productService = {
     }
   },
   // get
+  // TODO: добавити звернення щоб отримати каталог
+
 
 };

@@ -7,7 +7,9 @@ import {
 } from "lucide-react";
 import { ProductCard } from "./ProductCard";
 import { ProductDrawer } from "./ProductDrawer";
+import { productService } from "../../api/productServise";
 
+import { useEffect } from "react";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const CATEGORIES = ["All", "Roller Blinds", "Day-Night", "Blackout", "Shutters", "Custom"];
@@ -186,12 +188,36 @@ const SYSTEM_CLASSES = [
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export function CatalogPage() {
+
+
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
   const [sortBy, setSortBy] = useState("popular");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
+
+
+  const [product, setProduct] = useState<any>(null);
+
+  useEffect(() => {
+    productService.getVariableProductBySlug('tkaninna-bila-skladki-f-2')
+      .then(data => setProduct(data));
+  }, []);
+
+  // const{
+  //   id,
+  //   name,
+  //   slug,
+  //   description,
+  //   classesDescriptionDict,
+  //   images,
+  //   variations,
+  //   allColors,
+  //   allTypes,
+  //   allClasses
+  //   } = product
+
 
   const filtered = useMemo(() => {
     let list = [...products];
@@ -421,8 +447,12 @@ export function CatalogPage() {
 
       {/* Product detail drawer */}
       <AnimatePresence>
-        {selectedProduct && (
-          <ProductDrawer product={selectedProduct} onClose={() => setSelectedProduct(null)} SYSTEM_CLASSES={SYSTEM_CLASSES} PRODUCT_TYPES={PRODUCT_TYPES} />
+        {selectedProduct && product && (
+          <ProductDrawer 
+            product={product} 
+            onClose={() => setSelectedProduct(null)} 
+            classesDescription={product.classesDescriptionDict} 
+          />
         )}
       </AnimatePresence>
     </div>
