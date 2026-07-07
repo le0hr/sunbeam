@@ -1,0 +1,28 @@
+# --- Системні файли ---
+.DS_Store
+Thumbs.db
+.vscode/
+
+# --- Середовища (venv) та залежності ---
+# Ігноруємо будь-яку папку venv або node_modules, де б вона не була
+**/venv/
+**/node_modules/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# --- WordPress ---
+# Не зберігаємо завантажені медіа та кеш
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/blogs.dir/
+wp-content/cache/
+
+# --- Логи та конфігурації ---
+*.log
+.env
+.env.local
+.env.*.local
+
+# --- Docker ---
+docker-compose.override.yml

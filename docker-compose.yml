@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.6
+    container_name: wp_shop_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wp_shop_app
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      # Прокидаємо папку wp-content локально, щоб редагувати код у VS Code
+      - ./wp-content:/var/www/html/wp-content
+    networks:
+      - app-network
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: ./Dockerfile
+    container_name: fastapi_backend
+    restart: always
+    ports:
+      - "8000:8000" # Прокидаємо порт для браузера користувача (React буде стукати сюди)
+    volumes:
+      - ./backend:/app # Монтуємо код для hot-reload під час розробки
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+
+  frontend:
+      image: node:20-slim
+      container_name: react_frontend
+      user: "node"
+      working_dir: /home/node/app
+      volumes:
+        - ./frontend:/home/node/app 
+      ports:
+        - "5173:5173"
+      command: sh -c "npm install && npm run dev -- --host"
+      networks:
+        - app-network
+
+volumes:
+  db_data:
+  wp_data:
+
+networks:
+  app-network:
+    driver: bridge
