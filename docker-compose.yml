@@ -53,9 +53,6 @@ services:
       container_name: react_frontend
       user: "node"
       working_dir: /home/node/app
-      volumes:
-        - ./frontend:/home/node/app 
-        - /home/node/app/node_modules
       ports:
         - "5173:5173"
       command: sh -c "npm install && npm run dev -- --host"
