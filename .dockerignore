@@ -6,3 +6,5 @@ frontend/dist/
 .backend/__pycache__/
 ./wp-content
 ./.vscode
+
+backend/fastapi/.main.py

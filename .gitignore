@@ -26,3 +26,5 @@ wp-content/cache/
 
 # --- Docker ---
 docker-compose.override.yml
+
+
