@@ -1,19 +1,3 @@
-export interface Product{
-    id: number,
-    name: string,
-    category: string,
-    material: string,
-    price: number,
-    rating: number,
-    reviews: number,
-    popular: boolean,
-    new: boolean
-    description: string,
-    colors: string[],
-    image: string,
-    features: string[],
-}
-
 
 export interface ProductVariation {
   id: number;
@@ -28,7 +12,6 @@ export interface ProductVariation {
 export interface TransformedVariableProduct {
   id: number;
   name: string;
-  slug: string;
   description: string;
   images: string[];
   variations: ProductVariation[]; // Список усіх можливих комбінацій

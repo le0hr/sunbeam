@@ -198,10 +198,10 @@ export function CatalogPage() {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
 
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<any>([]);
 
   useEffect(() => {
-    productService.getVariableProductBySlug('tkaninna-bila-skladki-f-2')
+    productService.getProductList(1)
       .then(data => setProduct(data));
   }, []);
 
