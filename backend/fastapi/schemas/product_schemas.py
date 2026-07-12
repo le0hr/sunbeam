@@ -7,10 +7,16 @@ class Meta(BaseModel):
     key: str
     value: Any
 
+class AttributeResponse(BaseModel):
+    id: int
+    name: str
+    slug: str
+    option: str
+
 class VariationResponse(BaseModel):
     id: int
-    price: float
-    attributes: list[str]
+    price: str
+    attributes: list[AttributeResponse]
 
 class ProductResponse(BaseModel):
     id: int
@@ -22,3 +28,11 @@ class ProductResponse(BaseModel):
     variations: list[VariationResponse]
     meta_data: list[Meta] = []
 
+
+class SupplierProduct(BaseModel):
+    url: str
+    category: str
+    title: str
+    description: str
+    calculator_limits: dict
+    matrix: list[dict]

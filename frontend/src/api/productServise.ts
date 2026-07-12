@@ -4,8 +4,8 @@ import { TransformedVariableProduct, ProductVariation } from '../types/product';
 export const productService = {
   getProductList: async (page:number): Promise<TransformedVariableProduct[] | []> => {
     try {
-      const productsResponse = await apiClient.get('/products', { params: { page } });
-      const productsData = productsResponse.data[0];
+      const productsResponse = await apiClient.get('/products', { params: { page }, timeout: 60000 });
+      const productsData = productsResponse.data;
       
       if (!productsData) return [];
 
@@ -13,14 +13,20 @@ export const productService = {
 
         const metaList = product?.meta_data || [];
         
-        const classesDescriptionDict = metaList.find((meta: any) => meta.key === '_headless_attributes_descriptions')?.value["Класс системи"];
+        const raw = metaList.find(
+            (m: any) => m.key === "_headless_attributes_descriptions"
+        )?.value;
+
+        const classesDescriptionDict = raw
+          ? JSON.parse(raw)["Класс системи"]
+          : undefined;
   
         // 3. Трансформуємо варіації у зручний формат
-        const variations: ProductVariation[] = product.variations.data.map((v: any) => {
+        const variations: ProductVariation[] = product.variations.map((v: any) => {
           // Витягуємо значення атрибутів (парсер мав записати їх у pa_color, pa_type тощо)
-          const color = v.attributes.find((a: any) => a.name === 'pa_color' || a.name === 'color')?.option || '';
-          const type = v.attributes.find((a: any) => a.name === 'pa_type' || a.name === 'type')?.option || '';
-          const sysClass = v.attributes.find((a: any) => a.name === 'pa_class' || a.name === 'class')?.option || '';
+          const color = v.attributes.find((a: any) => a.name === 'color')?.option || '';
+          const type = v.attributes.find((a: any) =>  a.name === 'type')?.option || '';
+          const sysClass = v.attributes.find((a: any) =>  a.name === 'class')?.option || '';
   
           return {
             id: v.id,

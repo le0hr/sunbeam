@@ -74,6 +74,9 @@ class WooCommerceClient:
             json=data,
         )
 
+        print(response.status_code, flush=True)
+        print(response.text, flush=True)
+        
         response.raise_for_status()
 
         return response.json()

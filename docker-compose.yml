@@ -59,7 +59,19 @@ services:
     expose: 
       - "8000"
 
-
+  agent:
+    build:
+      context: ./backend/sync-bot
+      dockerfile: Dockerfile
+    container_name: supplier_agent
+    env_file:
+      - .env
+    volumes:
+      - ./backend/sync-bot:/app
+    depends_on:
+      - backend
+    networks:
+      - app-network
   frontend:
     image: node:20-slim
     container_name: react_frontend

@@ -3,9 +3,25 @@ from parse_products import start_parse_products
 from parse_catalog import start_parse_catalog
 from woocommerce_interaction import update_products
 from agent import agent_data
-def main():
+import httpx
+import asyncio
+async def main():
     # urls = start_parse_catalog()
-    products = start_parse_products(["https://valko.ua/rolety/tkaninna-bila-skladki-f-2", "https://valko.ua/plise/persykovorozeva-711", "https://valko.ua/zhalyuzi/zhalyuzi-1", "https://valko.ua/moskitna-sitka/dveri-plisovana-plise-elit-dvostulkova-kutova-bila"])
+    products = await start_parse_products(["https://valko.ua/rolety/tkaninna-bila-skladki-f-2"])
     enriched_products = agent_data(products)
-    update_products(enriched_products)
-main()
+    print(enriched_products)
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://fastapi_backend:8000/internal/products",
+                json=enriched_products,
+            )
+            print(response.status_code)
+        print(response.text)
+        response.raise_for_status()
+        print('sended')
+    except Exception as e:
+        print(f"Помилка відправки товару: {e}")
+        return
+if __name__ == "__main__":
+    asyncio.run(main())

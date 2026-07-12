@@ -14,6 +14,8 @@ export interface TransformedVariableProduct {
   name: string;
   description: string;
   images: string[];
+  price: string;
+  category: string;
   variations: ProductVariation[]; // Список усіх можливих комбінацій
   // Списки унікальних значень для первинних селектів
   allColors: string[];

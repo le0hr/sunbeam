@@ -1,1 +1,1 @@
-from .product_schemas import ProductResponse
+from .product_schemas import ProductResponse, SupplierProduct

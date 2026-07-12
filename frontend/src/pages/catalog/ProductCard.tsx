@@ -2,11 +2,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { StarRating } from "./StarRating";
 import {ArrowRight} from "lucide-react";
 
-import {Product} from "../../types/product"
+import {TransformedVariableProduct} from "../../types/product"
 import React from "react"
 
 interface ProductCardProps {
-  product: Product;
+  product: TransformedVariableProduct;
   onSelect: () => void;
 }
 
@@ -26,25 +26,12 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         {/* Image */}
         <div className="relative h-60 overflow-hidden">
           <img
-            src={product.image}
+            src={product.images[0]}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C] via-[#1C1C1C]/20 to-transparent" />
 
-          {/* Badges */}
-          <div className="absolute top-3 left-3 flex gap-2">
-            {product.popular && (
-              <span className="bg-[#FFCC00] text-[#121212] text-xs font-semibold px-2.5 py-1 rounded-full" style={{ fontFamily: "Inter, sans-serif" }}>
-                Popular
-              </span>
-            )}
-            {product.new && (
-              <span className="bg-white/15 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full border border-white/20" style={{ fontFamily: "Inter, sans-serif" }}>
-                New
-              </span>
-            )}
-          </div>
         </div>
 
         {/* Content */}
@@ -55,19 +42,13 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             </h3>
           </div>
           <p className="text-white/50 text-xs mb-3" style={{ fontFamily: "Inter, sans-serif" }}>
-            {product.category} · {product.material}
+            {product.category} 
           </p>
 
-          <div className="flex items-center gap-2 mb-4">
-            <StarRating rating={product.rating} />
-            <span className="text-white/40 text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
-              {product.rating} ({product.reviews})
-            </span>
-          </div>
 
           {/* Color swatches */}
           <div className="flex items-center gap-1.5 mb-4">
-            {product.colors.map((color) => (
+            {product.allColors.map((color: any) => (
               <div
                 key={color}
                 className="w-5 h-5 rounded-full border border-white/10"
@@ -78,7 +59,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
 
           <div className="flex items-center justify-between">
             <div style={{ fontFamily: "Inter, sans-serif" }}>
-              {product.price > 0 ? (
+              {product.price.length > 0 ? (
                 <span className="text-white font-semibold">
                   від <span className="text-[#FFCC00]">{product.price.toLocaleString("uk-UA")} ₴</span>
                 </span>
