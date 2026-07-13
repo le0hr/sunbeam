@@ -33,6 +33,8 @@ async def parse_rolety(page):
     product_list = []
 
     raw_title = await page.locator("div.item-header-tovar-name").first.inner_text()
+    img = "https://valko.ua" + await page.locator(".owl-item.active img").first.get_attribute("src")
+    print(img, flush= True)
     if not raw_title:
         raw_title = "Ролета тканинна"
 
@@ -82,25 +84,15 @@ async def parse_rolety(page):
                         await page.wait_for_timeout(1000)
 
                         price_per_m2 = await calculate_price_per_m2(page, f"{s_type_name} -> {s_class_name} -> {s_color_name}")
-                        '''
-                        On donor site classes and types were several times confused among different products
-                        In code above I named variables as they were at donor site
-                        In code bellow I named it in right way\
-
-                        Here I ad some definition:
-                        sys_type is system open, close or neither
-                        sys_class is "prestige" of the system, cheap or expensive materials
-                        
-                        
-                        '''
                         if price_per_m2:
                             product_list.append({
                                 "raw_title": raw_title,       # "Ролета Аврора"
-                                "sys_type": s_class_name,  # "Відкрита система" 
-                                "sys_class": s_type_name,  # "Престиж система"
+                                "sys_type": s_type_name,  # "Відкрита система" 
+                                "sys_class": s_class_name,  # "Престиж система"
                                 "sys_class_description":s_class_description, #"Труба діаметром..."
                                 "color": s_color_name,        # "Коричневий"
-                                "price": str(price_per_m2)  # "650.00"
+                                "price": str(price_per_m2),  # "650.00"
+                                "img": img
                             })
                             
 
@@ -115,6 +107,8 @@ async def parse_plise(page):
     product_list = []
 
     raw_title = await page.locator("div.item-header-tovar-name").first.inner_text()
+    img = await page.locator(".owl-item.active img").first.get_attribute("src")
+
     if not raw_title:
         raw_title = "Плісе тканинна"
         
@@ -156,7 +150,8 @@ async def parse_plise(page):
                     "sys_class": s_type_name,     # "Преміум-Плюс"
                     "sys_class_description": s_type_description, #"Плісе кріпиться..."
                     "color": s_color_name,        # "Коричневий"
-                    "price": str(price_per_m2)    # "650.00"
+                    "price": str(price_per_m2),    # "650.00"
+                    "img": img
                 })
             
 
@@ -166,6 +161,8 @@ async def parse_zhalyuzi(page):
     print("Категорія: ЖАЛЮЗІ. Починаю збір...")
     
     raw_title = await page.locator("div.item-header-tovar-name").first.inner_text()
+    img = await page.locator(".owl-item.active img").first.get_attribute("src")
+    
     if not raw_title:
         raw_title = "Жалюзі"
     
@@ -202,7 +199,8 @@ async def parse_zhalyuzi(page):
                     "sys_class": s_type_name,     # "Преміум-Плюс"
                     "sys_class_description":s_type_description, #"Жалюзі кріпиться..."
                     "sys_type": s_zatemn_name,        # "Коричневий"
-                    "price": str(price_per_m2)  # "650.00"
+                    "price": str(price_per_m2),  # "650.00"
+                    "img": img
                 })
 
     return product_list, None
@@ -210,6 +208,7 @@ async def parse_zhalyuzi(page):
 async def parse_moskitna(page):
     print("Категорія: МОСКІТНА СІТКА. Починаю збір...")
     raw_title = await page.locator("div.item-header-tovar-name").first.inner_text()
+    img = await page.locator(".owl-item.active img").first.get_attribute("src")
 
     if not raw_title:
         raw_title = "Москітна"
@@ -222,7 +221,8 @@ async def parse_moskitna(page):
     if price_per_m2:        
         product_list.append({
             "raw_title": raw_title,       # "Ролета Аврора"
-            "price": str(price_per_m2)  # "650.00"
+            "price": str(price_per_m2),  # "650.00"
+            "img": img
         })
         
         

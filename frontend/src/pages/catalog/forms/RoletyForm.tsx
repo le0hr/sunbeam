@@ -1,5 +1,5 @@
 import { useRoletyCalculator } from "../../../hooks/useRoletyCalculator";
-import { Product, TransformedVariableProduct } from "../../../types/product";
+import { TransformedVariableProduct } from "../../../types/product";
 import { SystemClasses } from "../../../types/systemClasses";
 import DimensionsInput from "./CustomDimentions";
 

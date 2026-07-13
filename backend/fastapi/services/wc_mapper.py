@@ -1,4 +1,12 @@
 import json
+from config import settings
+
+def fix_urls(products):
+    for product in products:
+        for image in product.get("images", []):
+            image["src"] = image["src"].replace(settings.WC_URL, settings.SITE_URL)
+    print("....." + str(products), flush=True)
+    return products
 
 def extract_attributes_and_meta(matrix):
 
@@ -76,7 +84,8 @@ def build_product_query(product, sku):
         "sku": sku,
         "manage_stock": False,
         "categories": [{"id": 1}],  # У WooCommerce категорії передаються як список об'єктів ID
-        "attributes": attributes
+        "attributes": attributes,
+        "images": [{"src": product.img}]
     }
 
     # Додаємо ліміти калькулятора в мета-дані, якщо вони є
@@ -106,39 +115,32 @@ def build_variation_query(product_id, matrix, parent_sku):
     Нова функція: створює модифікатори (варіації) для згенерованої картки товару
     """
     print(f"Починаю генерацію варіацій для товару ID: {product_id}...")
-    
-    for index, item in enumerate(matrix):
-        # Пропускаємо, якщо це пустий рядок матриці
-        if not item.get("price"):
-            continue
-            
-        variation_attributes = []
-        variation_sku_parts = [parent_sku]
+    print(matrix, flush=True)
+        
+    variation_attributes = []
+    variation_sku_parts = [parent_sku]
 
-        # Зв'язуємо комбінацію з атрибутами картки
-        if "sys_class" in item:
-            variation_attributes.append({"name": "Класс системи", "option": item["sys_class"]})
-            variation_sku_parts.append(item["sys_class"])
-        if "color" in item:
-            variation_attributes.append({"name": "Колір", "option": item["color"]})
-            variation_sku_parts.append(item["color"])
-        if "sys_type" in item:
-            variation_attributes.append({"name": "Тип системи", "option": item["sys_type"]})
-            variation_sku_parts.append(item["sys_type"])
+    # Зв'язуємо комбінацію з атрибутами картки
+    if "sys_class" in matrix:
+        variation_attributes.append({"name": "Класс системи", "option": matrix["sys_class"]})
+        variation_sku_parts.append(matrix["sys_class"])
+    if "color" in matrix:
+        variation_attributes.append({"name": "Колір", "option": matrix["color"]})
+        variation_sku_parts.append(matrix["color"])
+    if "sys_type" in matrix:
+        variation_attributes.append({"name": "Тип системи", "option": matrix["sys_type"]})
+        variation_sku_parts.append(matrix["sys_type"])
 
-        # Якщо немає жодного динамічного атрибуту, варіації не потрібні (це Simple Product)
-        if not variation_attributes:
-            continue
 
-        # Генеруємо унікальний SKU для варіації
-        var_sku = "-".join(variation_sku_parts).replace(" ", "-").lower()
+    # Генеруємо унікальний SKU для варіації
+    var_sku = "-".join(variation_sku_parts).replace(" ", "-").lower()
 
-        variation_data = {
-            "regular_price": str(item["price"]),
-            "image": None, 
-            "sku": var_sku,
-            "manage_stock": False,
-            "attributes": variation_attributes
-        }
+    variation_data = {
+        "regular_price": str(matrix["price"]),
+        "image": None, 
+        "sku": var_sku,
+        "manage_stock": False,
+        "attributes": variation_attributes
+    }
 
-        return variation_data
+    return variation_data

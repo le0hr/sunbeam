@@ -189,7 +189,7 @@ const PRODUCT_TYPES = ["Рулонна", "День-Ніч", "Жорстка"];
 
 export function CatalogPage() {
 
-  const [products, setProduct] = useState<any>([]);
+  const [products, setProducts] = useState<any>([]);
 
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
@@ -202,7 +202,7 @@ export function CatalogPage() {
 
   useEffect(() => {
     productService.getProductList(1)
-      .then(data => setProduct(data));
+      .then(data => setProducts(data));
   }, []);
 
   // const{
@@ -243,6 +243,8 @@ export function CatalogPage() {
     else if (sortBy === "price-asc") list.sort((a, b) => a.price - b.price);
     else if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);
 
+    console.log(products);
+    
     return list;
   }, [activeCategory, activeMaterial, sortBy, searchQuery]);
 

@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    SITE_URL: str
     WC_URL: str
     WC_CK_API: str
     WC_CS_API: str

@@ -33,6 +33,7 @@ class SupplierProduct(BaseModel):
     url: str
     category: str
     title: str
+    img: str
     description: str
     calculator_limits: dict
     matrix: list[dict]

@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState, useMemo } from "react";
 import {X, Check, Phone} from "lucide-react";
 import { StarRating } from "./StarRating";
-import {Product} from "../../types/product";
 import {SystemClasses} from "../../types/systemClasses";
 import {TransformedVariableProduct} from "../../types/product";
 import { RoletyForm } from "./forms/RoletyForm";
@@ -13,7 +12,7 @@ const CALCULATOR_COMPONENTS: Record<number, React.ComponentType<any>> = {
 
 };
 
-export function ProductDrawer({ product, classesDescription, onClose }: { product: Product; onClose: () => void; classesDescription: Record<string, string> }) {
+export function ProductDrawer({ product, classesDescription, onClose }: { product: TransformedVariableProduct; onClose: () => void; classesDescription: Record<string, string> }) {
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedType, setSelectedType] = useState(0);
   const [selectedClass, setSelectedClass] = useState("standard");
@@ -57,17 +56,8 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
 
         {/* Image */}
         <div className="relative h-72 flex-shrink-0 overflow-hidden">
-          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+          <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-[#181818]/10 to-transparent" />
-
-          <div className="absolute top-4 left-4 flex gap-2">
-            {product.popular && (
-              <span className="bg-[#FFCC00] text-[#121212] text-xs font-semibold px-2.5 py-1 rounded-full" style={{ fontFamily: "Inter, sans-serif" }}>Popular</span>
-            )}
-            {product.new && (
-              <span className="bg-white/15 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full border border-white/20" style={{ fontFamily: "Inter, sans-serif" }}>New</span>
-            )}
-          </div>
         </div>
 
         {/* Body */}
@@ -76,12 +66,6 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
             <h2 className="text-3xl mb-1" style={{ fontFamily: "Playfair Display, serif" }}>
               {product.name}
             </h2>
-            <div className="flex items-center gap-3">
-              <StarRating rating={product.rating} />
-              <span className="text-white/50 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
-                {product.rating} · {product.reviews} відгуків
-              </span>
-            </div>
           </div>
 
           <p className="text-white/70 leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>

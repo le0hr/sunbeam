@@ -18,18 +18,23 @@ async def import_products(products):
             if not exists:
                 print(2.1, flush=True)
                 product_query = build_product_query(product, sku)
+                print(product_query, flush=True)
+
                 created = await wc.post("/products", product_query)
-                product_data = created.json()
+                print(created, flush=True)
+                
+                product_data = created[0]
 
             else:
                 print(2.2, flush=True)
-                product_data = exists.json()
+                print(exists)
+                product_data = exists[0]
                 print(product_data, flush =True)
 
-            for variation in product.matrix:
-                print(3, flush=True)
-                variation_query = build_variation_query(product_data['id'], variation, sku)
-                print(variation_query, flush = True)
-                await wc.post(f"products/{product_data['id']}/variations", variation_query)
+            # for variation in product.matrix:
+            #     print(3, flush=True)
+            #     variation_query = build_variation_query(product_data['id'], variation, sku)
+            #     print(variation_query, flush = True)
+            #     await wc.post(f"/products/{product_data['id']}/variations", variation_query)
         except Exception as e:
              print(f"Критична помилка запиту для {sku}: {e}", flush=True)

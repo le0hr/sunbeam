@@ -70,6 +70,7 @@ def agent_data(raw_data):
             enriched_item = {
                 "url": product["url"],
                 "category": product["category"],
+                "img": product["matrix"][0]["img"],
                 "title": ai_data["seo_title"],
                 "description": ai_data["clean_description"],
                 "calculator_limits": {
