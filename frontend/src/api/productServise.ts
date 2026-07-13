@@ -6,7 +6,7 @@ export const productService = {
     try {
       const productsResponse = await apiClient.get('/products', { params: { page }, timeout: 60000 });
       const productsData = productsResponse.data;
-      
+      console.log(productsData);
       if (!productsData) return [];
 
       const products: TransformedVariableProduct[] = productsData.map((product: any) =>{
@@ -23,10 +23,9 @@ export const productService = {
   
         // 3. Трансформуємо варіації у зручний формат
         const variations: ProductVariation[] = product.variations.map((v: any) => {
-          // Витягуємо значення атрибутів (парсер мав записати їх у pa_color, pa_type тощо)
-          const color = v.attributes.find((a: any) => a.name === 'color')?.option || '';
-          const type = v.attributes.find((a: any) =>  a.name === 'type')?.option || '';
-          const sysClass = v.attributes.find((a: any) =>  a.name === 'class')?.option || '';
+          const color = v.attributes.find((a: any) => a.name === 'Колір')?.option || '';
+          const type = v.attributes.find((a: any) =>  a.name === 'Тип системи')?.option || '';
+          const sysClass = v.attributes.find((a: any) =>  a.name === 'Класс системи')?.option || '';
   
           return {
             id: v.id,
@@ -44,6 +43,7 @@ export const productService = {
           id: product.id,
           name: product.name,
           slug: product.slug,
+          price: product.price,
           description: product.description || '',
           classesDescriptionDict,
           images: product.images?.map((img: any) => img.src) || [],
