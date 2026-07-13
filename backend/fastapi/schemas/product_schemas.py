@@ -27,6 +27,7 @@ class ProductResponse(BaseModel):
     images: list[dict] = []
     variations: list[VariationResponse]
     meta_data: list[Meta] = []
+    categories: list[dict] = []
 
 
 class SupplierProduct(BaseModel):

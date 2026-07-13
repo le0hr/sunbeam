@@ -1,5 +1,7 @@
 import json
 from config import settings
+from clients import wc
+
 
 def fix_urls(products):
     for product in products:
@@ -68,13 +70,31 @@ def extract_attributes_and_meta(matrix):
 
 
 
-def build_product_query(product, sku):
+async def build_product_query(product, sku):
     """
     Фабрика запиту: формує структуру для WooCommerce на основі категорії та матриці.
     """
     category = product.category
     matrix = product.matrix
     
+
+    categories = await wc.get(
+        "/products/categories",
+        params={"slug": f"{category}"}
+    )
+
+    if categories:
+        category_id = categories[0]["id"]
+    else:
+        category = await wc.post(
+            "/products/categories",
+            {
+                "name": "Ролети",
+                "slug": "rolety"
+            }
+        )
+        category_id = category["id"]
+
     attributes, meta_descriptions = extract_attributes_and_meta(matrix)
 
     query = {
@@ -83,7 +103,7 @@ def build_product_query(product, sku):
         "description": product.description,
         "sku": sku,
         "manage_stock": False,
-        "categories": [{"id": 1}],  # У WooCommerce категорії передаються як список об'єктів ID
+        "categories": [{"id": category_id}],  # У WooCommerce категорії передаються як список об'єктів ID
         "attributes": attributes,
         "images": [{"src": product.img}]
     }

@@ -15,7 +15,7 @@ export const productService = {
         
         const raw = metaList.find(
             (m: any) => m.key === "_headless_attributes_descriptions"
-        )?.value;
+        )?.value ?? [];
 
         console.log(raw);
         console.log(typeof raw);
@@ -51,8 +51,9 @@ export const productService = {
           slug: product.slug,
           price: product.price,
           description: product.description || '',
-          classesDescriptionDict,
           images: product.images?.map((img: any) => img.src) || [],
+          categories: product.categories,
+          classesDescriptionDict,
           variations,
           allColors,
           allTypes,

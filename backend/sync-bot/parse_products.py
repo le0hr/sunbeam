@@ -107,7 +107,7 @@ async def parse_plise(page):
     product_list = []
 
     raw_title = await page.locator("div.item-header-tovar-name").first.inner_text()
-    img = await page.locator(".owl-item.active img").first.get_attribute("src")
+    img = "https://valko.ua" + await page.locator(".owl-item.active img").first.get_attribute("src")
 
     if not raw_title:
         raw_title = "Плісе тканинна"
@@ -161,7 +161,7 @@ async def parse_zhalyuzi(page):
     print("Категорія: ЖАЛЮЗІ. Починаю збір...")
     
     raw_title = await page.locator("div.item-header-tovar-name").first.inner_text()
-    img = await page.locator(".owl-item.active img").first.get_attribute("src")
+    img = "https://valko.ua" + await page.locator(".owl-item.active img").first.get_attribute("src")
     
     if not raw_title:
         raw_title = "Жалюзі"
@@ -208,7 +208,7 @@ async def parse_zhalyuzi(page):
 async def parse_moskitna(page):
     print("Категорія: МОСКІТНА СІТКА. Починаю збір...")
     raw_title = await page.locator("div.item-header-tovar-name").first.inner_text()
-    img = await page.locator(".owl-item.active img").first.get_attribute("src")
+    img = "https://valko.ua" + await page.locator(".owl-item.active img").first.get_attribute("src")
 
     if not raw_title:
         raw_title = "Москітна"

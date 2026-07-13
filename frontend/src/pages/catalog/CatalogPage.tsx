@@ -12,147 +12,9 @@ import { productService } from "../../api/productServise";
 import { useEffect } from "react";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const CATEGORIES = ["All", "Roller Blinds", "Day-Night", "Blackout", "Shutters", "Custom"];
+const CATEGORIES = ["Всі", "Ролети", "Плісе", "Москітна сітка", "Жалюзі"];
 
 const MATERIALS = ["All Materials", "Fabric", "PVC", "Aluminium", "Wood", "Composite"];
-
-// const products = [
-//   {
-//     id: 1,
-//     name: "Aurora Day-Night",
-//     category: "Day-Night",
-//     material: "Fabric",
-//     price: 2800,
-//     rating: 4.9,
-//     reviews: 128,
-//     popular: true,
-//     new: false,
-//     description: "Effortlessly transition between sheer and opaque panels. Perfect for living rooms that demand both ambience and privacy.",
-//     colors: ["#F5F0E8", "#D4C5A9", "#8B7355", "#2C2C2C"],
-//     image: "https://images.unsplash.com/photo-1506455050018-40e785776da4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXklMjBuaWdodCUyMHJvbGxlciUyMGJsaW5kc3xlbnwxfHx8fDE3ODE5ODEyMjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
-//     features: ["Dual-layer system", "UV protection 97%", "Easy installation", "Custom sizing"],
-//   },
-//   {
-//     id: 2,
-//     name: "Nocturne Blackout",
-//     category: "Blackout",
-//     material: "PVC",
-//     price: 2200,
-//     rating: 4.8,
-//     reviews: 204,
-//     popular: true,
-//     new: false,
-//     description: "Total darkness on demand. Our thickest blackout lining blocks 100% of light — ideal for bedrooms and home cinemas.",
-//     colors: ["#1A1A1A", "#2D2D2D", "#4A3728", "#1C2B3A"],
-//     image: "https://images.unsplash.com/photo-1609534117141-ff9f20450902?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFja291dCUyMHdpbmRvdyUyMGJsaW5kc3xlbnwxfHx8fDE3ODE5ODEyMjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
-//     features: ["100% light blocking", "Thermal insulation", "Noise reduction", "Moisture resistant"],
-//   },
-//   {
-//     id: 3,
-//     name: "Linen Classic Roller",
-//     category: "Roller Blinds",
-//     material: "Fabric",
-//     price: 1600,
-//     rating: 4.7,
-//     reviews: 89,
-//     popular: false,
-//     new: false,
-//     description: "Timeless woven linen texture that complements any interior. Soft diffused light for a warm, natural atmosphere.",
-//     colors: ["#E8DFD0", "#C9B99A", "#A89070", "#7A6550"],
-//     image: "https://images.unsplash.com/photo-1616594092403-fb65629b0a46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjB3aW5kb3clMjBibGluZHMlMjBiZWRyb29tfGVufDF8fHx8MTc4MTk4MTIyNnww&ixlib=rb-4.1.0&q=80&w=1080",
-//     features: ["Natural linen blend", "Light filtering", "Anti-static coating", "Washable"],
-//   },
-//   {
-//     id: 4,
-//     name: "Heritage Shutter",
-//     category: "Shutters",
-//     material: "Wood",
-//     price: 6500,
-//     rating: 5.0,
-//     reviews: 47,
-//     popular: false,
-//     new: false,
-//     description: "Solid basswood shutters with a hand-lacquered finish. A statement piece that adds architectural value to any room.",
-//     colors: ["#F5F0E8", "#D4B896", "#8B6914", "#2C1A0E"],
-//     image: "https://images.unsplash.com/photo-1518027322746-3813f2e2bb5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjbGFzc2ljJTIwd2luZG93JTIwc2h1dHRlcnN8ZW58MXx8fHwxNzgxOTgxMjI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-//     features: ["Solid basswood", "Hand-lacquered", "Adjustable louvres", "15-year warranty"],
-//   },
-//   {
-//     id: 5,
-//     name: "Prism Motorised",
-//     category: "Roller Blinds",
-//     material: "Composite",
-//     price: 4200,
-//     rating: 4.9,
-//     reviews: 63,
-//     popular: false,
-//     new: true,
-//     description: "Smart motorised blinds controlled via app or voice. Schedule sunrise and sunset automations for effortless living.",
-//     colors: ["#FFFFFF", "#E0E0E0", "#B0B0B0", "#404040"],
-//     image: "https://images.unsplash.com/photo-1632120669818-ed5498030e32?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjB3aW5kb3clMjB0cmVhdG1lbnQlMjBsaXZpbmclMjByb29tfGVufDF8fHx8MTc4MTk4MTIyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
-//     features: ["Motorised drive", "App & voice control", "Automation schedules", "Battery or wired"],
-//   },
-//   {
-//     id: 6,
-//     name: "Bespoke Studio",
-//     category: "Custom",
-//     material: "Fabric",
-//     price: 0,
-//     rating: 5.0,
-//     reviews: 31,
-//     popular: false,
-//     new: true,
-//     description: "Fully custom-designed solution for unusual windows, skylights, and architectural features. We measure, design, and install.",
-//     colors: ["#FFCC00", "#F2B705", "#D4A017", "#8B6914"],
-//     image: "https://images.unsplash.com/photo-1732973708124-444694c08759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjByb2xsZXIlMjBibGluZHMlMjBkYXJrJTIwaW50ZXJpb3J8ZW58MXx8fHwxNzgxOTgxMjI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
-//     features: ["Any shape window", "Material samples", "3D visualisation", "Full installation"],
-//   },
-//   {
-//     id: 7,
-//     name: "Velvet Dimout",
-//     category: "Roller Blinds",
-//     material: "Fabric",
-//     price: 1950,
-//     rating: 4.6,
-//     reviews: 72,
-//     popular: false,
-//     new: false,
-//     description: "A sumptuous velvet-effect fabric that filters light to a warm amber glow. Adds depth and luxury to any space.",
-//     colors: ["#4A1942", "#1A3A5C", "#1C3A2A", "#3A2010"],
-//     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-//     features: ["Velvet texture", "Dimout 85%", "Anti-crease", "Eco-certified"],
-//   },
-//   {
-//     id: 8,
-//     name: "Aluminium Venetian",
-//     category: "Shutters",
-//     material: "Aluminium",
-//     price: 3100,
-//     rating: 4.7,
-//     reviews: 55,
-//     popular: false,
-//     new: false,
-//     description: "Precision-cut aluminium louvres with a micro-perforation option for ventilation without sacrificing privacy.",
-//     colors: ["#C0C0C0", "#A0A0A0", "#707070", "#303030"],
-//     image: "https://images.unsplash.com/photo-1556909212-d5b604d0c90d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-//     features: ["Micro-perforation", "Corrosion-proof", "Tilt & raise", "Slim 25mm profile"],
-//   },
-//   {
-//     id: 9,
-//     name: "Polar Blackout Duo",
-//     category: "Blackout",
-//     material: "PVC",
-//     price: 2600,
-//     rating: 4.8,
-//     reviews: 91,
-//     popular: true,
-//     new: false,
-//     description: "Twin-roller system combining a sheer voile with a full blackout panel. Two blinds, one cassette — maximum flexibility.",
-//     colors: ["#F5F5F5", "#E8E8E8", "#D0D0D0", "#1A1A1A"],
-//     image: "https://images.unsplash.com/photo-1614267157481-ca2b81ac6fcc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-//     features: ["Twin cassette", "Sheer + blackout", "Child-safe cord", "Colour-matched"],
-//   },
-// ];
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
@@ -160,30 +22,6 @@ const MATERIALS = ["All Materials", "Fabric", "PVC", "Aluminium", "Wood", "Compo
 
 
 const PRODUCT_TYPES = ["Рулонна", "День-Ніч", "Жорстка"];
-
-// const SYSTEM_CLASSES = [
-//   {
-//     id: "econom",
-//     label: "Econom",
-//     multiplier: 0.82,
-//     description:
-//       "Practical entry-level system with a reliable open-roll mechanism. Suitable for low-traffic rooms and rental properties where durability and easy installation matter more than aesthetics.",
-//   },
-//   {
-//     id: "standard",
-//     label: "Standard",
-//     multiplier: 1.0,
-//     description:
-//       "Our most popular class — a cassette-enclosed cassette system with a soft-close brake and coordinated colour fascia. Balances premium look with accessible pricing for everyday living spaces.",
-//   },
-//   {
-//     id: "premium",
-//     label: "Premium",
-//     multiplier: 1.38,
-//     description:
-//       "Top-tier motorised or clutch-drive cassette with a slim 55 mm profile, powder-coated aluminium rails, and a 10-year mechanical warranty. The definitive choice for showroom-quality interiors.",
-//   },
-// ];
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
@@ -223,8 +61,8 @@ export function CatalogPage() {
   const filtered = useMemo(() => {
     let list = [...products];
 
-    if (activeCategory !== "All") {
-      list = list.filter((p) => p.category === activeCategory);
+    if (activeCategory !== "Всі") {
+      list = list.filter((p) => p.categories[0].name === activeCategory);
     }
     if (activeMaterial !== "All Materials") {
       list = list.filter((p) => p.material === activeMaterial);

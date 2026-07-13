@@ -18,7 +18,7 @@ async def import_products(products):
         try:
             if not exists:
                 print(2.1, flush=True)
-                product_query = build_product_query(product, sku)
+                product_query = await build_product_query(product, sku)
                 print(product_query, flush=True)
                 created = await wc.post("/products", product_query)
                 print(created, flush=True)
