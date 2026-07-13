@@ -198,6 +198,7 @@ export function CatalogPage() {
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
+  console.log(products);
 
 
   useEffect(() => {

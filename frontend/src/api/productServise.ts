@@ -17,10 +17,16 @@ export const productService = {
             (m: any) => m.key === "_headless_attributes_descriptions"
         )?.value;
 
-        const classesDescriptionDict = raw
-          ? JSON.parse(raw)["Класс системи"]
-          : undefined;
-  
+        console.log(raw);
+        console.log(typeof raw);
+        const classesDescriptionDict = raw.reduce(
+          (acc: Record<string, string>, item: any) => {
+            acc[item.value] = item.description;
+            return acc;
+          },
+          {}
+        );
+
         // 3. Трансформуємо варіації у зручний формат
         const variations: ProductVariation[] = product.variations.map((v: any) => {
           const color = v.attributes.find((a: any) => a.name === 'Колір')?.option || '';

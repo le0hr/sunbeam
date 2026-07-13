@@ -17,13 +17,13 @@ def extract_attributes_and_meta(matrix):
     sys_classes = set()
     sys_classes_description = {}
     colors = set()
-
+    print(matrix, flush=True)
     for item in matrix:
         sys_type = item.get("sys_type")
         sys_class = item.get("sys_class")
         sys_class_desc = item.get("sys_class_description")
         color = item.get("color")
-        
+        # print(item, flush=True)
         if sys_class:
             sys_classes.add(sys_class)
             if sys_class_desc:
@@ -55,14 +55,14 @@ def extract_attributes_and_meta(matrix):
             "variation": True,
             "options": list(colors)
         })
-
+    print( sys_classes_description, flush=True)
     # Формуємо структуру для мета-даних розширених описів
-    meta_descriptions = {
-        "Класс системи": {
+    meta_descriptions = [ {
             "value": sys_cl,
             "description": sys_cl_desc
         } for sys_cl, sys_cl_desc in sys_classes_description.items()
-    }
+    ]
+    print( meta_descriptions, flush=True)
 
     return attributes, meta_descriptions
 
@@ -94,14 +94,14 @@ def build_product_query(product, sku):
     if any(limits.values()):  # Якщо хоча б одне поле не None
         meta_data.append({
             "key": "_calculator_limits",
-            "value": json.dumps(limits, ensure_ascii=False)
+            "value": limits
         })
 
     # Додаємо описи систем у мета-дані
     if meta_descriptions:
         meta_data.append({
             "key": "_headless_attributes_descriptions",
-            "value": json.dumps(meta_descriptions, ensure_ascii=False)
+            "value": meta_descriptions
         })
 
     if meta_data:

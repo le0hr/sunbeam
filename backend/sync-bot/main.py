@@ -7,7 +7,7 @@ import httpx
 import asyncio
 async def main():
     # urls = start_parse_catalog()
-    products = await start_parse_products(["https://valko.ua/rolety/roleta-a5"])
+    products = await start_parse_products(["https://valko.ua/rolety/roleta-a4"])
     enriched_products = agent_data(products)
     print(enriched_products)
     try:

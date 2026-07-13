@@ -20,7 +20,7 @@ export function RoletyForm({ product, classesDescription, onClose }: { product: 
   
   return(
     
-    <div>
+    <div className="flex flex-col gap-8">
       {/* ── Type Selector ─────────────────────────────────── */}
       <div>
         <p className="text-white/50 text-xs uppercase tracking-widest mb-3" style={{ fontFamily: "Inter, sans-serif" }}>Тип</p>
