@@ -5,10 +5,17 @@ import { StarRating } from "./StarRating";
 import {SystemClasses} from "../../types/systemClasses";
 import {TransformedVariableProduct} from "../../types/product";
 import { RoletyForm } from "./forms/RoletyForm";
+import { PliseForm } from "./forms/PliseForm";
+import { ZhalyuziForm } from "./forms/ZhalyuziForm";
+import { MoskitnaForm } from "./forms/MoskitnaForm";
 
 
-const CALCULATOR_COMPONENTS: Record<number, React.ComponentType<any>> = {
-  15: RoletyForm
+
+const CALCULATOR_COMPONENTS: Record<string, React.ComponentType<any>> = {
+  'Ролети': RoletyForm,
+  'Плісе': PliseForm,
+  'Жалюзі': ZhalyuziForm,
+  'Москітна сітка': MoskitnaForm
 
 };
 
@@ -19,9 +26,8 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
   
-
   // Додати визначення по категоріям
-  const TargetCalculator =CALCULATOR_COMPONENTS[15]; 
+  const TargetCalculator =CALCULATOR_COMPONENTS[product.categories[0].name]; 
 
 
   return (

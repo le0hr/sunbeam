@@ -67,6 +67,7 @@ export const useZhalyuziCalculator = (variations: ProductVariation[], classesDes
     selectedClass, setSelectedClass,
     availableTypes,
     availableClasses,
+    
     currentVariation, // віддаємо назовні, щоб знати id варіації для кошика
     finalPrice
   };

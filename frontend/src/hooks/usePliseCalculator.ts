@@ -65,7 +65,8 @@ export const usePliseCalculator = (variations: ProductVariation[], classesDescri
     selectedColor, setSelectedColor,
     selectedClass, setSelectedClass,
     availableColors,
-    currentVariation, // віддаємо назовні, щоб знати id варіації для кошика
+    availableClasses,
+    currentVariation, 
     finalPrice
   };
 };

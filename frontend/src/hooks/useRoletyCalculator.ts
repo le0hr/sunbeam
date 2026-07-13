@@ -6,9 +6,17 @@ export const useRoletyCalculator = (variations: ProductVariation[], classesDescr
   const [height, setHeight] = useState(1000); // мм
 
   // Стан вибраних користувачем параметрів
-  const [selectedColor, setSelectedColor] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
+
+  useEffect(() => {
+    if (!variations.length) return;
+
+    setSelectedColor(variations[0].attributes.color);
+    setSelectedType(variations[0].attributes.type);
+    setSelectedClass(variations[0].attributes.class);
+  }, [variations]);
 
   // ФІЛЬТР ДЛЯ СЕЛЕКТУ "КЛАС" (які класи доступні для обраного Типц)
   const availableClasses = useMemo(() => {
@@ -49,13 +57,13 @@ const availableTypes = useMemo(() => {
   // Скидання неможливих значень при зміні батьківських параметрів (Каскад)
   useEffect(() => {
     if (selectedColor && !availableColors.some(color => color.id === selectedColor )) {
-      setSelectedColor('');
+      setSelectedColor(availableColors[0]?.id);
     }
   }, [selectedColor, availableColors]);
 
   useEffect(() => {
     if (selectedClass && !availableClasses.some(cls => cls.id === selectedClass )) {
-      setSelectedClass('');
+      setSelectedClass(availableClasses[0]?.id);
     }
   }, [selectedClass, availableClasses]);
 
