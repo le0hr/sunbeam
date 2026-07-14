@@ -11,13 +11,14 @@ async def fetch_products(categorySlug, page: int, per_page: int = 12):
         }
     )
     print(categories, flush=True)
-    products = await wc.get(
+    products, pages_data = await wc.get(
         "/products",
         params={
             "category": categories[0]['id'],
             "page": page,
             "per_page": per_page,
         },
+        with_pages_data=True
     )
 
     async with asyncio.TaskGroup() as tg:
@@ -35,4 +36,5 @@ async def fetch_products(categorySlug, page: int, per_page: int = 12):
         products[task_index]["variations"] = task.result()
 
     products = fix_urls(products)
-    return products
+
+    return products, pages_data

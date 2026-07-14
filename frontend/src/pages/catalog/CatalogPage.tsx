@@ -10,6 +10,9 @@ import { ProductDrawer } from "./ProductDrawer";
 import { productService } from "../../api/productServise";
 import { TransformedVariableProduct } from "../../types/product";
 import { useEffect } from "react";
+import { Pagination } from "./Pagination";
+
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 
@@ -58,13 +61,20 @@ export function CatalogPage() {
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0)
+  const [totalProducts, setTotalProducts] = useState(0)
   console.log(products);
 
 
   useEffect(() => {
     productService.getProductList(activeCategory.slug, 1)
-      .then(data => setProducts(data));
-  }, [activeCategory]);
+      .then((data) => {
+        setProducts(data.products);
+        setTotalPages(data.totalPages);
+        setTotalProducts(data.total);
+        });
+  }, [activeCategory, currentPage]);
 
   // const{
   //   id,
@@ -216,7 +226,16 @@ export function CatalogPage() {
               ))}
             </AnimatePresence>
           </motion.div>
+          
         )}
+
+        <Pagination
+              current={currentPage}
+              total={totalPages}
+              perPage={12}
+              totalProducts={totalProducts}
+              onChange={setCurrentPage}
+            />
 
         {/* CTA band */}
         <motion.div

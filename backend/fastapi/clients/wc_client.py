@@ -46,6 +46,7 @@ class WooCommerceClient:
         self,
         endpoint: str,
         params: dict | None = None,
+        with_pages_data: bool = False
     ):
         url = self._build_signed_url(
             endpoint,
@@ -57,7 +58,18 @@ class WooCommerceClient:
 
         response.raise_for_status()
 
-        return response.json()
+        body = response.json()
+
+        if not with_pages_data:
+            return body
+
+        return (
+            body,
+            {
+                "total": int(response.headers.get("X-WP-Total", 0)),
+                "total_pages": int(response.headers.get("X-WP-TotalPages", 0)),
+            },
+        )
 
     async def post(
         self,

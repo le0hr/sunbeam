@@ -1,13 +1,26 @@
 import { apiClient } from './client';
 import { TransformedVariableProduct, ProductVariation } from '../types/product';
 
+type ProductListResponse = {
+  products: TransformedVariableProduct[];
+  total: number;
+  totalPages: number;
+};
+
 export const productService = {
-  getProductList: async (categorySlug: string, page:number): Promise<TransformedVariableProduct[] | []> => {
+  getProductList: async (categorySlug: string, page:number): Promise<ProductListResponse > => {
     try {
       const productsResponse = await apiClient.get('/products', { params: { page, categorySlug }, timeout: 60000 });
+      
+      console.log(productsResponse.headers["x-total"]);
+      console.log(productsResponse.headers["x-total-pages"]);
+      
+      
       const productsData = productsResponse.data;
       console.log(productsData);
-      if (!productsData) return [];
+      if (!productsData) return {products: [],
+            total: 0,
+            totalPages: 0,}
 
       const products: TransformedVariableProduct[] = productsData.map((product: any) =>{
 
@@ -61,12 +74,17 @@ export const productService = {
         };
       }) 
 
-    return products;
+    return {products,
+          total: Number(productsResponse.headers["x-total"] ?? 0),
+          totalPages: Number(productsResponse.headers["x-total-pages"] ?? 0),
+    };
 
 
     } catch (error) {
       console.error("Помилка завантаження варіативного товару:", error);
-      return [];
+      return {products: [],
+            total: 0,
+            totalPages: 0,};
     }
   },
 
