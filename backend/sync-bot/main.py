@@ -5,9 +5,26 @@ from woocommerce_interaction import update_products
 from agent import agent_data
 import httpx
 import asyncio
-async def main():
+async def job():
     # urls = start_parse_catalog()
-    products = await start_parse_products(["https://valko.ua/rolety/roleta-b2", "https://valko.ua/plise/sira-romb-shovkovyi-702", "https://valko.ua/zhalyuzi/antratsyt-ral-7024", "https://valko.ua/moskitna-sitka/vikno-ramkova-nevydymka"])
+    # Тестові товари щоб економить токени
+    urls = [
+        "https://valko.ua/rolety/tkanynna-bila-z-tkanoiy-smuzhkoiy-i-4",
+        "https://valko.ua/rolety/tkanynna-bila-z-chornoiy-smuzhkoiy-i-3",
+        "https://valko.ua/rolety/tkanynna-prozora-zolotysta-i-2",
+        "https://valko.ua/rolety/tkaninna-lon-skladki-f-1",
+        "https://valko.ua/rolety/tkaninna-bila-skladki-f-2",
+        "https://valko.ua/rolety/tkaninna-svitlo-zhowta-skladki-f-3",
+        "https://valko.ua/rolety/dn-107",
+        "https://valko.ua/rolety/tkanynna-bila-prozora-khvyli-h-1",
+        "https://valko.ua/rolety/dn-802",
+        "https://valko.ua/rolety/dn-110",
+        "https://valko.ua/rolety/tkanynna-zhowta-prozora-khvyli-h-2",
+        "https://valko.ua/rolety/tkanynna-sira-prozora-khvyli-h-3",
+        "https://valko.ua/rolety/zebrano-4",
+        "https://valko.ua/rolety/tkanynna-sribno-bila-perlamutrova-e-1"
+    ]
+    products = await start_parse_products(urls)
     enriched_products = agent_data(products)
     print(enriched_products)
     try:
@@ -25,3 +42,13 @@ async def main():
         return
 if __name__ == "__main__":
     asyncio.run(main())
+
+async def main():
+    while True:
+        try:
+            await job()
+        except Exception as e:
+            print(e)
+
+        # чекати 24 години
+        await asyncio.sleep(24 * 60 * 60)
