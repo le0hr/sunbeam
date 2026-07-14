@@ -2,11 +2,19 @@ from clients import wc
 import asyncio
 from .wc_mapper import fix_urls
 
-async def fetch_products(page: int, per_page: int = 12):
+async def fetch_products(categorySlug, page: int, per_page: int = 12):
 
+    categories = await wc.get(
+        "/products/categories",
+        params={
+            "slug": categorySlug
+        }
+    )
+    print(categories, flush=True)
     products = await wc.get(
         "/products",
         params={
+            "category": categories[0]['id'],
             "page": page,
             "per_page": per_page,
         },

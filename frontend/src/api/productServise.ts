@@ -2,9 +2,9 @@ import { apiClient } from './client';
 import { TransformedVariableProduct, ProductVariation } from '../types/product';
 
 export const productService = {
-  getProductList: async (page:number): Promise<TransformedVariableProduct[] | []> => {
+  getProductList: async (categorySlug: string, page:number): Promise<TransformedVariableProduct[] | []> => {
     try {
-      const productsResponse = await apiClient.get('/products', { params: { page }, timeout: 60000 });
+      const productsResponse = await apiClient.get('/products', { params: { page, categorySlug }, timeout: 60000 });
       const productsData = productsResponse.data;
       console.log(productsData);
       if (!productsData) return [];

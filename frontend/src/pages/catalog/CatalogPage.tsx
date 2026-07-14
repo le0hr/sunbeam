@@ -8,16 +8,38 @@ import {
 import { ProductCard } from "./ProductCard";
 import { ProductDrawer } from "./ProductDrawer";
 import { productService } from "../../api/productServise";
-
+import { TransformedVariableProduct } from "../../types/product";
 import { useEffect } from "react";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const CATEGORIES = ["Всі", "Ролети", "Плісе", "Москітна сітка", "Жалюзі"];
 
 const MATERIALS = ["All Materials", "Fabric", "PVC", "Aluminium", "Wood", "Composite"];
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
+type Category = {
+  slug: string;
+  name: string;
+};
+
+const CATEGORIES: Category[] = [
+  {
+    slug: "rolety",
+    name: "Ролети"
+  },
+  {
+    slug: "plise",
+    name: "Плісе"
+  },
+  {
+    slug: "moskitna",
+    name: "Москітна сітка"
+  },
+  {
+    slug: "zhalyuzi",
+    name: "Жалюзі"
+  },
+]
 
 
 
@@ -27,9 +49,9 @@ const PRODUCT_TYPES = ["Рулонна", "День-Ніч", "Жорстка"];
 
 export function CatalogPage() {
 
-  const [products, setProducts] = useState<any>([]);
+  const [products, setProducts] = useState<TransformedVariableProduct[] | []>([]);
 
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES[0]);
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
   const [sortBy, setSortBy] = useState("popular");
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,9 +62,9 @@ export function CatalogPage() {
 
 
   useEffect(() => {
-    productService.getProductList(1)
+    productService.getProductList(activeCategory.slug, 1)
       .then(data => setProducts(data));
-  }, []);
+  }, [activeCategory]);
 
   // const{
   //   id,
@@ -58,34 +80,6 @@ export function CatalogPage() {
   //   } = product
 
 
-  const filtered = useMemo(() => {
-    let list = [...products];
-
-    if (activeCategory !== "Всі") {
-      list = list.filter((p) => p.categories[0].name === activeCategory);
-    }
-    if (activeMaterial !== "All Materials") {
-      list = list.filter((p) => p.material === activeMaterial);
-    }
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q)
-      );
-    }
-
-    if (sortBy === "popular") list.sort((a, b) => b.reviews - a.reviews);
-    else if (sortBy === "rating") list.sort((a, b) => b.rating - a.rating);
-    else if (sortBy === "price-asc") list.sort((a, b) => a.price - b.price);
-    else if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);
-
-    console.log(products);
-    
-    return list;
-  }, [activeCategory, activeMaterial, sortBy, searchQuery]);
 
   return (
     <div className="min-h-screen bg-[#121212] text-white">
@@ -137,7 +131,7 @@ export function CatalogPage() {
             <div className="flex gap-2 flex-wrap">
               {CATEGORIES.map((cat) => (
                 <button
-                  key={cat}
+                  key={cat.slug}
                   onClick={() => setActiveCategory(cat)}
                   className={`px-4 py-2 rounded-xl text-sm transition-all ${
                     activeCategory === cat
@@ -146,7 +140,7 @@ export function CatalogPage() {
                   }`}
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  {cat}
+                  {cat.name}
                 </button>
               ))}
             </div>
@@ -192,13 +186,13 @@ export function CatalogPage() {
       <main className="container mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-8">
           <p className="text-white/40 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
-            {filtered.length === products.length
+            {products.length === products.length
               ? `${products.length} товарів`
-              : `${filtered.length} з ${products.length} товарів`}
+              : `${products.length} з ${products.length} товарів`}
           </p>
         </div>
 
-        {filtered.length === 0 ? (
+        {products.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -209,18 +203,11 @@ export function CatalogPage() {
             </div>
             <p className="text-white/40 text-lg" style={{ fontFamily: "Playfair Display, serif" }}>Нічого не знайдено</p>
             <p className="text-white/30 text-sm mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Спробуйте змінити фільтри або пошуковий запит</p>
-            <button
-              onClick={() => { setActiveCategory("All"); setActiveMaterial("All Materials"); setSearchQuery(""); }}
-              className="mt-6 px-6 py-2.5 bg-[#FFCC00]/10 text-[#FFCC00] rounded-xl hover:bg-[#FFCC00]/20 transition-colors text-sm"
-              style={{ fontFamily: "Inter, sans-serif" }}
-            >
-              Скинути фільтри
-            </button>
           </motion.div>
         ) : (
           <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
-              {filtered.map((product) => (
+              {products.map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}

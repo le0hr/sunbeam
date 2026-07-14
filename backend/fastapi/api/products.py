@@ -6,5 +6,5 @@ from services import fetch_products
 api_router = APIRouter(prefix="/api")
 
 @api_router.get("/products", response_model=list[ProductResponse])
-async def get_products(page: int, per_page: int =12):
-    return await fetch_products(page, per_page)
+async def get_products(categorySlug: str, page: int, per_page: int =12):
+    return await fetch_products(categorySlug, page, per_page)
