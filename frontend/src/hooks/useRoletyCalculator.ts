@@ -25,19 +25,21 @@ export const useRoletyCalculator = (variations: ProductVariation[], classesDescr
       : variations;
 
     const uniqueClassNames = Array.from(new Set(filteredVariations.map(v => v.attributes.class)));
+    setSelectedClass(uniqueClassNames[0]);
+
     return uniqueClassNames.map((cls) => ({
       id: cls,
       label: cls, 
       description: classesDescriptions[cls] || 'Опис системи відсутній', 
     }));
-  }, [selectedType, variations, classesDescriptions]);
+  }, [selectedType, variations]);
 
   const availableColors = useMemo(() => {
     let filtered = variations;
     if (selectedType) filtered = filtered.filter(v => v.attributes.type === selectedType);
     if (selectedClass) filtered = filtered.filter(v => v.attributes.class === selectedClass);
-    
     const uniqueColors = Array.from(new Set(filtered.map(v => v.attributes.color)));
+    setSelectedColor(uniqueColors[0]);
     
     return uniqueColors.map(color => ({
       id: color,
@@ -57,15 +59,18 @@ const availableTypes = useMemo(() => {
   // Скидання неможливих значень при зміні батьківських параметрів (Каскад)
   useEffect(() => {
     if (selectedColor && !availableColors.some(color => color.id === selectedColor )) {
+      console.log(availableColors[0]?.id);
       setSelectedColor(availableColors[0]?.id);
+
     }
-  }, [selectedColor, availableColors]);
+  }, [availableColors]);
 
   useEffect(() => {
     if (selectedClass && !availableClasses.some(cls => cls.id === selectedClass )) {
+      console.log(availableClasses[0]?.id);
       setSelectedClass(availableClasses[0]?.id);
     }
-  }, [selectedClass, availableClasses]);
+  }, [availableClasses]);
 
   // 3. ПОШУК ПОТОЧНОЇ ВАРІАЦІЇ ТА РОЗРАХУНОК ЦІНИ
   const currentVariation = useMemo(() => {
