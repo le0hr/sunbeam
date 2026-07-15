@@ -2,30 +2,32 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { User, Phone, Send, CheckCircle } from 'lucide-react';
 
+import { contactService } from '../../api/contactService';
+
 export function LeadCaptureForm() {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // In a real application, this would send data to a backend
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', phone: '' });
-    }, 3000);
+
+    try {
+      await contactService(formData);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
 
   return (
     <section 
       id="contact" 
-      className="py-20 bg-[#121212] relative overflow-hidden"
+      className="py-20 bg-[#121212] relative overflow-hidden
+      scroll-mt-24"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">

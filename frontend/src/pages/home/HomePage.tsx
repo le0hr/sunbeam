@@ -1,22 +1,25 @@
 import { useState } from "react";
-import { Header } from "../../components/Header";
+import { Header } from "../../components/common/Header";
 import { HeroSection } from "./HeroSection";
 import { FeaturesSection } from "./FeaturesSection";
 import { CategoriesSection } from "./CategoriesSection";
 import { LeadCaptureForm } from "./LeadCaptureForm";
-import { Footer } from "../../components/Footer";
+import { Footer } from "../../components/common/Footer";
+import { ScrollToHash } from "./ScrollToHash";
+import { useEffect } from "react";
+
+
 
 export function HomePage() {
-  const scrollToForm = () => {
-    const formElement = document.getElementById("contact-form");
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  useEffect(() => {
+    console.log("mounted");
 
+    return () => console.log("unmounted");
+  }, []);
   return (
     <div className="min-h-screen bg-[#121212] text-white">
-      <HeroSection onGetStarted={scrollToForm} />
+      <ScrollToHash/>  
+      <HeroSection />
       <FeaturesSection />
       <CategoriesSection />
       <LeadCaptureForm />

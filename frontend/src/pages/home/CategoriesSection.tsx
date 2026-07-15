@@ -2,49 +2,43 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import { ArrowRight } from 'lucide-react';
 
+const MotionLink = motion(Link);
+
 const categories = [
   {
     id: 1,
-    title: 'Ролети День-Ніч',
+    title: 'Ролети',
     description: 'Ідеальний баланс приватності та сонячного світла',
-    image: 'https://images.unsplash.com/photo-1506455050018-40e785776da4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXklMjBuaWdodCUyMHJvbGxlciUyMGJsaW5kc3xlbnwxfHx8fDE3ODE5ODEyMjd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    image: 'https://mirrolet.com.ua/local/image/002/004/podvijni-rulonni-shtori-750@.jpg',
     popular: true,
+    categorySlug: 'rolety'
   },
   {
     id: 2,
-    title: 'Блекаут Ролети',
+    title: 'Плісе',
     description: 'Повне блокування сонячного світла',
-    image: 'https://images.unsplash.com/photo-1609534117141-ff9f20450902?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFja291dCUyMHdpbmRvdyUyMGJsaW5kc3xlbnwxfHx8fDE3ODE5ODEyMjd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    image: 'https://images.shafastatic.net/1291736632',
     popular: false,
+    categorySlug: 'plise'
+
   },
   {
     id: 3,
-    title: 'Класичні Ролети',
+    title: 'Жалюзі',
     description: "Класична елегантність для будь якого інтер'єру",
-    image: 'https://images.unsplash.com/photo-1616594092403-fb65629b0a46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjB3aW5kb3clMjBibGluZHMlMjBiZWRyb29tfGVufDF8fHx8MTc4MTk4MTIyNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    image: 'https://content.rozetka.com.ua/goods/images/big/669522333.jpg',
     popular: false,
+    categorySlug: 'zhalyuzi'
+    
   },
   {
     id: 4,
-    title: 'Жалюзі',
-    description: 'Складний дизайн з неймовірною довговічністю',
-    image: 'https://images.unsplash.com/photo-1518027322746-3813f2e2bb5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjbGFzc2ljJTIwd2luZG93JTIwc2h1dHRlcnN8ZW58MXx8fHwxNzgxOTgxMjI3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    title: 'Москітні сітки',
+    description: 'Системи захисту від комах',
+    image: 'https://vrps.com.ua/image/cache/catalog/tovary/pidvikonnja/Sitka_antrazit_vikonna-600x600.jpg',
     popular: false,
+    categorySlug: "moskitna"
   },
-  {
-    id: 5,
-    title: 'Плісе',
-    description: "Сучасне рішення для будь-якого інтер'єру",
-    image: 'https://images.unsplash.com/photo-1632120669818-ed5498030e32?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjB3aW5kb3clMjB0cmVhdG1lbnQlMjBsaXZpbmclMjByb29tfGVufDF8fHx8MTc4MTk4MTIyN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    popular: true,
-  },
-  // {
-  //   id: 6,
-  //   title: 'Персональне рішення',
-  //   description: 'Tailored designs for unique requirements',
-  //   image: 'https://images.unsplash.com/photo-1732973708124-444694c08759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjByb2xsZXIlMjBibGluZHMlMjBkYXJrJTIwaW50ZXJpb3J8ZW58MXx8fHwxNzgxOTgxMjI2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-  //   popular: false,
-  // },
 ];
 
 export function CategoriesSection() {
@@ -74,7 +68,8 @@ export function CategoriesSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category, index) => (
-            <motion.div
+            <MotionLink
+              to = {`/catalog?category=${category.categorySlug}`} 
               key={category.id}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -114,14 +109,13 @@ export function CategoriesSection() {
                   {category.description}
                 </p>
 
-                <Link
-                  to="/catalog"
+                <div
                   className="group/btn flex items-center gap-2 text-[#FFCC00] hover:gap-3 transition-all"
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 >
                   <span>Learn More</span>
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </div>
               </div>
 
               {/* Glow Effect on Hover */}
@@ -129,7 +123,7 @@ export function CategoriesSection() {
                 <div className="absolute inset-0 border-2 border-[#FFCC00]/20 rounded-2xl" />
                 <div className="absolute -inset-1 bg-gradient-to-r from-[#FFCC00]/0 via-[#FFCC00]/10 to-[#FFCC00]/0 blur-xl" />
               </div>
-            </motion.div>
+            </MotionLink>
           ))}
         </div>
       </div>

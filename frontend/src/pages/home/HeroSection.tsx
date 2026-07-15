@@ -1,13 +1,10 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router';
 
-interface HeroSectionProps {
-  onGetStarted: () => void;
-}
-
-export function HeroSection({ onGetStarted }: HeroSectionProps) {
+export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section id = "home" className="relative min-h-[90vh] flex items-center overflow-hidden scroll-mt-24">
       {/* Gradient Glow Background */}
       <div className="absolute inset-0 bg-gradient-radial from-[#FFCC00]/10 via-transparent to-transparent opacity-30 blur-3xl" />
       
@@ -38,21 +35,22 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <button
-                onClick={onGetStarted}
+              <Link
+                to = "/#contact"
                 className="group px-8 py-4 bg-[#FFCC00] text-[#121212] rounded-xl hover:bg-[#F2B705] transition-all shadow-[0_0_30px_rgba(255,204,0,0.4)] hover:shadow-[0_0_40px_rgba(255,204,0,0.6)] flex items-center gap-2"
                 style={{ fontFamily: 'Inter, sans-serif' }}
               >
                 <span className="font-semibold">Отримати консультацію</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </Link>
               
-              <button
+              <Link
+                to = "/catalog"
                 className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all"
                 style={{ fontFamily: 'Inter, sans-serif' }}
               >
                 Переглянути каталог
-              </button>
+              </Link>
             </div>
 
             {/* Stats */}
@@ -99,28 +97,6 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-50" />
             </div>
-            
-            {/* Floating Badge */}
-            {/* <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1 }}
-              className="absolute -bottom-6 -left-6 bg-[#1C1C1C] border border-white/10 rounded-2xl p-6 shadow-xl backdrop-blur-sm"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#FFCC00] rounded-full flex items-center justify-center">
-                  <span className="text-2xl">✓</span>
-                </div>
-                <div>
-                  <div className="text-sm text-white/60" style={{ fontFamily: 'Inter, sans-serif' }}>
-                    Premium Quality
-                  </div>
-                  <div className="font-semibold" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    Certified Materials
-                  </div>
-                </div>
-              </div>
-            </motion.div> */}
           </motion.div>
         </div>
       </div>

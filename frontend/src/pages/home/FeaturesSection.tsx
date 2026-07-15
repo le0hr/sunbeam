@@ -26,7 +26,7 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="about" className="py-20 bg-[#121212]">
+    <section id="about" className="py-20 bg-[#121212] scroll-mt-24">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

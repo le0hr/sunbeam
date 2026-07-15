@@ -7,6 +7,7 @@ import { RoletyForm } from "./forms/RoletyForm";
 import { PliseForm } from "./forms/PliseForm";
 import { ZhalyuziForm } from "./forms/ZhalyuziForm";
 import { MoskitnaForm } from "./forms/MoskitnaForm";
+import { Link } from "react-router";
 
 
 
@@ -84,18 +85,17 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
 
         {/* CTA */}
         <div className="sticky bottom-0 bg-[#181818]/95 backdrop-blur-sm border-t border-white/5 p-6 flex gap-3">
-          <button
-            className="flex-1 py-3 bg-[#FFCC00] text-[#121212] font-semibold rounded-xl hover:bg-[#F2B705] transition-all shadow-[0_0_20px_rgba(255,204,0,0.25)] hover:shadow-[0_0_32px_rgba(255,204,0,0.45)]"
+          <Link
+            to="/#contact"
+            className="flex flex-1 items-center justify-center py-3
+                      bg-[#FFCC00] text-[#121212] font-semibold
+                      rounded-xl hover:bg-[#F2B705] transition-all
+                      shadow-[0_0_20px_rgba(255,204,0,0.25)]
+                      hover:shadow-[0_0_32px_rgba(255,204,0,0.45)]"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
             Замовити вимірювання
-          </button>
-          <a
-            href="tel:+380501234567"
-            className="px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center transition-colors border border-white/5"
-          >
-            <Phone className="w-5 h-5 text-white/70" />
-          </a>
+          </Link>
         </div>
       </motion.div>
     </motion.div>

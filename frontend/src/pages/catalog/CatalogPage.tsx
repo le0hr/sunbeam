@@ -11,7 +11,7 @@ import { productService } from "../../api/productServise";
 import { TransformedVariableProduct } from "../../types/product";
 import { useEffect } from "react";
 import { Pagination } from "./Pagination";
-
+import { useSearchParams } from "react-router";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -54,17 +54,19 @@ export function CatalogPage() {
 
   const [products, setProducts] = useState<TransformedVariableProduct[] | []>([]);
 
-  const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES[0]);
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
   const [sortBy, setSortBy] = useState("popular");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0)
   const [totalProducts, setTotalProducts] = useState(0)
   console.log(products);
+  const [searchParams, setActiveCategory] = useSearchParams();
+
+  const activeCategory = CATEGORIES.find((v: any) => v.slug === searchParams.get("category"))?? CATEGORIES[0];
 
 
   useEffect(() => {
@@ -193,7 +195,7 @@ export function CatalogPage() {
       </div>
 
       {/* Products grid */}
-      <main className="container mx-auto px-6 py-10">
+      <div className="container mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-8">
           <p className="text-white/40 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
             {products.length === products.length
@@ -274,7 +276,7 @@ export function CatalogPage() {
           </div>
         </motion.div>
       )}
-      </main>
+      </div>
 
       {/* Product detail drawer */}
       <AnimatePresence>
