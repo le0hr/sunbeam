@@ -158,13 +158,13 @@ export function LeadCaptureForm() {
                   className="text-2xl mb-2"
                   style={{ fontFamily: 'Playfair Display, serif' }}
                 >
-                  Thank You!
+                  Дякуємо!
                 </h3>
                 <p 
                   className="text-white/70"
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 >
-                  We've received your request. Our specialist will contact you soon.
+                  Ми отримали вашу заявку. Наша команда скоро з вами зв'яжиться.
                 </p>
               </motion.div>
             )}
