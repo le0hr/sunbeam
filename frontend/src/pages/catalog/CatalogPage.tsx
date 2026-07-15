@@ -144,7 +144,7 @@ export function CatalogPage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.slug}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => setActiveCategory({category: cat.slug})}
                   className={`px-4 py-2 rounded-xl text-sm transition-all ${
                     activeCategory === cat
                       ? "bg-[#FFCC00] text-[#121212] font-semibold shadow-[0_0_12px_rgba(255,204,0,0.3)]"
