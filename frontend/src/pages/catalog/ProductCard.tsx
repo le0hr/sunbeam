@@ -1,5 +1,4 @@
 import { motion, AnimatePresence } from "motion/react";
-import { StarRating } from "./StarRating";
 import {ArrowRight} from "lucide-react";
 
 import {TransformedVariableProduct} from "../../types/product"
@@ -28,7 +27,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
           <img
             src={product.images[0]}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C] via-[#1C1C1C]/20 to-transparent" />
 
@@ -41,9 +40,6 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
               {product.name}
             </h3>
           </div>
-          <p className="text-white/50 text-xs mb-3" style={{ fontFamily: "Inter, sans-serif" }}>
-            {product.category} 
-          </p>
 
 
           {/* Color swatches */}

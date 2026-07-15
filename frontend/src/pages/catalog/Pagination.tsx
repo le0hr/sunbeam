@@ -29,9 +29,9 @@ export function Pagination({ current, total, perPage, totalProducts, onChange }:
   const to   = Math.min(current * perPage, totalProducts);
 
   return (
-    <div className="mt-12 flex flex-col items-center gap-5">
+    <div className="mt-12 flex flex-col items-center gap-3">
       {/* Counter */}
-      <p className="text-white/35 text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
+      <p className="text-white/40 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
         Показано{" "}
         <span className="text-white/60">{from}–{to}</span>
         {" "}з{" "}
@@ -40,7 +40,7 @@ export function Pagination({ current, total, perPage, totalProducts, onChange }:
       </p>
 
       {/* Controls */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         <motion.button
           whileTap={{ scale: 0.92 }}
           onClick={() => onChange(current - 1)}

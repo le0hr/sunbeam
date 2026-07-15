@@ -68,7 +68,7 @@ export function CatalogPage() {
 
 
   useEffect(() => {
-    productService.getProductList(activeCategory.slug, 1)
+    productService.getProductList(activeCategory.slug, currentPage)
       .then((data) => {
         setProducts(data.products);
         setTotalPages(data.totalPages);
@@ -238,7 +238,7 @@ export function CatalogPage() {
             />
 
         {/* CTA band */}
-        <motion.div
+        {currentPage === totalPages && (<motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -273,6 +273,7 @@ export function CatalogPage() {
             </Link>
           </div>
         </motion.div>
+      )}
       </main>
 
       {/* Product detail drawer */}

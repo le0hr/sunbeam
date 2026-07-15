@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useMemo } from "react";
 import {X, Check, Phone} from "lucide-react";
-import { StarRating } from "./StarRating";
 import {SystemClasses} from "../../types/systemClasses";
 import {TransformedVariableProduct} from "../../types/product";
 import { RoletyForm } from "./forms/RoletyForm";
@@ -50,19 +49,17 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
         onClick={(e) => e.stopPropagation()}
         className="relative z-10 w-full max-w-lg bg-[#181818] h-full overflow-y-auto border-l border-white/10 flex flex-col"
       >
-        {/* Header */}
-        <div className="sticky top-0 z-10 bg-[#181818]/95 backdrop-blur-sm border-b border-white/5 px-6 py-4 flex items-center justify-between">
-          <span className="text-white/50 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
-            {product.category}
-          </span>
-          <button onClick={onClose} className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
-            <X className="w-4 h-4 text-white/60" />
-          </button>
-        </div>
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="fixed top-4 right-4 z-50 w-10 h-10 rounded-xl bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center transition-colors"
+        >
+          <X className="w-5 h-5 text-white" />
+        </button>
 
         {/* Image */}
         <div className="relative h-72 flex-shrink-0 overflow-hidden">
-          <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+          <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover object-top" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-[#181818]/10 to-transparent" />
         </div>
 
@@ -75,7 +72,9 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
           </div>
 
           <p className="text-white/70 leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
-            {product.description}
+            <div
+            // Обережно з цим, потрібно правильно форматувати опис товару в адмінці
+              dangerouslySetInnerHTML={{ __html: product.description }}/>
           </p>
 
 

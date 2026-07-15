@@ -40,8 +40,6 @@ async def job():
     except Exception as e:
         print(f"Помилка відправки товару: {e}")
         return
-if __name__ == "__main__":
-    asyncio.run(main())
 
 async def main():
     while True:
@@ -52,3 +50,8 @@ async def main():
 
         # чекати 24 години
         await asyncio.sleep(24 * 60 * 60)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
