@@ -1,0 +1,8 @@
+User-agent: *
+
+Disallow: /admin/
+Disallow: /api/
+
+Allow: /
+
+Sitemap: https://167.235.242.142/sitemap.xml
