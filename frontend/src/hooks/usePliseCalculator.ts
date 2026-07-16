@@ -9,6 +9,12 @@ export const usePliseCalculator = (variations: ProductVariation[], classesDescri
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
+  useEffect(() => {
+      if (!variations.length) return;
+      setSelectedColor(variations[0].attributes.color);
+      setSelectedClass(variations[0].attributes.class);
+    }, [variations]);
+
   // ФІЛЬТР ДЛЯ СЕЛЕКТУ "Колір" (які класи доступні для обраного Класу)
   const availableColors = useMemo(() => {
     let filtered = variations;

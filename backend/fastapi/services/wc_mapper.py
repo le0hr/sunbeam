@@ -1,7 +1,7 @@
 import json
 from config import settings
 from clients import wc
-
+import traceback
 
 def fix_urls(products):
     for product in products:
@@ -74,61 +74,62 @@ async def build_product_query(product, sku):
     """
     Фабрика запиту: формує структуру для WooCommerce на основі категорії та матриці.
     """
-    category = product.category
-    matrix = product.matrix
-    
+    try:
+        category = product.category
+        matrix = product.matrix
+        
 
-    categories = await wc.get(
-        "/products/categories",
-        params={"slug": f"{category}"}
-    )
-
-    if categories:
-        category_id = categories[0]["id"]
-    else:
-        category = await wc.post(
+        categories = await wc.get(
             "/products/categories",
-            {
-                "name": "Ролети",
-                "slug": "rolety"
-            }
+            params={"slug": f"{category}"}
         )
-        category_id = category["id"]
+        if categories:
+            category_id = categories[0]["id"]
+        else:
+            categories = await wc.post(
+                "/products/categories",
+                data = {
+                    "name": category,
+                    "slug": category
+                }
+            )
+        attributes, meta_descriptions = extract_attributes_and_meta(matrix)
 
-    attributes, meta_descriptions = extract_attributes_and_meta(matrix)
+        query = {
+            "name": product.title,
+            "type": "variable",  # Якщо матриця порожня (як у жалюзі), робимо simple
+            "description": product.description,
+            "sku": sku,
+            "manage_stock": False,
+            "categories": [{"id": category_id}],  # У WooCommerce категорії передаються як список об'єктів ID
+            "attributes": attributes,
+            "images": [{"src": product.img}]
+        }
 
-    query = {
-        "name": product.title,
-        "type": "variable",  # Якщо матриця порожня (як у жалюзі), робимо simple
-        "description": product.description,
-        "sku": sku,
-        "manage_stock": False,
-        "categories": [{"id": category_id}],  # У WooCommerce категорії передаються як список об'єктів ID
-        "attributes": attributes,
-        "images": [{"src": product.img}]
-    }
+        # Додаємо ліміти калькулятора в мета-дані, якщо вони є
+        meta_data = []
+        limits = product.calculator_limits
+        if any(limits.values()):  # Якщо хоча б одне поле не None
+            meta_data.append({
+                "key": "_calculator_limits",
+                "value": limits
+            })
 
-    # Додаємо ліміти калькулятора в мета-дані, якщо вони є
-    meta_data = []
-    limits = product.calculator_limits
-    if any(limits.values()):  # Якщо хоча б одне поле не None
-        meta_data.append({
-            "key": "_calculator_limits",
-            "value": limits
-        })
+        # Додаємо описи систем у мета-дані
+        if meta_descriptions:
+            meta_data.append({
+                "key": "_headless_attributes_descriptions",
+                "value": meta_descriptions
+            })
 
-    # Додаємо описи систем у мета-дані
-    if meta_descriptions:
-        meta_data.append({
-            "key": "_headless_attributes_descriptions",
-            "value": meta_descriptions
-        })
+        if meta_data:
+            query["meta_data"] = meta_data
 
-    if meta_data:
-        query["meta_data"] = meta_data
-
-    return query
-
+        return query
+    except Exception as e:
+        print(type(e))
+        print(repr(e))
+        traceback.print_exc()
 
 def build_variation_query(product_id, matrix, parent_sku):
     """
@@ -153,7 +154,7 @@ def build_variation_query(product_id, matrix, parent_sku):
 
 
     # Генеруємо унікальний SKU для варіації
-    var_sku = "-".join(variation_sku_parts).replace(" ", "-").lower()
+    var_sku = "var_" + "-".join(variation_sku_parts).replace(" ", "-").lower()
 
     variation_data = {
         "regular_price": str(matrix["price"]),
@@ -163,4 +164,4 @@ def build_variation_query(product_id, matrix, parent_sku):
         "attributes": variation_attributes
     }
 
-    return variation_data
+    return variation_data, var_sku

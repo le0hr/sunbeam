@@ -11,32 +11,43 @@ async def import_products(products):
 
         print("before wc.get", flush=True)
 
-        exists = await wc.get("/products", params={"sku": sku})
+        product_exists = await wc.get("/products", params={"sku": sku})
 
         print("after wc.get", flush=True)
-        print(exists, flush=True)
+        print(product_exists, flush=True)
         try:
-            if not exists:
-                print(2.1, flush=True)
-                product_query = await build_product_query(product, sku)
-                print(product_query, flush=True)
+            product_query = await build_product_query(product, sku)
+            print(product_query, flush=True)
+            
+            if not product_exists:
+                print(f"Створюю продукт {sku}", flush = True)
                 created = await wc.post("/products", product_query)
-                print(created, flush=True)
-                print(created["meta_data"], flush=True)
-                print(type(created["meta_data"]), flush=True)
-                product_data = created
+                product_id = created['id']
 
             else:
-                print(2.2, flush=True)
-                print(exists)
-                product_data = exists[0]
-                # print(product_data, flush =True)
+                print(f"Оновлюю продукт {sku}", flush = True)
 
+                product_id = product_exists[0]['id']
+                await wc.put(f"/products/{product_id}", product_query)
+
+            existing_variations = await wc.get(f"/products/{product_id}/variations", params={"per_page": 100}
+            )
+
+            id_by_sku = {
+                variation["sku"]: variation["id"]
+                for variation in existing_variations
+            }
+
+            print("Створюю варіації", flush=True)
             for variation in product.matrix:
-                # print(3, flush=True)
-                variation_query = build_variation_query(product_data['id'], variation, sku)
-                # print(variation_query, flush = True)
-                await wc.post(f"/products/{product_data['id']}/variations", variation_query)
+                print()
+                variation_query, var_sku = build_variation_query(product_id, variation, sku)
+                variation_id = id_by_sku.get(var_sku)
+                if variation_id:
+                    await wc.put(f"/products/{product_id}/variations/{variation_id}", variation_query)
+                else:
+                    await wc.post(f"/products/{product_id}/variations", variation_query)
+                    
         except Exception as e:
             print(type(e))
             print(repr(e))
