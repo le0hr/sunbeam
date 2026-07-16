@@ -84,7 +84,7 @@ export function PliseForm({ product, classesDescription, onClose }: { product: T
       </div>
 
       {/* Colors */}
-      <div>
+      {/* <div>
         <p className="text-white/50 text-xs uppercase tracking-widest mb-3" style={{ fontFamily: "Inter, sans-serif" }}>Кольори</p>
         <div className="flex gap-3">
           {availableColors.map((color) => (
@@ -100,7 +100,7 @@ export function PliseForm({ product, classesDescription, onClose }: { product: T
             />
           ))}
         </div>
-      </div>
+      </div> */}
       <DimensionsInput width={width} height={height} setWidth={setWidth} setHeight={setHeight} finalPrice = {finalPrice} basePrice={0} />
     </div>);
 }

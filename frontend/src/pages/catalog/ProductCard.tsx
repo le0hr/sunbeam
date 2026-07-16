@@ -23,7 +23,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         className="group relative flex h-full flex-col bg-[#1C1C1C] rounded-2xl overflow-hidden border border-white/5 hover:border-[#FFCC00]/40 transition-all duration-300 cursor-pointer"
       >
         {/* Image */}
-        <div className="relative h-60 overflow-hidden">
+        <div className="relative overflow-hidden">
           <img
             src={product.images[0]}
             alt={product.name}

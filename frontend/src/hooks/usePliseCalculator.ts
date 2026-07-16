@@ -42,7 +42,7 @@ export const usePliseCalculator = (variations: ProductVariation[], classesDescri
   // Скидання неможливих значень при зміні батьківських параметрів (Каскад)
   useEffect(() => {
     if (selectedColor && !availableColors.some(color => color.id === selectedColor)) {
-      setSelectedColor('');
+      setSelectedColor(availableColors[0]?.id);
     }
   }, [selectedColor, availableColors]);
 

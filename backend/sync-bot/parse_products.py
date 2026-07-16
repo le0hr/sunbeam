@@ -272,7 +272,7 @@ async def parse_valko_product(url):
         # СЦЕНАРІЙ 4: МОСКІТНА СІТКА 
         # ---------------------------------------------------------------------
         elif url.startswith("https://valko.ua/moskitna-sitka"):
-            result_data["category"] = "moskitna-sitka"
+            result_data["category"] = "moskitna"
             result_data["matrix"], result_data["description"] = await parse_moskitna(page)
                 
         else:

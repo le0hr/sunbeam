@@ -3,15 +3,15 @@ import { TransformedVariableProduct } from "../../../types/product";
 import { SystemClasses } from "../../../types/systemClasses";
 import DimensionsInput from "./CustomDimentions";
 
-const colorMap: Record<string, string> = {
-  "Білий": "#FFFFFF",
-  "Чорний": "#000000",
-  "Сірий": "#808080",
-  "Коричневий": "#6B4423",
-  "Антрацит": "#3A3A3A",
-  "Золотий дуб": "#B8860B",
-  "Горіх": "#7B4A2A",
-};
+// const colorMap: Record<string, string> = {
+//   "Білий": "#FFFFFF",
+//   "Чорний": "#000000",
+//   "Сірий": "#808080",
+//   "Коричневий": "#6B4423",
+//   "Антрацит": "#3A3A3A",
+//   "Золотий дуб": "#B8860B",
+//   "Горіх": "#7B4A2A",
+// };
 
 export function RoletyForm({ product, classesDescription, onClose }: { product: TransformedVariableProduct; classesDescription: Record<string, string>; onClose: () => void; SYSTEM_CLASSES:SystemClasses[]; PRODUCT_TYPES: string[] }) {
   
@@ -107,7 +107,7 @@ export function RoletyForm({ product, classesDescription, onClose }: { product: 
       </div>
 
       {/* Colors */}
-      <div>
+      {/* <div>
         <p className="text-white/50 text-xs uppercase tracking-widest mb-3" style={{ fontFamily: "Inter, sans-serif" }}>Кольори</p>
         <div className="flex gap-3">
           {availableColors.map((color) => (
@@ -123,7 +123,7 @@ export function RoletyForm({ product, classesDescription, onClose }: { product: 
             />
           ))}
         </div>
-      </div>
+      </div> */}
       <DimensionsInput width={width} height={height} setWidth={setWidth} setHeight={setHeight} finalPrice = {finalPrice} basePrice={0} />
     </div>);
 }
