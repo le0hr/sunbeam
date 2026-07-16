@@ -1,46 +1,34 @@
-import { useZhalyuziCalculator } from "../../../hooks/useZhalyuziCalculator";
-import { TransformedVariableProduct } from "../../../types/product";
-import { SystemClasses } from "../../../types/systemClasses";
+import { usePliseCalculator } from "../../../../hooks/usePliseCalculator";
+import { TransformedVariableProduct } from "../../../../types/product";
+import { SystemClasses } from "../../../../types/systemClasses";
 import DimensionsInput from "./CustomDimentions";
 
+const colorMap: Record<string, string> = {
+  "Білий": "#FFFFFF",
+  "Чорний": "#000000",
+  "Сірий": "#808080",
+  "Коричневий": "#6B4423",
+  "Антрацит": "#3A3A3A",
+  "Золотий дуб": "#B8860B",
+  "Горіх": "#7B4A2A",
+};
 
-export function ZhalyuziForm({ product, classesDescription, onClose }: { product: TransformedVariableProduct; classesDescription: Record<string, string>; onClose: () => void; SYSTEM_CLASSES:SystemClasses[]; PRODUCT_TYPES: string[] }) {
+export function PliseForm({ product, classesDescription, calculatedPrice, setCalculatedPrice }: { product: TransformedVariableProduct; classesDescription: Record<string, string>; calculatedPrice: number; setCalculatedPrice: (v: number) => void; }) {
   
   const {
     width, setWidth,
     height, setHeight,
-    selectedType, setSelectedType,
+    selectedColor, setSelectedColor,
     selectedClass, setSelectedClass,
+    availableColors,
     availableClasses,
-    availableTypes,
     currentVariation,
     finalPrice
-  } = useZhalyuziCalculator(product.variations, classesDescription );
+  } = usePliseCalculator(product.variations, classesDescription, setCalculatedPrice);
   
   return(
     
     <div className="flex flex-col gap-8">
-      {/* ── Type Selector ─────────────────────────────────── */}
-      <div>
-        <p className="text-white/50 text-xs uppercase tracking-widest mb-3" style={{ fontFamily: "Inter, sans-serif" }}>Тип</p>
-        <div className="flex gap-2 p-1 bg-white/5 rounded-xl border border-white/5">
-          {availableTypes.map((type) => (
-            <button
-              key={type.id}
-              onClick={() => setSelectedType(type.id)}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                selectedType === type.id
-                  ? "bg-[#FFCC00] text-[#121212] shadow-[0_0_12px_rgba(255,204,0,0.25)]"
-                  : "text-white/50 hover:text-white/80"
-              }`}
-              style={{ fontFamily: "Inter, sans-serif" }}
-              >
-              {type.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* ── System Class ──────────────────────────────────── */}
       <div>
         <p className="text-white/50 text-xs uppercase tracking-widest mb-3" style={{ fontFamily: "Inter, sans-serif" }}>Клас системи</p>
@@ -95,6 +83,24 @@ export function ZhalyuziForm({ product, classesDescription, onClose }: { product
         </div>
       </div>
 
+      {/* Colors */}
+      {/* <div>
+        <p className="text-white/50 text-xs uppercase tracking-widest mb-3" style={{ fontFamily: "Inter, sans-serif" }}>Кольори</p>
+        <div className="flex gap-3">
+          {availableColors.map((color) => (
+            <button
+              key={color.id}
+              onClick={() => setSelectedColor(color.id)}
+              className="relative w-8 h-8 rounded-full border-2 transition-all"
+              style={{
+                backgroundColor: colorMap[color.id],
+                borderColor: selectedColor === color.id ? "#FFCC00" : "transparent",
+                boxShadow: selectedColor === color.id ? "0 0 0 1px #FFCC00" : "0 0 0 1px rgba(255,255,255,0.1)",
+              }}
+            />
+          ))}
+        </div>
+      </div> */}
       <DimensionsInput width={width} height={height} setWidth={setWidth} setHeight={setHeight} finalPrice = {finalPrice} basePrice={0} />
     </div>);
 }

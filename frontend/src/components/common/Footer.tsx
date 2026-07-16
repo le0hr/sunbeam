@@ -68,7 +68,7 @@ export function Footer() {
                 Черкаси, Україна
               </p>
               <p className="text-white/60 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
-                +380 (50) 123-45-67
+                +380 (63) 630-31-31
               </p>
               <p className="text-white/60 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
                 info@sunbeam.ua

@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ProductVariation } from '../types/product';
 
-export const useZhalyuziCalculator = (variations: ProductVariation[], classesDescriptions: Record<string, string>) => {
+export const useZhalyuziCalculator = (variations: ProductVariation[], classesDescriptions: Record<string, string>, setCalculatedPrice: (v: number) => void) => {
   const [width, setWidth] = useState(1000);  // мм
   const [height, setHeight] = useState(1000); // мм
 
@@ -60,6 +60,8 @@ export const useZhalyuziCalculator = (variations: ProductVariation[], classesDes
     return Math.round(area * pricePerM2);
   }, [width, height, currentVariation]);
 
+  setCalculatedPrice(finalPrice);
+  
   return {
     width, setWidth,
     height, setHeight,

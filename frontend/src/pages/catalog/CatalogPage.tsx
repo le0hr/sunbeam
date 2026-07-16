@@ -6,7 +6,7 @@ import {
   ChevronDown, Phone, ArrowRight, Check
 } from "lucide-react";
 import { ProductCard } from "./ProductCard";
-import { ProductDrawer } from "./ProductDrawer";
+import { ProductDrawer } from "./drawer/ProductDrawer";
 import { productService } from "../../api/productServise";
 import { TransformedVariableProduct } from "../../types/product";
 import { useEffect } from "react";

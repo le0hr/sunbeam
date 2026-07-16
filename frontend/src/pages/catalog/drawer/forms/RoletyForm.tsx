@@ -1,6 +1,5 @@
-import { useRoletyCalculator } from "../../../hooks/useRoletyCalculator";
-import { TransformedVariableProduct } from "../../../types/product";
-import { SystemClasses } from "../../../types/systemClasses";
+import { useRoletyCalculator } from "../../../../hooks/useRoletyCalculator";
+import { TransformedVariableProduct } from "../../../../types/product";
 import DimensionsInput from "./CustomDimentions";
 
 // const colorMap: Record<string, string> = {
@@ -13,7 +12,17 @@ import DimensionsInput from "./CustomDimentions";
 //   "Горіх": "#7B4A2A",
 // };
 
-export function RoletyForm({ product, classesDescription, onClose }: { product: TransformedVariableProduct; classesDescription: Record<string, string>; onClose: () => void; SYSTEM_CLASSES:SystemClasses[]; PRODUCT_TYPES: string[] }) {
+export function RoletyForm({ 
+  product, 
+  classesDescription, 
+  calculatedPrice, 
+  setCalculatedPrice
+}: {
+    product: TransformedVariableProduct; 
+    calculatedPrice: number;
+    setCalculatedPrice: (v: number) => void;
+    classesDescription: Record<string, string>; 
+  }) {
   
   const {
     width, setWidth,
@@ -24,9 +33,8 @@ export function RoletyForm({ product, classesDescription, onClose }: { product: 
     availableColors,
     availableClasses,
     availableTypes,
-    currentVariation,
-    finalPrice
-  } = useRoletyCalculator(product.variations, classesDescription );
+    currentVariation  
+  } = useRoletyCalculator(product.variations, classesDescription, setCalculatedPrice );
   
   return(
     
@@ -124,6 +132,6 @@ export function RoletyForm({ product, classesDescription, onClose }: { product: 
           ))}
         </div>
       </div> */}
-      <DimensionsInput width={width} height={height} setWidth={setWidth} setHeight={setHeight} finalPrice = {finalPrice} basePrice={0} />
+      <DimensionsInput width={width} height={height} setWidth={setWidth} setHeight={setHeight} finalPrice = {calculatedPrice} basePrice={0} />
     </div>);
 }

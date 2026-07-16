@@ -178,7 +178,7 @@ export function LeadCaptureForm() {
               </div>
               <div className="text-sm text-white/60" style={{ fontFamily: 'Inter, sans-serif' }}>
                 Шоурум в Черкасах 
-                Вулиця М. Батицького 1<br />Mon-Sat: 9AM-7PM
+                вулиця Байди Вишневецького 68/3<br />Пн-Пт: 9AM-7PM
               </div>
             </div>
             <div>
@@ -186,7 +186,7 @@ export function LeadCaptureForm() {
                 Зателефонуйте
               </div>
               <div className="text-sm text-white/60" style={{ fontFamily: 'Inter, sans-serif' }}>
-                +380 (50) 123-45-67<br />
+                +380 (63) 630-31-31 <br />
               </div>
             </div>
             <div>

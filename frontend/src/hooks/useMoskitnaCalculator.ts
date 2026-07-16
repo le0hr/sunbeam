@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ProductVariation } from '../types/product';
 
-export const useMoskitnaCalculator = (variations: ProductVariation[]) => {
+export const useMoskitnaCalculator = (variations: ProductVariation[], setCalculatedPrice: (v: number) => void) => {
   const [width, setWidth] = useState(1000);  // мм
   const [height, setHeight] = useState(1000); // мм
 
@@ -13,6 +13,8 @@ export const useMoskitnaCalculator = (variations: ProductVariation[]) => {
     
     return Math.round(area * pricePerM2);
   }, [width, height]);
+
+  setCalculatedPrice(finalPrice);
   return {
     width, setWidth,
     height, setHeight,
