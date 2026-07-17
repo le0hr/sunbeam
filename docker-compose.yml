@@ -72,6 +72,9 @@ services:
       - backend
     networks:
       - app-network
+    profiles:
+      - manual
+  
   frontend:
     image: node:20-slim
     container_name: react_frontend
@@ -84,6 +87,8 @@ services:
     volumes:  
       - ./frontend:/home/node/app
       - /home/node/app/node_modules
+
+
   nginx:
     image: nginx:alpine
     container_name: nginx

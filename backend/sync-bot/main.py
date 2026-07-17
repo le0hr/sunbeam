@@ -52,18 +52,18 @@ async def job():
 
 
         "https://valko.ua/moskitna-sitka/dveri-plisovana-plise-elit-dvostulkova-kutova-bila",
-        "https://valko.ua/moskitna-sitka/moskitna-sitka-plise-chorna",
-        "https://valko.ua/moskitna-sitka/ekonom-bila",
-        "https://valko.ua/moskitna-sitka/ekonom-bila-na-zavisakh",
-        "https://valko.ua/moskitna-sitka/standart-bila",
-        "https://valko.ua/moskitna-sitka/ekonom-korychneva",
-        "https://valko.ua/moskitna-sitka/ekonom-korychneva-na-zavisakh",
-        "https://valko.ua/moskitna-sitka/standart-korychneva",
-        "https://valko.ua/moskitna-sitka/standart-antracyt",
-        "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-antratsit",
-        "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-bila",
-        "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-korychneva",
-        "https://valko.ua/moskitna-sitka/premium-antratsyt"
+        # "https://valko.ua/moskitna-sitka/moskitna-sitka-plise-chorna",
+        # "https://valko.ua/moskitna-sitka/ekonom-bila",
+        # "https://valko.ua/moskitna-sitka/ekonom-bila-na-zavisakh",
+        # "https://valko.ua/moskitna-sitka/standart-bila",
+        # "https://valko.ua/moskitna-sitka/ekonom-korychneva",
+        # "https://valko.ua/moskitna-sitka/ekonom-korychneva-na-zavisakh",
+        # "https://valko.ua/moskitna-sitka/standart-korychneva",
+        # "https://valko.ua/moskitna-sitka/standart-antracyt",
+        # "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-antratsit",
+        # "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-bila",
+        # "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-korychneva",
+        # "https://valko.ua/moskitna-sitka/premium-antratsyt"
 
 
 
@@ -82,7 +82,13 @@ async def job():
         response.raise_for_status()
         print('sended')
     except Exception as e:
-        print(f"Помилка відправки товару: {e}")
+        print(f"Помилка при відправці запиту: {e}")
+        # Якщо запит таки дійшов до сервера і ми отримали відповідь, але вона була з помилкою (напр. 422 чи 500)
+        if response is not None:
+            print(f"Код відповіді сервера: {response.status_code}")
+            print(f"Деталі відповіді: {response.text}")
+        else:
+            print("Сервер взагалі не відповів (можливо, контейнер лежить або таймаут)")
         return
 
 async def main():

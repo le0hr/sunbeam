@@ -7,9 +7,6 @@ from config import settings
 # 1. Ініціалізація клієнта (ключ береться з системних змінних)
 client = genai.Client(api_key=settings.GOOGLE_API)
 
-for model in client.models.list():
-    print(model.name)
-
 # 2. Створюємо суворий системний промпт для ШІ
 system_instruction = """
 Ти — контент-менеджер інтернет-магазину сонцезахисних систем та москітних сіток. 
