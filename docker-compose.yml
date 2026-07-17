@@ -122,6 +122,7 @@ volumes:
   certbot-etc:
   certbot-var:
   webroot:
+  wp-content:
 
 networks:
   app-network:
