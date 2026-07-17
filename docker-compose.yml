@@ -27,14 +27,23 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         if (!defined('WP_HOME')) {
             $$host  = $$_SERVER['HTTP_HOST'] ?? 'localhost';
-            $$proto = (!empty($$_SERVER['HTTPS']) && $$_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+            $$proto = (
+                (!empty($$_SERVER['HTTPS']) && $$_SERVER['HTTPS'] !== 'off')
+                || (!empty($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+            ) ? 'https' : 'http';
             define('WP_HOME', $$proto . '://' . $$host);
             define('WP_SITEURL', $$proto . '://' . $$host);
         }
 
-        define('WP_DEBUG', true);
-        define('WP_DEBUG_LOG', true);
-        define('WP_DEBUG_DISPLAY', false);
+        if (!defined('WP_DEBUG')) {
+            define('WP_DEBUG', true);
+        }
+        if (!defined('WP_DEBUG_LOG')) {
+            define('WP_DEBUG_LOG', true);
+        }
+        if (!defined('WP_DEBUG_DISPLAY')) {
+            define('WP_DEBUG_DISPLAY', false);
+        }
         @ini_set('log_errors', 1);
         @ini_set('display_errors', 0);
         define('WC_LOG_HANDLER', 'WC_Log_Handler_File');
