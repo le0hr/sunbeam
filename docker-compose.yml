@@ -40,7 +40,7 @@ services:
         define('WC_LOG_HANDLER', 'WC_Log_Handler_File');
         define('WC_LOG_LEVEL', 'debug');
     volumes:
-      - ./wp-content:/var/www/html/wp-content
+      - wp-content:/var/www/html/wp-content
     networks:
       - app-network
 
@@ -96,16 +96,32 @@ services:
       - "80:80" # Тільки цей порт відкритий назовні
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - webroot:/var/www/html
     depends_on:
       - wordpress
       - backend
       - frontend
     networks:
       - app-network
+    restart: always
+    
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - webroot:/var/www/html
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/html; sleep 24h & wait $${!}; done'"
+    restart: always
 
 volumes:
   db_data:
   wp_data:
+  certbot-etc:
+  certbot-var:
+  webroot:
 
 networks:
   app-network:
