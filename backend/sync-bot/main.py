@@ -83,13 +83,9 @@ async def job():
         print('sended')
     except Exception as e:
         print(f"Помилка при відправці запиту: {e}")
-        # Якщо запит таки дійшов до сервера і ми отримали відповідь, але вона була з помилкою (напр. 422 чи 500)
-        if response is not None:
-            print(f"Код відповіді сервера: {response.status_code}")
-            print(f"Деталі відповіді: {response.text}")
-        else:
-            print("Сервер взагалі не відповів (можливо, контейнер лежить або таймаут)")
-        return
+        print(type(e))
+        print(repr(e))
+
 
 async def main():
     while True:
