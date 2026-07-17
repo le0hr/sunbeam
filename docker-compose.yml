@@ -112,7 +112,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-      - webroot:/var/www/html
+      - webroot:/var/www/certbot
     restart: always
 
 volumes:
