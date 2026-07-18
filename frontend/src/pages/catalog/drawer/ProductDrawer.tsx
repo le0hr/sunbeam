@@ -169,9 +169,9 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
                         Заявку отримано!
                       </h3>
                       <p className="text-white/55 text-sm leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
-                        Наш менеджер зателефонує на
+                        Наш менеджер зателефонує вам на номер 
                         <span className="text-white/80"> {phone}</span>
-                        протягом 30 хвилин
+                         протягом дня
                       </p>
                     </div>
                     <button
