@@ -18,8 +18,8 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [currentVariation, setCurrentVariation] = useState<ProductVariation>();
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(1000);
+  const [height, setHeight] = useState(1000);
 
 
   return (
