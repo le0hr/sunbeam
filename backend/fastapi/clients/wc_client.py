@@ -56,6 +56,9 @@ class WooCommerceClient:
 
         response = await self.client.get(url)
 
+        print("STATUS:", response.status_code, flush=True)
+        print("BODY:", response.text, flush=True)
+
         response.raise_for_status()
 
         body = response.json()

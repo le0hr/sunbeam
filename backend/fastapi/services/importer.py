@@ -11,8 +11,6 @@ async def import_products(products):
         print("before wc.get", flush=True)
 
         product_exists = await wc.get("/products", params={"sku": sku})
-        print("STATUS:", product_exists.status_code)
-        print("BODY:", product_exists.text)
 
         print("after wc.get", flush=True)
         print(product_exists, flush=True)
