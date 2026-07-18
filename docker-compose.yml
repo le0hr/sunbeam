@@ -49,6 +49,8 @@ services:
       dockerfile: Dockerfile.nginx
     container_name: react_frontend
     restart: unless-stopped
+    ports:
+      - "80:80"
     depends_on:
       - wordpress
       - backend
