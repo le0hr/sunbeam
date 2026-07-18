@@ -28,6 +28,7 @@ class ProductResponse(BaseModel):
     variations: list[VariationResponse]
     meta_data: list[Meta] = []
     categories: list[dict] = []
+    slug: str
 
 
 class SupplierProduct(BaseModel):
