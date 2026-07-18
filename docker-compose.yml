@@ -34,6 +34,10 @@ services:
             define('WP_SITEURL', 'http://' . $$my_host);
             $$_SERVER['HTTPS'] = 'off';
             define('FORCE_SSL_ADMIN', false);
+            
+            # Хук для WooCommerce: змушуємо його валідувати підпис OAuth без SSL
+            add_filter('woocommerce_api_require_ssl', '__return_false', 999);
+            add_filter('woocommerce_https_check_required', '__return_false', 999);
         } else {
             # 3. Якщо запит йде ззовні через Nginx
             $$is_https = ( !empty($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' );
@@ -49,7 +53,6 @@ services:
             }
         }
 
-        define('WP_DEBUG', true);
         define('WP_DEBUG_LOG', true);
         define('WP_DEBUG_DISPLAY', false);
         define('WP_DISABLE_FATAL_ERROR_HANDLER', true);
