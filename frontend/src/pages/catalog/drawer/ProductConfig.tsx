@@ -62,7 +62,7 @@ export function ProductConfig({
             width={width}
             height={height}
             setWidth={setWidth}
-            setHight={setHeight}
+            setHeight={setHeight}
           />
         ) : (
           <div className="text-white/60 text-sm">
