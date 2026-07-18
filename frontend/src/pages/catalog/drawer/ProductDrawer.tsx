@@ -1,11 +1,13 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { X } from "lucide-react";
-import { TransformedVariableProduct } from "../../../types/product";
+import { ProductVariation, TransformedVariableProduct } from "../../../types/product";
 import { ProductConfig } from "./ProductConfig";
 import { ArrowLeft } from "lucide-react";
 import { CheckCircle } from "lucide-react";
 import { OrderStep } from "./OrderStep";
+import { PurchaseData } from "../../../types/product";
+
 
 export function ProductDrawer({ product, classesDescription, onClose }: { product: TransformedVariableProduct; onClose: () => void; classesDescription: Record<string, string> }) {
   const [calculatedPrice, setCalculatedPrice] = useState(0);
@@ -15,6 +17,9 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
   const [nameError, setNameError] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [currentVariation, setCurrentVariation] = useState<ProductVariation>();
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
 
   return (
@@ -110,6 +115,11 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
                       calculatedPrice={calculatedPrice}
                       setCalculatedPrice={setCalculatedPrice}
                       onShowOrder={() => setStep("order")}
+                      setCurrentVariation={setCurrentVariation}
+                      width={width}
+                      height={height}
+                      setWidth={setWidth}
+                      setHeight={setHeight}
                     />
                   </motion.div>
                 )}
@@ -138,6 +148,7 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
                       phoneError={phoneError}
                       setPhoneError={setPhoneError}
                       onSubmit={handleConfirmOrder}
+                      currentVariation={currentVariation}
                     />
                   </motion.div>
                 )}
@@ -194,12 +205,24 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
       setNameError("Вкажіть ваше ім'я");
       return;
     }
-
+    if (!currentVariation) {
+      return;
+    }
     const digits = phone.replace(/\D/g, "");
     if (!digits || digits.length < 9) {
       setPhoneError("Вкажіть коректний номер телефону");
       return;
     }
+    const purchaseData: PurchaseData = {
+      variation: currentVariation,
+      price: calculatedPrice,
+      width: width,
+      height: height,
+      name: name,
+      phone: phone,
+    }
+    console.log(currentVariation);
+    
 
     setPhoneError("");
     setNameError("");

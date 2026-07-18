@@ -1,3 +1,4 @@
+import { Currency } from "lucide-react";
 import { useRoletyCalculator } from "../../../../hooks/useRoletyCalculator";
 import { TransformedVariableProduct } from "../../../../types/product";
 import DimensionsInput from "./CustomDimentions";
@@ -16,17 +17,25 @@ export function RoletyForm({
   product, 
   classesDescription, 
   calculatedPrice, 
-  setCalculatedPrice
+  setCalculatedPrice,
+  setCurrentVariation,
+  width,
+  height,
+  setWidth,
+  setHeight
 }: {
     product: TransformedVariableProduct; 
     calculatedPrice: number;
     setCalculatedPrice: (v: number) => void;
-    classesDescription: Record<string, string>; 
+    classesDescription: Record<string, string>;
+    setCurrentVariation: (v: any) => void;
+    width: number;
+    height: number;
+    setWidth: (v:any) => void;
+    setHeight: (v:any) => void;
   }) {
   
   const {
-    width, setWidth,
-    height, setHeight,
     selectedType, setSelectedType,
     selectedColor, setSelectedColor,
     selectedClass, setSelectedClass,
@@ -34,8 +43,10 @@ export function RoletyForm({
     availableClasses,
     availableTypes,
     currentVariation  
-  } = useRoletyCalculator(product.variations, classesDescription, setCalculatedPrice );
+  } = useRoletyCalculator(product.variations, classesDescription, setCalculatedPrice, width, height  );
   
+  setCurrentVariation(currentVariation);
+
   return(
     
     <div className="flex flex-col gap-8">

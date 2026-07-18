@@ -12,7 +12,29 @@ const CALCULATOR_COMPONENTS: Record<string, ComponentType<any>> = {
   'moskitna': MoskitnaForm
 };
 
-export function ProductConfig({ product, classesDescription, calculatedPrice, setCalculatedPrice, onShowOrder }: { product: TransformedVariableProduct; calculatedPrice: number; setCalculatedPrice: (v: number) => void; onShowOrder: () => void; classesDescription: Record<string, string> }) {
+export function ProductConfig({ 
+  product, 
+  classesDescription, 
+  calculatedPrice, 
+  setCalculatedPrice, 
+  onShowOrder,
+  setCurrentVariation ,
+  width,
+  height,
+  setWidth,
+  setHeight
+}: { product: TransformedVariableProduct; 
+  calculatedPrice: number; 
+  setCalculatedPrice: (v: number) => void; 
+  onShowOrder: () => void;
+  setCurrentVariation: (v: any) => void;
+  classesDescription: Record<string, string>,
+  width: number;
+  height: number
+  setWidth: (v:any) => void;
+  setHeight: (v:any) => void;
+
+}) {
   const TargetCalculator = CALCULATOR_COMPONENTS[product.categories?.[0]?.name || ""];
 
   return (
@@ -36,6 +58,11 @@ export function ProductConfig({ product, classesDescription, calculatedPrice, se
             classesDescription={classesDescription}
             calculatedPrice={calculatedPrice}
             setCalculatedPrice={setCalculatedPrice}
+            setCurrentVariation={setCurrentVariation}
+            width={width}
+            height={height}
+            setWidth={setWidth}
+            setHight={setHeight}
           />
         ) : (
           <div className="text-white/60 text-sm">

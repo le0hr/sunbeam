@@ -1,9 +1,12 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ProductVariation } from '../types/product';
 
-export const useMoskitnaCalculator = (variations: ProductVariation[], setCalculatedPrice: (v: number) => void) => {
-  const [width, setWidth] = useState(1000);  // мм
-  const [height, setHeight] = useState(1000); // мм
+export const useMoskitnaCalculator = (
+  variations: ProductVariation[], 
+  setCalculatedPrice: (v: number) => void,
+  width: number,
+  height: number
+) => {
 
   const currentVariation = variations[0];
   const finalPrice = useMemo(() => {
@@ -16,8 +19,6 @@ export const useMoskitnaCalculator = (variations: ProductVariation[], setCalcula
 
   setCalculatedPrice(finalPrice);
   return {
-    width, setWidth,
-    height, setHeight,
 
     currentVariation, // віддаємо назовні, щоб знати id варіації для кошика
     finalPrice

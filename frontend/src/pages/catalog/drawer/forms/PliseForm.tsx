@@ -13,19 +13,39 @@ const colorMap: Record<string, string> = {
   "Горіх": "#7B4A2A",
 };
 
-export function PliseForm({ product, classesDescription, calculatedPrice, setCalculatedPrice }: { product: TransformedVariableProduct; classesDescription: Record<string, string>; calculatedPrice: number; setCalculatedPrice: (v: number) => void; }) {
+export function PliseForm({ 
+  product,
+  classesDescription, 
+  calculatedPrice, 
+  setCalculatedPrice,
+  setCurrentVariation,
+  width,
+  height,
+  setWidth,
+  setHeight
+}: 
+  { product: TransformedVariableProduct; 
+    classesDescription: Record<string, string>; 
+    calculatedPrice: number; 
+    setCalculatedPrice: (v: number) => void;
+    setCurrentVariation:  (v: any) => void;
+    width: number;
+    height: number;
+    setWidth: (v:any) => void;
+    setHeight: (v:any) => void;
+  }) {
   
   const {
-    width, setWidth,
-    height, setHeight,
     selectedColor, setSelectedColor,
     selectedClass, setSelectedClass,
     availableColors,
     availableClasses,
     currentVariation,
     finalPrice
-  } = usePliseCalculator(product.variations, classesDescription, setCalculatedPrice);
+  } = usePliseCalculator(product.variations, classesDescription, setCalculatedPrice, width, height);
   
+  setCurrentVariation(currentVariation);
+
   return(
     
     <div className="flex flex-col gap-8">

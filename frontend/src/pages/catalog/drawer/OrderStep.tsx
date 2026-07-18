@@ -27,6 +27,7 @@ export interface OrderStepProps {
   phoneError: string;
   setPhoneError: (v: string) => void;
   onSubmit: () => void;
+  currentVariation: any;
 }
 
 export function OrderStep({
@@ -47,7 +48,8 @@ export function OrderStep({
   setPhone,
   phoneError,
   setPhoneError,
-  onSubmit
+  onSubmit,
+  currentVariation
 }: OrderStepProps) {
   return (
     <div className="px-6 py-6 space-y-6">

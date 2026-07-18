@@ -1,9 +1,13 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ProductVariation } from '../types/product';
 
-export const useZhalyuziCalculator = (variations: ProductVariation[], classesDescriptions: Record<string, string>, setCalculatedPrice: (v: number) => void) => {
-  const [width, setWidth] = useState(1000);  // мм
-  const [height, setHeight] = useState(1000); // мм
+export const useZhalyuziCalculator = (
+  variations: ProductVariation[], 
+  classesDescriptions: Record<string, string>,
+  setCalculatedPrice: (v: number) => void,
+  width: number,
+  height: number,
+) => {
 
   // Стан вибраних користувачем параметрів
   const [selectedType, setSelectedType] = useState('');
@@ -63,8 +67,6 @@ export const useZhalyuziCalculator = (variations: ProductVariation[], classesDes
   setCalculatedPrice(finalPrice);
   
   return {
-    width, setWidth,
-    height, setHeight,
     selectedType, setSelectedType,
     selectedClass, setSelectedClass,
     availableTypes,

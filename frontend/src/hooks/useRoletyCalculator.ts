@@ -1,9 +1,13 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ProductVariation } from '../types/product';
 
-export const useRoletyCalculator = (variations: ProductVariation[], classesDescriptions: Record<string, string>, setCalculatedPrice: (v: number) => void) => {
-  const [width, setWidth] = useState(1000);  // мм
-  const [height, setHeight] = useState(1000); // мм
+export const useRoletyCalculator = (
+  variations: ProductVariation[],
+  classesDescriptions: Record<string, string>, 
+  setCalculatedPrice: (v: number) => void,
+  width: number,
+  height: number
+) => {
 
   // Стан вибраних користувачем параметрів
   const [selectedColor, setSelectedColor] = useState("");
@@ -95,8 +99,6 @@ const availableTypes = useMemo(() => {
   setCalculatedPrice(finalPrice);
   
   return {
-    width, setWidth,
-    height, setHeight,
     selectedType, setSelectedType,
     selectedColor, setSelectedColor,
     selectedClass, setSelectedClass,

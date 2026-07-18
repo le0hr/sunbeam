@@ -23,3 +23,12 @@ export interface TransformedVariableProduct {
   allClasses: string[];
   classesDescriptionDict: Record<string, string>;
 }
+
+export interface PurchaseData{
+  variation: ProductVariation,
+  name: string,
+  phone: string,
+  width: number,
+  height: number,
+  price: number,
+}

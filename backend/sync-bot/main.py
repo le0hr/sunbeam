@@ -10,7 +10,7 @@ async def job():
     # Тестові товари щоб економить токени
     urls = [
         "https://valko.ua/rolety/tkanynna-bila-z-tkanoiy-smuzhkoiy-i-4",
-        "https://valko.ua/rolety/tkanynna-bila-z-chornoiy-smuzhkoiy-i-3",
+        # "https://valko.ua/rolety/tkanynna-bila-z-chornoiy-smuzhkoiy-i-3",
         # "https://valko.ua/rolety/tkanynna-prozora-zolotysta-i-2",
         # "https://valko.ua/rolety/tkaninna-lon-skladki-f-1",
         # "https://valko.ua/rolety/tkaninna-bila-skladki-f-2",
