@@ -6,10 +6,10 @@ import { ZhalyuziForm } from "./forms/ZhalyuziForm";
 import { MoskitnaForm } from "./forms/MoskitnaForm";
 
 const CALCULATOR_COMPONENTS: Record<string, ComponentType<any>> = {
-  'Ролети': RoletyForm,
-  'Плісе': PliseForm,
-  'Жалюзі': ZhalyuziForm,
-  'Москітна сітка': MoskitnaForm
+  'rolety': RoletyForm,
+  'plise': PliseForm,
+  'zhalyuzi': ZhalyuziForm,
+  'moskitna': MoskitnaForm
 };
 
 export function ProductConfig({ product, classesDescription, calculatedPrice, setCalculatedPrice, onShowOrder }: { product: TransformedVariableProduct; calculatedPrice: number; setCalculatedPrice: (v: number) => void; onShowOrder: () => void; classesDescription: Record<string, string> }) {
