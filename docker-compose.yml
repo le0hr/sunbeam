@@ -25,25 +25,34 @@ services:
       WORDPRESS_DB_PASSWORD: wp_password
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_CONFIG_EXTRA: |
-        # 1. Визначаємо поточний хост запиту
-        $$my_host = $$_SERVER['HTTP_HOST'] ?? 'localhost';
-        
-        # 2. Якщо запит йде від FastAPI (внутрішня мережа Docker)
-        if ($$my_host === 'wp_shop_app' || strpos($$my_host, '172.') === 0) {
+        // === Визначення хоста запиту (без порту, якщо він є) ===
+        $$raw_host = $$_SERVER['HTTP_HOST'] ?? 'localhost';
+        $$my_host  = preg_replace('/:\d+$$/', '', $$raw_host);
+
+        // === Визначення протоколу (nginx прокидує X-Forwarded-Proto) ===
+        $$is_https = ( !empty($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' );
+
+        if ( $$is_https ) {
+            $$_SERVER['HTTPS'] = 'on';
+        } else {
+            $$_SERVER['HTTPS'] = 'off';
+        }
+
+        // === Внутрішній запит (FastAPI -> WordPress напряму в Docker-мережі) ===
+        if ( $$my_host === 'wp_shop_app' || strpos($$my_host, '172.') === 0 ) {
+
             define('WP_HOME', 'http://' . $$my_host);
             define('WP_SITEURL', 'http://' . $$my_host);
-            $$_SERVER['HTTPS'] = 'off';
             define('FORCE_SSL_ADMIN', false);
-            
-            # Хук для WooCommerce: змушуємо його валідувати підпис OAuth без SSL
+
+            // WooCommerce REST API: не вимагати SSL для внутрішніх запитів
             add_filter('woocommerce_api_require_ssl', '__return_false', 999);
             add_filter('woocommerce_https_check_required', '__return_false', 999);
+
+        // === Зовнішній запит (через nginx, публічний домен) ===
         } else {
-            # 3. Якщо запит йде ззовні через Nginx
-            $$is_https = ( !empty($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' );
-            
-            if ($$is_https) {
-                $$_SERVER['HTTPS'] = 'on';
+
+            if ( $$is_https ) {
                 define('WP_HOME', 'https://sunbeambe.com');
                 define('WP_SITEURL', 'https://sunbeambe.com');
             } else {
@@ -53,6 +62,8 @@ services:
             }
         }
 
+        // === Debug / логування ===
+        define('WP_DEBUG', true);
         define('WP_DEBUG_LOG', true);
         define('WP_DEBUG_DISPLAY', false);
         define('WP_DISABLE_FATAL_ERROR_HANDLER', true);
@@ -60,6 +71,9 @@ services:
         @ini_set('log_errors', 1);
         error_reporting(E_ALL);
         define('WC_LOG_HANDLER', 'WC_Log_Handler_File');
+
+        // === Тимчасовий діагностичний лог хоста (можна прибрати після перевірки) ===
+        error_log('WP HOST DEBUG: raw=' . $$raw_host . ' parsed=' . $$my_host . ' https=' . ($$is_https ? 'yes' : 'no'));
     volumes:
       - wp-content:/var/www/html/wp-content
     networks:
