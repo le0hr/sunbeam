@@ -1,6 +1,7 @@
 
 export interface ProductVariation {
   id: number;
+  parent_id: number;
   price: string; // Базова ціна за 1 м² для ЦІЄЇ конкретної комбінації
   attributes: {
     color: string;
@@ -15,6 +16,7 @@ export interface TransformedVariableProduct {
   description: string;
   images: string[];
   price: string;
+  slug: string;
   categories: Record<string, string>[];
   variations: ProductVariation[]; // Список усіх можливих комбінацій
   // Списки унікальних значень для первинних селектів
@@ -25,7 +27,8 @@ export interface TransformedVariableProduct {
 }
 
 export interface PurchaseData{
-  variation: ProductVariation,
+  id: number,
+  parent_id: number,
   name: string,
   phone: string,
   width: number,

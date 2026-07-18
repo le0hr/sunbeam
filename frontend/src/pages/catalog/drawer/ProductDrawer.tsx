@@ -214,14 +214,15 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
       return;
     }
     const purchaseData: PurchaseData = {
-      variation: currentVariation,
+      id: currentVariation.id,
+      parent_id: currentVariation.parent_id,
       price: calculatedPrice,
       width: width,
       height: height,
       name: name,
       phone: phone,
     }
-    console.log(currentVariation);
+    console.log(purchaseData);
     
 
     setPhoneError("");

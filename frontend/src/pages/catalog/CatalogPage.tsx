@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -57,17 +57,30 @@ export function CatalogPage() {
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
   const [sortBy, setSortBy] = useState("popular");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<TransformedVariableProduct | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0)
   const [totalProducts, setTotalProducts] = useState(0)
-  console.log(products);
-  const [searchParams, setActiveCategory] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const activeCategory = CATEGORIES.find((v: any) => v.slug === searchParams.get("category"))?? CATEGORIES[0];
+  const activeCategory = CATEGORIES.find((v) => v.slug === searchParams.get("category")) ?? CATEGORIES[0];
+  const activeProductSlug = searchParams.get("product");
 
+  const updateSearchParams = (params: Record<string, string | null>) => {
+    const nextParams = new URLSearchParams(searchParams);
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === null) {
+        nextParams.delete(key);
+      } else {
+        nextParams.set(key, value);
+      }
+    });
+
+    setSearchParams(nextParams);
+  };
 
   useEffect(() => {
     productService.getProductList(activeCategory.slug, currentPage)
@@ -75,8 +88,22 @@ export function CatalogPage() {
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setTotalProducts(data.total);
-        });
+      });
   }, [activeCategory, currentPage]);
+
+  useEffect(() => {
+    if (!activeProductSlug) {
+      setSelectedProduct(null);
+      return;
+    }
+
+    const productFromList = products.find((product) => product.slug === activeProductSlug);
+    setSelectedProduct(productFromList ?? null);
+  }, [activeProductSlug, products]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory.slug]);
 
   // const{
   //   id,
@@ -144,7 +171,7 @@ export function CatalogPage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.slug}
-                  onClick={() => setActiveCategory({category: cat.slug})}
+                  onClick={() => updateSearchParams({ category: cat.slug, product: null })}
                   className={`px-4 py-2 rounded-xl text-sm transition-all ${
                     activeCategory === cat
                       ? "bg-[#FFCC00] text-[#121212] font-semibold shadow-[0_0_12px_rgba(255,204,0,0.3)]"
@@ -223,7 +250,7 @@ export function CatalogPage() {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onSelect={() => setSelectedProduct(product)}
+                  onSelect={() => updateSearchParams({ category: activeCategory.slug, product: product.slug })}
                 />
               ))}
             </AnimatePresence>
@@ -280,10 +307,13 @@ export function CatalogPage() {
 
       {/* Product detail drawer */}
       <AnimatePresence>
-        {selectedProduct && selectedProduct && (
+        {selectedProduct && (
           <ProductDrawer 
             product={selectedProduct} 
-            onClose={() => setSelectedProduct(null)} 
+            onClose={() => {
+              updateSearchParams({ product: null });
+              setSelectedProduct(null);
+            }}
             classesDescription={selectedProduct.classesDescriptionDict} 
           />
         )}

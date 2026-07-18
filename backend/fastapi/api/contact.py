@@ -1,8 +1,13 @@
 from fastapi import APIRouter
-from schemas import ContactRequest
+from schemas import ContactRequest, PurchaseRequest
 from api import api_router
-from services import create_contact_service
+from services import request_consultation_service
 
-@api_router.post("/contact")
-async def create_contact(data:ContactRequest):
-    return await create_contact_service(data)
+@api_router.post("/contact/consultation")
+async def request_consultation(data:ContactRequest):
+    return await request_consultation_service(data)
+
+
+@api_router.post("/contact/purchase")
+async def request_purchase(data:PurchaseRequest):
+    return await request_consultation_service(data)

@@ -48,6 +48,7 @@ export const productService = {
   
           return {
             id: v.id,
+            parent_id: product.id,
             price: v.regular_price || v.price || '0',
             attributes: { color, type, class: sysClass },
           };
