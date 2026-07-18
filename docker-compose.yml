@@ -35,10 +35,10 @@ services:
             )
           ) ? 'https' : 'http';
 
-          if ($host === 'wp_shop_app' || strpos($host, '172.') === 0) {
-            $host = 'sunbeambe.com';
-            $proto = 'https'; 
-            $_SERVER['HTTPS'] = 'on'; # Переконуємо WordPress, що все безпечно
+          if ($$host === 'wp_shop_app' || strpos($$host, '172.') === 0) {
+            $$host = 'sunbeambe.com';
+            $$proto = 'https'; 
+            $$_SERVER['HTTPS'] = 'on'; # Переконуємо WordPress, що все безпечно
           }
 
           define('WP_HOME', $$proto . '://' . $$host);
