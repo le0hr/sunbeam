@@ -45,9 +45,6 @@ services:
             define('WP_SITEURL', 'http://' . $$my_host);
             define('FORCE_SSL_ADMIN', false);
 
-            // WooCommerce REST API: не вимагати SSL для внутрішніх запитів
-            add_filter('woocommerce_api_require_ssl', '__return_false', 999);
-            add_filter('woocommerce_https_check_required', '__return_false', 999);
 
         // === Зовнішній запит (через nginx, публічний домен) ===
         } else {
