@@ -43,6 +43,17 @@ services:
       - ./wp-content:/var/www/html/wp-content
     networks:
       - app-network
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: react_frontend
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+      - backend
+    networks:
+      - app-network
 
   backend:
     build: 
@@ -75,17 +86,6 @@ services:
     profiles:
       - manual
   
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    container_name: frontend
-    restart: unless-stopped
-    depends_on:
-      - wp_shop_app
-      - fastapi_backend
-    networks:
-      - app-network
 
 
 volumes:
