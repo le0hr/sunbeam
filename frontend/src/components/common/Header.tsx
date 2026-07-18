@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router";
 import { Phone } from "lucide-react";
-import logoUrl from "../icons/logo.png";
 
 export function Header() {
   const { pathname, hash } = useLocation();
@@ -19,7 +18,7 @@ export function Header() {
             {/* Logo */}
             <Link to="/#home" className="flex-shrink-0">
               <img
-                src={logoUrl}
+                src="/logo.png"
                 alt="Sunbeam"
                 className="w-[150px] h-auto"
               />

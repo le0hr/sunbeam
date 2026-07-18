@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
 import { Sun, Instagram, Facebook, Mail } from 'lucide-react';
-import logoUrl from "../icons/logo.png";
 
 
 export function Footer() {
@@ -12,7 +11,7 @@ export function Footer() {
           <div className="md:col-span-4 flex flex-col items-center text-center"> {/* Змінено: items-center та text-center */}
             <div className="flex justify-center items-center gap-2 mb-3 w-full"> {/* Змінено: justify-center та додано w-full */}
               <img
-                src={logoUrl}
+                src="/logo.png"
                 alt="Sunbeam"
                 className="h-14 w-auto object-contain"
               />
