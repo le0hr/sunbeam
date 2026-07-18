@@ -35,12 +35,12 @@ const CATEGORIES: Category[] = [
     name: "Плісе"
   },
   {
-    slug: "moskitna",
-    name: "Москітна сітка"
-  },
-  {
     slug: "zhalyuzi",
     name: "Жалюзі"
+  },
+  {
+    slug: "moskitna",
+    name: "Москітна сітка"
   },
 ]
 
@@ -186,21 +186,6 @@ export function CatalogPage() {
 
             {/* Right controls */}
             <div className="flex items-center gap-3 ml-auto">
-              {/* Material filter */}
-              <div className="relative">
-                <select
-                  value={activeMaterial}
-                  onChange={(e) => setActiveMaterial(e.target.value)}
-                  className="appearance-none bg-white/5 border border-white/10 rounded-xl pl-4 pr-8 py-2.5 text-sm text-white/70 focus:outline-none focus:border-[#FFCC00]/50 transition-colors cursor-pointer"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {MATERIALS.map((m) => (
-                    <option key={m} value={m} className="bg-[#1C1C1C]">{m}</option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" />
-              </div>
-
               {/* Sort */}
               <div className="relative">
                 <select

@@ -77,7 +77,7 @@ export function Header() {
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               <Phone className="w-4 h-4" />
-              <span>+380 (50) 123-45-67</span>
+              <span>+380 (63) 630-31-31</span>
             </a>
 
             <Link
