@@ -72,7 +72,7 @@ async def job():
     enriched_products = agent_data(products)
     print(enriched_products)
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
             response = await client.post(
                 "http://fastapi_backend:8000/internal/products",
                 json=enriched_products,
