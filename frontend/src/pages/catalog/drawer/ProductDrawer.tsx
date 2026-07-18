@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { CheckCircle } from "lucide-react";
 import { OrderStep } from "./OrderStep";
 import { PurchaseData } from "../../../types/product";
-
+import { contactService } from "../../../api/contactService";
 
 export function ProductDrawer({ product, classesDescription, onClose }: { product: TransformedVariableProduct; onClose: () => void; classesDescription: Record<string, string> }) {
   const [calculatedPrice, setCalculatedPrice] = useState(0);
@@ -223,7 +223,7 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
       phone: phone,
     }
     console.log(purchaseData);
-    
+    contactService.purchaseRequest(purchaseData);
 
     setPhoneError("");
     setNameError("");

@@ -1,3 +1,4 @@
+import { PurchaseData } from "../types/product";
 import { apiClient } from "./client";
 
 export const contactService ={
@@ -10,7 +11,7 @@ export const contactService ={
             throw error;
         }
     },
-    purchaseRequest: async (purchaseData: any) =>{
+    purchaseRequest: async (purchaseData: PurchaseData) =>{
         try {
             const response = await apiClient.post('/contact/purchase', purchaseData, {timeout: 60000 });
             return response.data;

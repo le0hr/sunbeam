@@ -15,7 +15,7 @@ export function LeadCaptureForm() {
     e.preventDefault();
 
     try {
-      await contactService(formData);
+      await contactService.consultationRequest(formData);
       setIsSubmitted(true);
     } catch (error) {
       console.error(error);
