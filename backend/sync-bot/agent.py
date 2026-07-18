@@ -4,6 +4,8 @@ from google import genai
 from google.genai import types
 from pydantic import BaseModel
 from config import settings
+
+import time
 # 1. Ініціалізація клієнта (ключ береться з системних змінних)
 client = genai.Client(api_key=settings.GOOGLE_API)
 
@@ -59,6 +61,9 @@ def agent_data(raw_data):
     enriched_catalog = []
     for product in raw_data:
         print(f"Обробка: {product['url']}...")
+        
+        # Після того як аггент проплачений можна приберати
+        time.sleep(15)
         ai_data = enrich_product(product)
         
         
