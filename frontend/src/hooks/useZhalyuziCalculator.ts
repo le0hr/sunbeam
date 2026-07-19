@@ -13,6 +13,12 @@ export const useZhalyuziCalculator = (
   const [selectedType, setSelectedType] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
+  useEffect(() => {
+    if (!variations.length) return;
+
+    setSelectedType(variations[0].attributes.type);
+    setSelectedClass(variations[0].attributes.class);
+  }, [variations]);
 
   // ФІЛЬТР ДЛЯ СЕЛЕКТУ "Тип" (які типи доступні для обраного Класу )
   const availableTypes = useMemo(() => {
@@ -22,7 +28,7 @@ export const useZhalyuziCalculator = (
     }
     
     const uniqueTypes = Array.from(new Set(filtered.map(v => v.attributes.type)));
-    
+    setSelectedType(uniqueTypes[0]);
     return uniqueTypes.map(type => ({
       id: type,
       label: type
@@ -31,7 +37,7 @@ export const useZhalyuziCalculator = (
 
   const availableClasses = useMemo(() => {
     const uniqueClasses = Array.from(new Set(variations.map(v => v.attributes.class)));
-    
+    setSelectedClass(uniqueClasses[0]);
     return uniqueClasses.map(cls => ({
       id: cls,
       label: cls,
@@ -41,7 +47,7 @@ export const useZhalyuziCalculator = (
 
   useEffect(() => {
     if (selectedType && !availableTypes.some(type => type.id === selectedType)) {
-      setSelectedType('');
+      setSelectedType(availableTypes[0]?.id);
     }
   }, [selectedType, availableTypes]);
 
