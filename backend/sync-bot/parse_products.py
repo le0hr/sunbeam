@@ -228,67 +228,82 @@ async def parse_moskitna(page):
         
     return product_list, full_raw_text
 
-async def parse_valko_product(url):
-    async with async_playwright() as p:
-        # headless=False дозволяє бачити, як робот клікає на сторінці
-        browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
-        
+async def parse_valko_product(page, url):
+    result_data = {
+        "url": url,
+        "category": "unknown",
+        "description": "unknown",
+        "matrix": {}
+    }
+    
+    try:
         print(f"Відкриваю сторінку: {url}")
-        await page.goto(url, wait_until="domcontentloaded")
+        # Додаємо strict timeout (наприклад, 20 сек), щоб не висіти вічно, якщо сторінка "задумалась"
+        await page.goto(url, wait_until="domcontentloaded", timeout=20000)
         
+        # Заповнення базових параметрів
         await page.fill("#tov_count", "1")
         await page.fill("#tov_width", "1000")
         await page.fill("#tov_height", "1000")
         await page.evaluate("jQuery('#tov_width').change(); jQuery('#tov_height').change();")
         await page.wait_for_timeout(1000)
         
-        result_data = {
-            "url": url,
-            "category": "unknown",
-            "description":"unknown",
-            "matrix": {}
-        }
-        
-        # ---------------------------------------------------------------------
-        # СЦЕНАРІЙ 1: РОЛЕТИ 
-        # ---------------------------------------------------------------------
+        # Визначення категорії
         if url.startswith("https://valko.ua/rolety"):
             result_data["category"] = "rolety"
             result_data["matrix"], result_data["description"] = await parse_rolety(page)
-        # ---------------------------------------------------------------------
-        # СЦЕНАРІЙ 2: ПЛІСЕ 
-        # ---------------------------------------------------------------------
-        elif url.startswith("https://valko.ua/plise") :
+        elif url.startswith("https://valko.ua/plise"):
             result_data["category"] = "plise"
             result_data["matrix"], result_data["description"] = await parse_plise(page)
-        # ---------------------------------------------------------------------
-        # СЦЕНАРІЙ 3: ЖАЛЮЗІ 
-        # ---------------------------------------------------------------------
         elif url.startswith("https://valko.ua/zhalyuzi"):
             result_data["category"] = "zhalyuzi"
             result_data["matrix"], result_data["description"] = await parse_zhalyuzi(page)
-        # ---------------------------------------------------------------------
-        # СЦЕНАРІЙ 4: МОСКІТНА СІТКА 
-        # ---------------------------------------------------------------------
         elif url.startswith("https://valko.ua/moskitna-sitka"):
             result_data["category"] = "moskitna"
             result_data["matrix"], result_data["description"] = await parse_moskitna(page)
-                
         else:
-            print("Не вдалося визначити категорію або на сторінці немає динамічного калькулятора.")
+            print("Не вдалося визначити категорію.")
             
-        await browser.close()
-        return result_data
+    except Exception as e:
+        print(f"❌ Помилка під час парсингу сторінки {url}: {e}")
+        
+    return result_data
 
 
 async def start_parse_products(urls):
+    """Браузер створюється один раз для всього масиву лінків"""
     all_products = []
-    for url in urls:
-        product_matrix = await parse_valko_product(url)
-        print("\nФІНАЛЬНИЙ МАТРИЧНИЙ JSON:")
-        print(json.dumps(product_matrix, indent=4, ensure_ascii=False))
-        print("=" * 60)
-        all_products.append(product_matrix)
-    return all_products
+    
+    async with async_playwright() as p:
+        print("Запуск браузера Chromium...")
+        browser = await p.chromium.launch(headless=True)
+        context = await browser.new_context()
+        page = await context.new_page()
+        page.set_default_timeout(5000) 
+        
+        # Використовуємо enumerate, щоб отримати індекс (i) та сам лінк (url)
+        for i, url in enumerate(urls):
+            try:
+                # --- ОСЬ СЮДИ ДОДАЄМО ЦЕЙ БЛОК ---
+                # Якщо оброблено чергові 30 товарів, перезапускаємо сторінку для очищення пам'яті
+                if i % 30 == 0 and i > 0:
+                    print(f" Очищення пам'яті: оброблено {i} товарів. Перезапуск сторінки...")
+                    await page.close()
+                    page = await context.new_page()
+                    page.set_default_timeout(5000)
+                # ---------------------------------
 
+                product_matrix = await parse_valko_product(page, url)
+                
+                print("\nФІНАЛЬНИЙ МАТРИЧНИЙ JSON:")
+                print(json.dumps(product_matrix, indent=4, ensure_ascii=False))
+                print("=" * 60)
+                
+                all_products.append(product_matrix)
+                
+            except Exception as e:
+                print(f"Помилка обробки URL {url}: {e}")
+                
+        await browser.close()
+        
+    return all_products
