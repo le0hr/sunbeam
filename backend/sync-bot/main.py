@@ -67,9 +67,18 @@ async def job():
 
 
 
+    print("1")
     urls = start_parse_catalog()
+
+    print("2")
     products = await start_parse_products(urls)
+
+    print("3")          
+
+    print("4")
     enriched_products = agent_data(products)
+
+    print("5")
     print(enriched_products)
     try:
         async with httpx.AsyncClient(follow_redirects=True) as client:
