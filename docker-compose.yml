@@ -107,6 +107,8 @@ services:
       - app-network
     profiles:
       - manual
+    environment:
+      DEBUG: pw:api
   
 
   nginx:
