@@ -2,9 +2,9 @@ import requests, time, re
 from bs4 import BeautifulSoup, Comment
 
 urls = [
-    "https://valko.ua/rolety",
+    # "https://valko.ua/rolety",
          "https://valko.ua/plise",
-           "https://valko.ua/zhalyuzi",
+        #    "https://valko.ua/zhalyuzi",
             #  "https://valko.ua/moskitna-sitka",
              ]
 headers = {
