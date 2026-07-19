@@ -93,6 +93,7 @@ async def build_product_query(product, sku):
                     "slug": category
                 }
             )
+            category_id = categories['id']
         attributes, meta_descriptions = extract_attributes_and_meta(matrix)
 
         query = {
