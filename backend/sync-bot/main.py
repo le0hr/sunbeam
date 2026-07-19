@@ -6,28 +6,27 @@ from agent import agent_data
 import httpx
 import asyncio
 async def job():
-    # urls = start_parse_catalog()
     # Тестові товари щоб економить токени
-    urls = [
-        "https://valko.ua/rolety/tkanynna-bila-z-tkanoiy-smuzhkoiy-i-4",
+    # urls = [
+        # "https://valko.ua/rolety/tkanynna-bila-z-tkanoiy-smuzhkoiy-i-4",
         # "https://valko.ua/rolety/tkanynna-bila-z-chornoiy-smuzhkoiy-i-3",
-        "https://valko.ua/rolety/tkanynna-prozora-zolotysta-i-2",
+        # "https://valko.ua/rolety/tkanynna-prozora-zolotysta-i-2",
         # "https://valko.ua/rolety/tkaninna-lon-skladki-f-1",
         # "https://valko.ua/rolety/tkaninna-bila-skladki-f-2",
-        "https://valko.ua/rolety/tkaninna-svitlo-zhowta-skladki-f-3",
-        "https://valko.ua/rolety/dn-107",
+        # "https://valko.ua/rolety/tkaninna-svitlo-zhowta-skladki-f-3",
+        # "https://valko.ua/rolety/dn-107",
         # "https://valko.ua/rolety/tkanynna-bila-prozora-khvyli-h-1",
         # "https://valko.ua/rolety/dn-802",
         # "https://valko.ua/rolety/dn-110",
-        "https://valko.ua/rolety/tkanynna-zhowta-prozora-khvyli-h-2",
+        # "https://valko.ua/rolety/tkanynna-zhowta-prozora-khvyli-h-2",
         # "https://valko.ua/rolety/tkanynna-sira-prozora-khvyli-h-3",
         # "https://valko.ua/rolety/zebrano-4",
         # "https://valko.ua/rolety/tkanynna-sribno-bila-perlamutrova-e-1",
 
 
 
-        "https://valko.ua/plise/persykovorozeva-711",
-        "https://valko.ua/plise/sira-kvity-708",
+        # "https://valko.ua/plise/persykovorozeva-711",
+        # "https://valko.ua/plise/sira-kvity-708",
         # "https://valko.ua/plise/bila-zhorzhyna-709",
         # "https://valko.ua/plise/salatova-ovaly-205",
         # "https://valko.ua/plise/bezheva-romb-dribnyj-704",
@@ -36,13 +35,13 @@ async def job():
         # "https://valko.ua/plise/rozheva-ovaly-201",
         # "https://valko.ua/plise/bila-venzel-shovk-706",
         # "https://valko.ua/plise/ajvori-smuga-504",
-        "https://valko.ua/plise/blakytna-odnotonna",
+        # "https://valko.ua/plise/blakytna-odnotonna",
         # "https://valko.ua/plise/bilochorna-romb-dribnyj-705",
         # "https://valko.ua/plise/blakytna-ovaly-202",
 
 
 
-        "https://valko.ua/zhalyuzi/zhalyuzi-1",
+        # "https://valko.ua/zhalyuzi/zhalyuzi-1",
         # "https://valko.ua/zhalyuzi/korychneva",
         # "https://valko.ua/zhalyuzi/sribni",
         # "https://valko.ua/zhalyuzi/chorni",
@@ -57,17 +56,18 @@ async def job():
         # "https://valko.ua/moskitna-sitka/ekonom-bila-na-zavisakh",
         # "https://valko.ua/moskitna-sitka/standart-bila",
         # "https://valko.ua/moskitna-sitka/ekonom-korychneva",
-        "https://valko.ua/moskitna-sitka/ekonom-korychneva-na-zavisakh",
+        # "https://valko.ua/moskitna-sitka/ekonom-korychneva-na-zavisakh",
         # "https://valko.ua/moskitna-sitka/standart-korychneva",
         # "https://valko.ua/moskitna-sitka/standart-antracyt",
         # "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-antratsit",
         # "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-bila",
         # "https://valko.ua/moskitna-sitka/vikno-ramkova-eksklyuziv-korychneva",
         # "https://valko.ua/moskitna-sitka/premium-antratsyt"
+    # ]
 
 
 
-    ]
+    urls = start_parse_catalog()
     products = await start_parse_products(urls)
     enriched_products = agent_data(products)
     print(enriched_products)
