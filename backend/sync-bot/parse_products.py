@@ -298,9 +298,10 @@ async def start_parse_products(urls):
                 print("\nФІНАЛЬНИЙ МАТРИЧНИЙ JSON:")
                 print(json.dumps(product_matrix, indent=4, ensure_ascii=False))
                 print("=" * 60)
-                
-                all_products.append(product_matrix)
-                
+                if product_matrix:
+                    all_products.append(product_matrix)
+                else:
+                    print("Матриця пуста!!!!!!!!!!!!!!!!!!!")
             except Exception as e:
                 print(f"Помилка обробки URL {url}: {e}")
                 
