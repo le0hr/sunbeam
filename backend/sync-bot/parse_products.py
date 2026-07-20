@@ -233,7 +233,7 @@ async def parse_valko_product(page, url):
         "url": url,
         "category": "unknown",
         "description": "unknown",
-        "matrix": {}
+        "matrix": []
     }
     
     try:
