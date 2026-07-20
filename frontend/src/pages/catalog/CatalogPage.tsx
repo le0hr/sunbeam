@@ -66,6 +66,7 @@ export function CatalogPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const requestIdRef = useRef(0);
+  const catalogTopRef = useRef<HTMLDivElement | null>(null);
 
   const activeCategory = CATEGORIES.find((v) => v.slug === searchParams.get("category")) ?? CATEGORIES[0];
   const activeProductSlug = searchParams.get("product");
@@ -88,30 +89,52 @@ export function CatalogPage() {
     const requestId = ++requestIdRef.current;
     setIsLoading(true);
 
+    const startedAt = Date.now();
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const finishLoading = (callback: () => void) => {
+      const elapsed = Date.now() - startedAt;
+      const remaining = Math.max(0, 280 - elapsed);
+
+      timeoutId = setTimeout(() => {
+        if (requestId !== requestIdRef.current) {
+          return;
+        }
+
+        callback();
+        setIsLoading(false);
+      }, remaining);
+    };
+
     productService.getProductList(activeCategory.slug, currentPage)
       .then((data) => {
         if (requestId !== requestIdRef.current) {
           return;
         }
 
-        setProducts(data.products);
-        setTotalPages(data.totalPages);
-        setTotalProducts(data.total);
+        finishLoading(() => {
+          setProducts(data.products);
+          setTotalPages(data.totalPages);
+          setTotalProducts(data.total);
+        });
       })
       .catch(() => {
         if (requestId !== requestIdRef.current) {
           return;
         }
 
-        setProducts([]);
-        setTotalPages(0);
-        setTotalProducts(0);
-      })
-      .finally(() => {
-        if (requestId === requestIdRef.current) {
-          setIsLoading(false);
-        }
+        finishLoading(() => {
+          setProducts([]);
+          setTotalPages(0);
+          setTotalProducts(0);
+        });
       });
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [activeCategory.slug, currentPage]);
 
   useEffect(() => {
@@ -131,6 +154,12 @@ export function CatalogPage() {
   useEffect(() => {
     setSelectedProduct(null);
   }, [activeCategory.slug]);
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      catalogTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [currentPage]);
 
   // const{
   //   id,
@@ -212,9 +241,9 @@ export function CatalogPage() {
             </div>
 
             {/* Right controls */}
-            <div className="flex items-center gap-3 ml-auto">
+            {/* <div className="flex items-center gap-3 ml-auto"> */}
               {/* Sort */}
-              <div className="relative">
+              {/* <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -227,14 +256,14 @@ export function CatalogPage() {
                   <option value="price-desc" className="bg-[#1C1C1C]">Ціна: дорожче</option>
                 </select>
                 <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" />
-              </div>
-            </div> 
+              </div> */}
+            {/* </div>  */}
           </div>
         </div>
       </div>
 
       {/* Products grid */}
-      <div className="container mx-auto px-6 py-10">
+      <div ref={catalogTopRef} className="container mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-8">
           <p className="text-white/40 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
             {isLoading && products.length > 0
