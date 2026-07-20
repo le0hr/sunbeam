@@ -272,7 +272,7 @@ export function CatalogPage() {
           </p>
         </div>
 
-        {isLoading && products.length === 0 ? (
+        {isLoading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, index) => (
               <div key={index} className="rounded-[28px] border border-white/10 bg-white/5 p-4 min-h-[24rem] animate-pulse">
@@ -302,15 +302,8 @@ export function CatalogPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.22 }}
-            className={`relative ${isLoading ? "opacity-70" : "opacity-100"}`}
+            className="relative"
           >
-            {isLoading && (
-              <div className="absolute inset-0 z-10 flex items-start justify-center pt-4 pointer-events-none">
-                <div className="rounded-full border border-[#FFCC00]/30 bg-[#121212]/70 px-4 py-2 text-sm text-[#FFCC00]/80 backdrop-blur-sm">
-                  Оновлюємо каталог...
-                </div>
-              </div>
-            )}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
                 <ProductCard
