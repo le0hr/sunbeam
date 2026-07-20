@@ -4,8 +4,9 @@ from google import genai
 from google.genai import types
 from pydantic import BaseModel
 from config import settings
-
 import time
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
+
 # 1. Ініціалізація клієнта (ключ береться з системних змінних)
 client = genai.Client(api_key=settings.GOOGLE_API)
 
@@ -30,6 +31,9 @@ class ProductEnrichment(BaseModel):
     min_area: float | None
 
 # 3. Функція обробки одного товару
+
+_executor = ThreadPoolExecutor(max_workers=1)
+
 def enrich_product(product):
     prompt = f"""
     Проаналізуй цей товар:
@@ -39,23 +43,40 @@ def enrich_product(product):
     
     Згенеруй новий опис (без плагіату, привабливий для покупця), витягни ліміти розмірів.
     """
-    
+
     try:
-        response = client.models.generate_content(
-            model='gemini-2.5-flash',
+        print(f"BEFORE GEMINI: {product['url']}", flush=True)
+        start = time.monotonic()
+
+        future = _executor.submit(
+            client.models.generate_content,
+            model="gemini-2.5-flash",
             contents=prompt,
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
                 response_mime_type="application/json",
                 response_schema=ProductEnrichment,
-                temperature=0.2 # Низька температура для точності цифр
+                temperature=0.2,
             ),
         )
-        # Перетворюємо текстову відповідь ШІ назад у Python-словник
+
+        response = future.result(timeout=60)
+
+        print(
+            f"AFTER GEMINI: {product['url']} ({time.monotonic() - start:.2f}s)",
+            flush=True,
+        )
+
         return json.loads(response.text)
-    except Exception as e:
-        print(f"Помилка обробки товару {product['url']}: {e}")
+
+    except FutureTimeoutError:
+        print(f"GEMINI TIMEOUT: {product['url']}", flush=True)
         return None
+
+    except Exception as e:
+        print(f"Помилка обробки товару {product['url']}: {e}", flush=True)
+        return None
+    
 
 def agent_data(raw_data):
     enriched_catalog = []
