@@ -70,7 +70,7 @@ def extract_attributes_and_meta(matrix):
 
 
 
-async def build_product_query(product, sku):
+async def build_product_query(product, slug):
     """
     Фабрика запиту: формує структуру для WooCommerce на основі категорії та матриці.
     """
@@ -90,7 +90,7 @@ async def build_product_query(product, sku):
                 "/products/categories",
                 data = {
                     "name": category,
-                    "slug": category
+                    "slug": category,
                 }
             )
             category_id = categories['id']
@@ -100,7 +100,8 @@ async def build_product_query(product, sku):
             "name": product.title,
             "type": "variable",  # Якщо матриця порожня (як у жалюзі), робимо simple
             "description": product.description,
-            "sku": sku,
+            "sku": slug,
+            "slug": slug,
             "manage_stock": False,
             "categories": [{"id": category_id}],  # У WooCommerce категорії передаються як список об'єктів ID
             "attributes": attributes,

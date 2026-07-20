@@ -7,24 +7,24 @@ async def import_products(products):
     for product in products:
         # print(product.url, flush=True)
 
-        sku = product.url.split("/")[-1]
+        slug = product.url.rstrip("/").split("/")[-1]
         print("before wc.get", flush=True)
 
-        product_exists = await wc.get("/products", params={"sku": sku})
+        product_exists = await wc.get("/products", params={"sku": slug})
 
         print("after wc.get", flush=True)
         print(product_exists, flush=True)
         try:
-            product_query = await build_product_query(product, sku)
+            product_query = await build_product_query(product, slug)
             print(product_query, flush=True)
             
             if not product_exists:
-                print(f"Створюю продукт {sku}", flush = True)
+                print(f"Створюю продукт {slug}", flush = True)
                 created = await wc.post("/products", product_query)
                 product_id = created['id']
 
             else:
-                print(f"Оновлюю продукт {sku}", flush = True)
+                print(f"Оновлюю продукт {slug}", flush = True)
 
                 product_id = product_exists[0]['id']
                 await wc.put(f"/products/{product_id}", product_query)
@@ -40,7 +40,7 @@ async def import_products(products):
             print("Створюю варіації", flush=True)
             for variation in product.matrix:
                 print()
-                variation_query, var_sku = build_variation_query(product_id, variation, sku)
+                variation_query, var_sku = build_variation_query(product_id, variation, slug)
                 variation_id = id_by_sku.get(var_sku)
                 if variation_id:
                     await wc.put(f"/products/{product_id}/variations/{variation_id}", variation_query)
