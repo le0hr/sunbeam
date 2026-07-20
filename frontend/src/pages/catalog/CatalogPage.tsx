@@ -274,7 +274,7 @@ export function CatalogPage() {
 
         {isLoading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 12 }).map((_, index) => (
               <div key={index} className="rounded-[28px] border border-white/10 bg-white/5 p-4 min-h-[24rem] animate-pulse">
                 <div className="h-56 rounded-2xl bg-white/10 mb-4" />
                 <div className="h-4 w-24 bg-white/10 rounded mb-3" />
@@ -345,12 +345,13 @@ export function CatalogPage() {
             Наші дизайнери розроблять індивідуальне рішення для будь-якого вікна та інтер'єру
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-            <button
+            <Link
+              to = "/#contact"
               className="px-8 py-3.5 bg-[#FFCC00] text-[#121212] font-semibold rounded-xl hover:bg-[#F2B705] transition-all shadow-[0_0_24px_rgba(255,204,0,0.3)] hover:shadow-[0_0_40px_rgba(255,204,0,0.5)]"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               Замовити консультацію
-            </button>
+            </Link>
             <Link
               to="/"
               className="px-8 py-3.5 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-colors border border-white/10 text-center"
