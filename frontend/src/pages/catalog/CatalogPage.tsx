@@ -209,7 +209,7 @@ export function CatalogPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-white/60 max-w-xl mx-auto"
+            className="hidden sm:block text-white/60 max-w-xl mx-auto"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
             {products.length} моделей рулонних штор та жалюзі — від класики до преміум автоматики
