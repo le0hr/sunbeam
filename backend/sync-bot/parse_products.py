@@ -269,44 +269,86 @@ async def parse_valko_product(page, url):
         
     return result_data
 
-
 async def start_parse_products(urls):
     """Браузер створюється один раз для всього масиву лінків"""
     all_products = []
-    
+
+    print(">>> start_parse_products()")
+
     async with async_playwright() as p:
-        print("Запуск браузера Chromium...")
+        print(">>> Playwright started")
+
         browser = await p.chromium.launch(headless=True)
+        print(">>> Browser launched")
+
         context = await browser.new_context()
+        print(">>> Context created")
+
         page = await context.new_page()
-        page.set_default_timeout(5000) 
-        
-        # Використовуємо enumerate, щоб отримати індекс (i) та сам лінк (url)
+        print(">>> Page created")
+
+        page.set_default_timeout(5000)
+
         for i, url in enumerate(urls):
+            print(f"\n===== [{i+1}/{len(urls)}] =====")
+            print(url)
+
             try:
-                # --- ОСЬ СЮДИ ДОДАЄМО ЦЕЙ БЛОК ---
-                # Якщо оброблено чергові 30 товарів, перезапускаємо сторінку для очищення пам'яті
                 if i % 30 == 0 and i > 0:
-                    print(f" Очищення пам'яті: оброблено {i} товарів. Перезапуск сторінки...")
+                    print(">>> Restarting page")
                     await page.close()
+                    print(">>> Old page closed")
+
                     page = await context.new_page()
                     page.set_default_timeout(5000)
-                # ---------------------------------
+                    print(">>> New page created")
+
+                print(">>> Before parse_valko_product")
 
                 product_matrix = await asyncio.wait_for(
                     parse_valko_product(page, url),
                     timeout=60,
                 )
-                                
+
+                print(">>> After parse_valko_product")
+
+                print(">>> Before json.dumps")
                 print(json.dumps(product_matrix, indent=4, ensure_ascii=False))
-                print(f"[{i+1}/{len(urls)}] {"=" * 60}")
+                print(">>> After json.dumps")
+
+                print(f"[{i+1}/{len(urls)}] {'=' * 60}")
+
                 if product_matrix:
                     all_products.append(product_matrix)
+                    print(f">>> Products count: {len(all_products)}")
                 else:
-                    print("Матриця пуста!!!!!!!!!!!!!!!!!!!")
+                    print("Матриця пуста!")
+
+            except asyncio.TimeoutError:
+                print(f"TIMEOUT: {url}")
+
             except Exception as e:
-                print(f"Помилка обробки URL {url}: {e}")
-                
+                print(f"ERROR: {url}")
+                print(type(e))
+                print(repr(e))
+
+        print(">>> FOR FINISHED")
+
+        print(f">>> all_products = {len(all_products)}")
+
+        print(">>> Closing page")
+        await page.close()
+        print(">>> Page closed")
+
+        print(">>> Closing context")
+        await context.close()
+        print(">>> Context closed")
+
+        print(">>> Closing browser")
         await browser.close()
-        
+        print(">>> Browser closed")
+
+    print(">>> Left async_playwright()")
+
+    print(">>> Returning products")
     return all_products

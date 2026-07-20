@@ -5,6 +5,18 @@ from woocommerce_interaction import update_products
 from agent import agent_data
 import httpx
 import asyncio
+
+import faulthandler
+import signal
+import sys
+
+faulthandler.enable()
+
+# щоб можна було отримати traceback по сигналу
+faulthandler.register(signal.SIGUSR1)
+
+
+
 async def job():
     # Тестові товари щоб економить токени
     # urls = [
