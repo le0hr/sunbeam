@@ -179,7 +179,7 @@ export function CatalogPage() {
   return (
     <div className="min-h-screen bg-[#121212] text-white">
       {/* Hero band */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#1C1C1C] to-[#121212] py-14">
+      <div className="hidden sm:block relative overflow-hidden bg-gradient-to-b from-[#1C1C1C] to-[#121212] py-14">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -218,8 +218,8 @@ export function CatalogPage() {
       </div>
 
       {/* Filters bar */}
-      <div className="sticky top-14 sm:top-[65px] z-30 bg-[#121212]/95 backdrop-blur-md border-b border-white/5">
-        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
+      <div className="sticky top-[72px] sm:top-[65px] z-30 bg-[#121212]/95 backdrop-blur-md border-b border-white/5">
+        <div className="container mx-auto px-4 sm:px-6 py-2.5 sm:py-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
 
             {/* Category tabs */}
