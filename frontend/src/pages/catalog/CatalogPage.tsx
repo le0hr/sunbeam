@@ -209,7 +209,7 @@ export function CatalogPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-white/60 max-w-xl mx-auto"
+            className="hidden sm:block text-white/60 max-w-xl mx-auto"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
             {products.length} моделей рулонних штор та жалюзі — від класики до преміум автоматики
@@ -218,7 +218,7 @@ export function CatalogPage() {
       </div>
 
       {/* Filters bar */}
-      <div className="sticky top-14 sm:top-[65px] z-30 bg-[#121212]/95 backdrop-blur-md border-b border-white/5">
+      <div className="sticky top-[88px] sm:top-[65px] z-30 bg-[#121212]/95 backdrop-blur-md border-b border-white/5">
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
 
