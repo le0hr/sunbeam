@@ -3,8 +3,8 @@ import { TransformedVariableProduct } from "../../../types/product";
 
 const MEASURE_OPTIONS = [
   { id: "both", label: "Спочатку консультація", sub: "Ми домовимось про заміри і монтаж" },
-  { id: "measure-service", label: "Ми зробимо заміри", sub: "Наш спеціаліст приїде та виконає точні виміри" },
-  { id: "use-mine", label: "Я сам заміряю", sub: "Ви надасте готові розміри для розрахунку" },
+  // { id: "measure-service", label: "Ми зробимо заміри", sub: "Наш спеціаліст приїде та виконає точні виміри" },
+  // { id: "use-mine", label: "Я сам заміряю", sub: "Ви надасте готові розміри для розрахунку" },
 ];
 
 export interface OrderStepProps {
@@ -126,7 +126,7 @@ export function OrderStep({
         </p>
         <div className="space-y-2">
           {MEASURE_OPTIONS.map(({ id, label, sub }) => {
-            if (!hasDimensions && (id === "use-mine" || id === "both")) return null;
+            // if (!hasDimensions && (id === "use-mine" || id === "both")) return null;
             const isActive = measureOption === id;
             return (
               <button
