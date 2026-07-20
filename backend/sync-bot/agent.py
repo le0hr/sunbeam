@@ -121,30 +121,98 @@ def agent_data(raw_data):
             print("C. ai_data is None", flush=True)
             continue
 
-        print("D. building enriched_item", flush=True)
+        try:
+            print("D1. product keys", flush=True)
+            print(product.keys(), flush=True)
 
-        enriched_item = {
-            "url": product["url"],
-            "category": product["category"],
-            "img": product["matrix"][0]["img"],
-            "title": ai_data["seo_title"],
-            "description": ai_data["clean_description"],
-            "calculator_limits": {
-                "min_width": ai_data["min_width"],
-                "max_width": ai_data["max_width"],
-                "min_height": ai_data["min_height"],
-                "max_height": ai_data["max_height"],
-                "min_area": ai_data["min_area"],
-            },
-            "matrix": product["matrix"],
-        }
+            print("D2. matrix", flush=True)
+            matrix = product["matrix"]
+            print(type(matrix), flush=True)
+            print(f"matrix len = {len(matrix)}", flush=True)
 
-        print("E. enriched_item built", flush=True)
+            print("D3. first matrix item", flush=True)
+            first = matrix[0]
+            print(type(first), flush=True)
+            print(first.keys(), flush=True)
 
-        enriched_catalog.append(enriched_item)
+            print("D4. url", flush=True)
+            url = product["url"]
+            print(url, flush=True)
 
-        print("F. appended", flush=True)
-        print(f"G. catalog size = {len(enriched_catalog)}", flush=True)
+            print("D5. category", flush=True)
+            category = product["category"]
+            print(category, flush=True)
+
+            print("D6. img", flush=True)
+            img = first["img"]
+            print(img, flush=True)
+
+            print("D7. title", flush=True)
+            title = ai_data["seo_title"]
+            print(title, flush=True)
+
+            print("D8. description", flush=True)
+            description = ai_data["clean_description"]
+            print(description[:100], flush=True)
+
+            print("D9. min_width", flush=True)
+            min_width = ai_data["min_width"]
+            print(min_width, flush=True)
+
+            print("D10. max_width", flush=True)
+            max_width = ai_data["max_width"]
+            print(max_width, flush=True)
+
+            print("D11. min_height", flush=True)
+            min_height = ai_data["min_height"]
+            print(min_height, flush=True)
+
+            print("D12. max_height", flush=True)
+            max_height = ai_data["max_height"]
+            print(max_height, flush=True)
+
+            print("D13. min_area", flush=True)
+            min_area = ai_data["min_area"]
+            print(min_area, flush=True)
+
+            print("D14. limits", flush=True)
+            limits = {
+                "min_width": min_width,
+                "max_width": max_width,
+                "min_height": min_height,
+                "max_height": max_height,
+                "min_area": min_area,
+            }
+            print(limits, flush=True)
+
+            print("D15. creating dict", flush=True)
+
+            enriched_item = {
+                "url": url,
+                "category": category,
+                "img": img,
+                "title": title,
+                "description": description,
+                "calculator_limits": limits,
+                "matrix": matrix,
+            }
+
+            print("D16. dict created", flush=True)
+            print(type(enriched_item), flush=True)
+
+            print("D17. append()", flush=True)
+            enriched_catalog.append(enriched_item)
+
+            print("D18. appended", flush=True)
+            print(f"Catalog size = {len(enriched_catalog)}", flush=True)
+
+        except Exception as e:
+            print("EXCEPTION while building enriched_item", flush=True)
+            print(type(e), flush=True)
+            print(repr(e), flush=True)
+            import traceback
+            traceback.print_exc()
+            continue
 
     print("=" * 80, flush=True)
     print("END agent_data", flush=True)
