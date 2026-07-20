@@ -2,9 +2,9 @@ import { Phone, User, Ruler } from "lucide-react";
 import { TransformedVariableProduct } from "../../../types/product";
 
 const MEASURE_OPTIONS = [
+  { id: "both", label: "Спочатку консультація", sub: "Ми домовимось про заміри і монтаж" },
   { id: "measure-service", label: "Ми зробимо заміри", sub: "Наш спеціаліст приїде та виконає точні виміри" },
   { id: "use-mine", label: "Я сам заміряю", sub: "Ви надасте готові розміри для розрахунку" },
-  { id: "both", label: "Спочатку консультація", sub: "Ми домовимось про заміри і монтаж" }
 ];
 
 export interface OrderStepProps {
