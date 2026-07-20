@@ -40,13 +40,17 @@ def enrich_product(product):
     Категорія: {product['category']}
     Опис від донора: {product['description']}
     Назва модифікації: {product['matrix'][0].get('raw_title', '') if product['matrix'] else ''}
-    
+
     Згенеруй новий опис (без плагіату, привабливий для покупця), витягни ліміти розмірів.
     """
 
     try:
-        print(f"BEFORE GEMINI: {product['url']}", flush=True)
+        print("=" * 80, flush=True)
+        print(f"START enrich_product: {product['url']}", flush=True)
+
         start = time.monotonic()
+
+        print("1. submit()", flush=True)
 
         future = _executor.submit(
             client.models.generate_content,
@@ -60,49 +64,90 @@ def enrich_product(product):
             ),
         )
 
+        print("2. submitted", flush=True)
+
         response = future.result(timeout=60)
 
-        print(
-            f"AFTER GEMINI: {product['url']} ({time.monotonic() - start:.2f}s)",
-            flush=True,
-        )
+        print(f"3. response received ({time.monotonic() - start:.2f}s)", flush=True)
 
-        return json.loads(response.text)
+        print(f"4. response type: {type(response)}", flush=True)
+
+        print("5. response.text access", flush=True)
+        text = response.text
+
+        print("6. response.text ok", flush=True)
+        print(f"7. response length: {len(text)}", flush=True)
+        print(f"8. response preview: {text[:300]}", flush=True)
+
+        print("9. json.loads()", flush=True)
+        data = json.loads(text)
+
+        print("10. json ok", flush=True)
+        print(f"11. keys: {list(data.keys())}", flush=True)
+
+        print(f"END enrich_product ({time.monotonic() - start:.2f}s)", flush=True)
+
+        return data
 
     except FutureTimeoutError:
         print(f"GEMINI TIMEOUT: {product['url']}", flush=True)
         return None
 
     except Exception as e:
-        print(f"Помилка обробки товару {product['url']}: {e}", flush=True)
+        print(f"EXCEPTION enrich_product: {product['url']}", flush=True)
+        print(type(e), flush=True)
+        print(repr(e), flush=True)
         return None
-    
+
 
 def agent_data(raw_data):
     enriched_catalog = []
-    for product in raw_data:
-        print(f"Обробка: {product['url']}...")
-        
-        # Після того як аггент проплачений можна приберати
+
+    print("=" * 80, flush=True)
+    print(f"START agent_data. Products: {len(raw_data)}", flush=True)
+
+    for index, product in enumerate(raw_data, start=1):
+        print("=" * 80, flush=True)
+        print(f"[{index}/{len(raw_data)}]", flush=True)
+        print(f"URL: {product['url']}", flush=True)
+
+        print("A. before enrich_product()", flush=True)
+
         ai_data = enrich_product(product)
-        
-        
-        if ai_data:
-            # Склеюємо старі дані (ціни, категорію) з новими даними від ШІ
-            enriched_item = {
-                "url": product["url"],
-                "category": product["category"],
-                "img": product["matrix"][0]["img"],
-                "title": ai_data["seo_title"],
-                "description": ai_data["clean_description"],
-                "calculator_limits": {
-                    "min_width": ai_data["min_width"],
-                    "max_width": ai_data["max_width"],
-                    "min_height": ai_data["min_height"],
-                    "max_height": ai_data["max_height"],
-                    "min_area": ai_data["min_area"]
-                },
-                "matrix": product["matrix"]
-            }
-            enriched_catalog.append(enriched_item)
-    return enriched_catalog 
+
+        print("B. after enrich_product()", flush=True)
+
+        if ai_data is None:
+            print("C. ai_data is None", flush=True)
+            continue
+
+        print("D. building enriched_item", flush=True)
+
+        enriched_item = {
+            "url": product["url"],
+            "category": product["category"],
+            "img": product["matrix"][0]["img"],
+            "title": ai_data["seo_title"],
+            "description": ai_data["clean_description"],
+            "calculator_limits": {
+                "min_width": ai_data["min_width"],
+                "max_width": ai_data["max_width"],
+                "min_height": ai_data["min_height"],
+                "max_height": ai_data["max_height"],
+                "min_area": ai_data["min_area"],
+            },
+            "matrix": product["matrix"],
+        }
+
+        print("E. enriched_item built", flush=True)
+
+        enriched_catalog.append(enriched_item)
+
+        print("F. appended", flush=True)
+        print(f"G. catalog size = {len(enriched_catalog)}", flush=True)
+
+    print("=" * 80, flush=True)
+    print("END agent_data", flush=True)
+    print(f"Final products: {len(enriched_catalog)}", flush=True)
+
+    return enriched_catalog
