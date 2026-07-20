@@ -7,7 +7,11 @@ from config import settings
 
 import time
 # 1. Ініціалізація клієнта (ключ береться з системних змінних)
-client = genai.Client(api_key=settings.GOOGLE_API)
+client = genai.Client(
+    api_key=settings.GOOGLE_API,
+    http_options={
+                "timeout": 60,
+            },)
 
 # 2. Створюємо суворий системний промпт для ШІ
 system_instruction = """
@@ -49,9 +53,6 @@ def enrich_product(product):
                 response_mime_type="application/json",
                 response_schema=ProductEnrichment,
                 temperature=0.2, # Низька температура для точності цифр
-                http_options={
-                "timeout": 60,
-            },
             
             ),
         )
