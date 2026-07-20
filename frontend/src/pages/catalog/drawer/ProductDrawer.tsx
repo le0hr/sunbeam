@@ -92,7 +92,6 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
                 alt={product.name}
                 className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C] via-[#1C1C1C]/20 to-transparent" />
             </div>
 
               {/* Close button */}
