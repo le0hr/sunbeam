@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -63,7 +63,9 @@ export function CatalogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0)
   const [totalProducts, setTotalProducts] = useState(0)
+  const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const requestIdRef = useRef(0);
 
   const activeCategory = CATEGORIES.find((v) => v.slug === searchParams.get("category")) ?? CATEGORIES[0];
   const activeProductSlug = searchParams.get("product");
@@ -83,13 +85,34 @@ export function CatalogPage() {
   };
 
   useEffect(() => {
+    const requestId = ++requestIdRef.current;
+    setIsLoading(true);
+
     productService.getProductList(activeCategory.slug, currentPage)
       .then((data) => {
+        if (requestId !== requestIdRef.current) {
+          return;
+        }
+
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setTotalProducts(data.total);
+      })
+      .catch(() => {
+        if (requestId !== requestIdRef.current) {
+          return;
+        }
+
+        setProducts([]);
+        setTotalPages(0);
+        setTotalProducts(0);
+      })
+      .finally(() => {
+        if (requestId === requestIdRef.current) {
+          setIsLoading(false);
+        }
       });
-  }, [activeCategory, currentPage]);
+  }, [activeCategory.slug, currentPage]);
 
   useEffect(() => {
     if (!activeProductSlug) {
@@ -103,6 +126,10 @@ export function CatalogPage() {
 
   useEffect(() => {
     setCurrentPage(1);
+  }, [activeCategory.slug]);
+
+  useEffect(() => {
+    setSelectedProduct(null);
   }, [activeCategory.slug]);
 
   // const{
@@ -210,13 +237,25 @@ export function CatalogPage() {
       <div className="container mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-8">
           <p className="text-white/40 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
-            {products.length === products.length
-              ? `${products.length} товарів`
-              : `${products.length} з ${products.length} товарів`}
+            {isLoading && products.length > 0
+              ? "Оновлюємо каталог..."
+              : `${products.length} товарів`}
           </p>
         </div>
 
-        {products.length === 0 ? (
+        {isLoading && products.length === 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="rounded-[28px] border border-white/10 bg-white/5 p-4 min-h-[24rem] animate-pulse">
+                <div className="h-56 rounded-2xl bg-white/10 mb-4" />
+                <div className="h-4 w-24 bg-white/10 rounded mb-3" />
+                <div className="h-5 w-3/4 bg-white/10 rounded mb-3" />
+                <div className="h-4 w-full bg-white/10 rounded mb-2" />
+                <div className="h-4 w-2/3 bg-white/10 rounded" />
+              </div>
+            ))}
+          </div>
+        ) : products.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -229,8 +268,21 @@ export function CatalogPage() {
             <p className="text-white/30 text-sm mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Спробуйте змінити фільтри або пошуковий запит</p>
           </motion.div>
         ) : (
-          <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <AnimatePresence mode="popLayout">
+          <motion.div
+            key={`${activeCategory.slug}-${currentPage}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.22 }}
+            className={`relative ${isLoading ? "opacity-70" : "opacity-100"}`}
+          >
+            {isLoading && (
+              <div className="absolute inset-0 z-10 flex items-start justify-center pt-4 pointer-events-none">
+                <div className="rounded-full border border-[#FFCC00]/30 bg-[#121212]/70 px-4 py-2 text-sm text-[#FFCC00]/80 backdrop-blur-sm">
+                  Оновлюємо каталог...
+                </div>
+              </div>
+            )}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -238,9 +290,8 @@ export function CatalogPage() {
                   onSelect={() => updateSearchParams({ category: activeCategory.slug, product: product.slug })}
                 />
               ))}
-            </AnimatePresence>
+            </div>
           </motion.div>
-          
         )}
 
         <Pagination
