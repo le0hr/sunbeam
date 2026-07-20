@@ -1,7 +1,7 @@
 import json
 import time
 from playwright.async_api import async_playwright
-
+import asyncio
 
 async def calculate_price_per_m2(page, context_info=""):
 
