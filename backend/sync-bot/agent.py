@@ -48,7 +48,11 @@ def enrich_product(product):
                 system_instruction=system_instruction,
                 response_mime_type="application/json",
                 response_schema=ProductEnrichment,
-                temperature=0.2 # Низька температура для точності цифр
+                temperature=0.2, # Низька температура для точності цифр
+                http_options={
+                "timeout": 60,
+            },
+            
             ),
         )
         # Перетворюємо текстову відповідь ШІ назад у Python-словник
@@ -63,7 +67,6 @@ def agent_data(raw_data):
         print(f"Обробка: {product['url']}...")
         
         # Після того як аггент проплачений можна приберати
-        time.sleep(15)
         ai_data = enrich_product(product)
         
         

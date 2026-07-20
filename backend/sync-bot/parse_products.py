@@ -293,11 +293,13 @@ async def start_parse_products(urls):
                     page.set_default_timeout(5000)
                 # ---------------------------------
 
-                product_matrix = await parse_valko_product(page, url)
-                
-                print("\nФІНАЛЬНИЙ МАТРИЧНИЙ JSON:")
+                product_matrix = await asyncio.wait_for(
+                    parse_valko_product(page, url),
+                    timeout=60,
+                )
+                                
                 print(json.dumps(product_matrix, indent=4, ensure_ascii=False))
-                print("=" * 60)
+                print(f"[{i+1}/{len(urls)}] {"=" * 60}")
                 if product_matrix:
                     all_products.append(product_matrix)
                 else:
