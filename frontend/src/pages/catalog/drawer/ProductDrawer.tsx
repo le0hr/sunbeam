@@ -78,7 +78,7 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
           </AnimatePresence>
           <motion.div
                 animate={{
-                  height:  step === "config" ? 288 : 0,
+                  height:  step === "config" ? 340 : 0,
                   opacity: step === "config" ? 1   : 0,
                 }}
                 transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
