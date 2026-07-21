@@ -5,5 +5,5 @@
   import "../styles/index.css";
 
 
-  ReactGA.initialize("AW-18334396152");
+  ReactGA.initialize("AW-18340368800");
   createRoot(document.getElementById("root")!).render(<App />);
