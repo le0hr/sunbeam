@@ -44,7 +44,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
 
           <div className="mt-auto flex items-center justify-between">
             <div style={{ fontFamily: "Inter, sans-serif" }}>
-              {product.price.length > 0 ? (
+              {product.price.length > 0 && Number(product.price) > 0 ? (
                 <span className="text-lg text-white font-semibold">
                   від{" "}
                   <span className="text-[#FFCC00]">
