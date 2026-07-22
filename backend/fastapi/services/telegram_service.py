@@ -31,10 +31,11 @@ async def tg_request_service(order: dict) -> tuple[str, str | None, InlineKeyboa
         product_id = item.get("product_id")
         variation_id = item.get("variation_id")
 
-        # Отримуємо варіацію
+        # Отримуємо варіацію та батьківськмй товар
+        parent = await wc.get(f"/products/{product_id}")
         variation = await wc.get(f"/products/{product_id}/variations/{variation_id}")
 
-        text += f"🛍 <b>Товар:</b> {variation.get('name', 'Без назви')}\n"
+        text += f"🛍 <b>Товар:</b> {parent.get('name', 'Без назви')}\n"
 
         # Атрибути
         for attr in variation.get("attributes", []):
