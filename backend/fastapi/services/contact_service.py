@@ -1,5 +1,6 @@
-from clients import wc
+from clients import wc, tg_client
 from schemas import ContactRequest, PurchaseRequest
+from .telegram_service import tg_request_service
 
 async def request_consultation_service(data: ContactRequest):
 
