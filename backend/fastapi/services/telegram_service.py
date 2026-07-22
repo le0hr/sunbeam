@@ -10,7 +10,7 @@ async def tg_request_service(order: dict) -> tuple[str, str | None, InlineKeyboa
     Формує текст, знаходить URL фото та будує inline-клавіатуру для Telegram.
     Повертає: (text, photo_url, reply_markup)
     """
-    order_id = order['line_items'].get("product_id")
+    order_id = order['line_items'][0].get("product_id")
     billing = order.get("billing", {})
     customer_name = billing.get("first_name", "Не вказано")
     customer_phone = billing.get("phone", "Не вказано")
