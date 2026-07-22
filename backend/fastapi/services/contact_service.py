@@ -11,6 +11,10 @@ async def request_consultation_service(data: ContactRequest):
         }
     }
 
+    text, _, keyboard = await tg_request_service(order)
+
+    await tg_client.send_message(text=text, reply_markup=keyboard)
+
     return await wc.post(
         "/orders",
         order
@@ -19,7 +23,8 @@ async def request_consultation_service(data: ContactRequest):
 async def purchase_request_service(data: PurchaseRequest):
     order = {
         "billing": {
-            "phone": data.phone
+            "phone": data.phone,
+            "first_name": data.name
         },
         "line_items": [
             {
@@ -41,6 +46,12 @@ async def purchase_request_service(data: PurchaseRequest):
         ]
     }
 
+    text, photo_url, keyboard = await tg_request_service(created_order)
+
+    if photo_url:
+        await tg_client.send_photo(photo_url=photo_url, caption=text, reply_markup=keyboard)
+    else:
+        await tg_client.send_message(text=text, reply_markup=keyboard)
     try:
         return await wc.post(
             "/orders",

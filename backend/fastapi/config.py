@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     WC_CK_API: str
     WC_CS_API: str
 
+    TG_BOT_TOKEN: str
+    TG_CHAT_ID: str
+
     model_config = SettingsConfigDict(
         env_file="../../.env",
         extra="ignore",
