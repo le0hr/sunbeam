@@ -8,6 +8,10 @@ import { CheckCircle } from "lucide-react";
 import { OrderStep } from "./OrderStep";
 import { PurchaseData } from "../../../types/product";
 import { contactService } from "../../../api/contactService";
+import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
+
+const phoneUtil = PhoneNumberUtil.getInstance();
+
 
 export function ProductDrawer({ product, classesDescription, onClose }: { product: TransformedVariableProduct; onClose: () => void; classesDescription: Record<string, string> }) {
   const [calculatedPrice, setCalculatedPrice] = useState(0);
@@ -211,11 +215,26 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
     if (!currentVariation) {
       return;
     }
-    const digits = phone.replace(/\D/g, "");
-    if (!digits || digits.length < 9) {
+
+    let formattedPhone = '';
+
+    try {
+      const parsedPhone = phoneUtil.parseAndKeepRawInput(phone, 'UA');
+
+      if (!phoneUtil.isValidNumber(parsedPhone)) {
+        setPhoneError("Вкажіть коректний номер телефону");
+        return;
+      }
+
+      formattedPhone = phoneUtil
+        .format(parsedPhone, PhoneNumberFormat.INTERNATIONAL)
+        .replace(/\s+/g, '');
+
+    } catch (error) {
       setPhoneError("Вкажіть коректний номер телефону");
       return;
     }
+
     const purchaseData: PurchaseData = {
       id: currentVariation.id,
       parent_id: currentVariation.parent_id,
@@ -223,8 +242,9 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
       width: width,
       height: height,
       name: name,
-      phone: phone,
-    }
+      phone: formattedPhone, 
+    };
+
     console.log(purchaseData);
     contactService.purchaseRequest(purchaseData);
 

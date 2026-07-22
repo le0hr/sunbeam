@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from clients import wc
 
 # Посилання на вашу адмінку WooCommerce
-SITE_ADMIN_URL = "https://your-site.com/wp-admin/post.php?action=edit&post="
+TG = "https://tg.me"
 
 async def tg_request_service(order: dict) -> tuple[str, str | None, InlineKeyboardMarkup]:
     """
@@ -63,7 +63,7 @@ async def tg_request_service(order: dict) -> tuple[str, str | None, InlineKeyboa
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="🔗 Відкрити в WooCommerce",
+                    text="🔗 Чат з клієнтом",
                     url=f"{SITE_ADMIN_URL}{order_id}"
                 )
             ]

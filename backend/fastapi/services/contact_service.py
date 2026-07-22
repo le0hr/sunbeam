@@ -47,7 +47,7 @@ async def purchase_request_service(data: PurchaseRequest):
         ]
     }
 
-    text, photo_url, keyboard = await tg_request_service(created_order)
+    text, photo_url, keyboard = await tg_request_service(order)
 
     if photo_url:
         await tg_client.send_photo(photo_url=photo_url, caption=text, reply_markup=keyboard)

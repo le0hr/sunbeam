@@ -4,6 +4,10 @@ import { User, Phone, Send, CheckCircle } from 'lucide-react';
 
 import { contactService } from '../../api/contactService';
 
+import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
+
+const phoneUtil = PhoneNumberUtil.getInstance();
+
 export function LeadCaptureForm() {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,12 +18,29 @@ export function LeadCaptureForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      await contactService.consultationRequest(formData);
-      setIsSubmitted(true);
-    } catch (error) {
-      console.error(error);
+  try {
+    const parsedPhone = phoneUtil.parseAndKeepRawInput(formData.phone, 'UA');
+
+    if (!phoneUtil.isValidNumber(parsedPhone)) {
+      alert('Будь ласка, введіть коректний номер телефону');
+      return;
     }
+
+    const formattedPhone = phoneUtil
+      .format(parsedPhone, PhoneNumberFormat.INTERNATIONAL)
+      .replace(/\s+/g, '');
+
+    const payload = {
+      ...formData,
+      phone: formattedPhone,
+    };
+
+    await contactService.consultationRequest(payload);
+    setIsSubmitted(true);
+  } catch (error) {
+    alert('Некоректний формат номера телефону');
+    console.error(error);
+  }
   };
 
 
