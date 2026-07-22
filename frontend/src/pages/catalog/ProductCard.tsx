@@ -48,7 +48,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
                 <span className="text-lg text-white font-semibold">
                   від{" "}
                   <span className="text-[#FFCC00]">
-                    {Number(product.price) * 0.7 * 12} ₴
+                    {(Number(product.price) * 0.7 * 1.2).toLocaleString('uk-UA', {maximumFractionDigits: 0})} ₴
                   </span>
                 </span>
               ) : (
