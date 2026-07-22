@@ -176,7 +176,7 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
                         Заявку отримано!
                       </h3>
                       <p className="text-white/55 text-sm leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
-                        Наш менеджер зателефонує вам на номер 
+                        Ми зв'яжемось з вами в Telegram за номером   
                         <span className="text-white/80"> {phone}</span>
                          протягом дня
                       </p>

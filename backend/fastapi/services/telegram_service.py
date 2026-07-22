@@ -56,7 +56,7 @@ async def tg_request_service(order: dict) -> tuple[str, str | None, InlineKeyboa
 
         image_data = variation.get("image")
         if image_data and isinstance(image_data, dict):
-            image_url["src"] = image_url["src"].replace(settings.WC_URL, settings.SITE_URL)
+            image_url["src"] = image_data["src"].replace(settings.WC_URL, settings.SITE_URL)
     else:
         text += "ℹ️ <b>Лише консультація, товар не обрано</b>\n"
 
