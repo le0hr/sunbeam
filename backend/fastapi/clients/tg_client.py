@@ -33,5 +33,6 @@ class TGClient:
                 reply_markup=reply_markup
             )
         except Exception as e:
+            print(photo_url)
             print(f"Помилка відправки фото у Telegram: {e}. Відправляю текстом.")
             await self.send_message(text=caption, reply_markup=reply_markup)
