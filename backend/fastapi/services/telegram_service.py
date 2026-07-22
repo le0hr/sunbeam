@@ -1,5 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from clients import wc
+from config import settings
 
 # Посилання на вашу адмінку WooCommerce
 TG_URL = "https://t.me/"
@@ -9,7 +10,7 @@ async def tg_request_service(order: dict) -> tuple[str, str | None, InlineKeyboa
     Формує текст, знаходить URL фото та будує inline-клавіатуру для Telegram.
     Повертає: (text, photo_url, reply_markup)
     """
-    order_id = order.get("id")
+    order_id = order['line_items'].get("product_id")
     billing = order.get("billing", {})
     customer_name = billing.get("first_name", "Не вказано")
     customer_phone = billing.get("phone", "Не вказано")
@@ -55,7 +56,7 @@ async def tg_request_service(order: dict) -> tuple[str, str | None, InlineKeyboa
 
         image_data = variation.get("image")
         if image_data and isinstance(image_data, dict):
-            image_url = image_data.get("src")
+            image_url["src"] = image_url["src"].replace(settings.WC_URL, settings.SITE_URL)
     else:
         text += "ℹ️ <b>Лише консультація, товар не обрано</b>\n"
 
