@@ -4,6 +4,6 @@
   import ReactGA from "react-ga4";
   import "../styles/index.css";
 
-
   ReactGA.initialize("AW-18340562703");
+
   createRoot(document.getElementById("root")!).render(<App />);
