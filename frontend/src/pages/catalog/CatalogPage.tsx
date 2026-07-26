@@ -263,7 +263,7 @@ export function CatalogPage() {
       </div>
 
       {/* Products grid */}
-      <div ref={catalogTopRef} className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
+      <div ref={catalogTopRef} className="container mx-auto px-4 scroll-mt-20 sm:px-6 py-8 sm:py-10">
         <div className="flex items-center justify-between mb-8">
           <p className="text-white/40 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
             {isLoading && products.length > 0
@@ -304,7 +304,7 @@ export function CatalogPage() {
             transition={{ duration: 0.22 }}
             className="relative"
           >
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
                 <ProductCard
                   key={product.id}
