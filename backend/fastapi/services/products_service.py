@@ -22,7 +22,7 @@ async def fetch_products(categorySlug, page: int, per_page: int = 12):
         },
         with_pages_data=True
     )
-
+    print([p["id"] for p in products], flush=True)
     async with asyncio.TaskGroup() as tg:
         # Список тасків для асинхронного клієнта 
         tasks = []
