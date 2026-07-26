@@ -13,10 +13,8 @@ async def import_products(products):
         product_exists = await wc.get("/products", params={"sku": slug})
 
         print("after wc.get", flush=True)
-        print(product_exists, flush=True)
         try:
             product_query = await build_product_query(product, slug)
-            print(product_query, flush=True)
             
             if not product_exists:
                 print(f"Створюю продукт {slug}", flush = True)
@@ -39,7 +37,6 @@ async def import_products(products):
 
             print("Створюю варіації", flush=True)
             for variation in product.matrix:
-                print()
                 variation_query, var_sku = build_variation_query(product_id, variation, slug)
                 variation_id = id_by_sku.get(var_sku)
                 if variation_id:
