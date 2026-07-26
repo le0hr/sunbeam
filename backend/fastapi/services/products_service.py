@@ -17,6 +17,8 @@ async def fetch_products(categorySlug, page: int, per_page: int = 12):
             "category": categories[0]['id'],
             "page": page,
             "per_page": per_page,
+            "orderby":"id",
+            "order":"desc",
         },
         with_pages_data=True
     )

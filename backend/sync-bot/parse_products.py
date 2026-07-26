@@ -18,6 +18,9 @@ async def calculate_price_per_m2(page, context_info=""):
         current_height = int(height_val) / 1000
         raw_price = float(price_text.replace(" ", "").strip())
 
+        if raw_price <= 0:
+            return None
+
         if current_width == 0 or current_height == 0:
             return "0.00"
 
