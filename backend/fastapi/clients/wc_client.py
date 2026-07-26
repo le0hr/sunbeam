@@ -57,7 +57,6 @@ class WooCommerceClient:
         response = await self.client.get(url)
 
         print("STATUS:", response.status_code, flush=True)
-        print("BODY:", response.text, flush=True)
 
         response.raise_for_status()
 
@@ -89,8 +88,8 @@ class WooCommerceClient:
             json=data,
         )
 
-        print(response.status_code, flush=True)
-        print(response.text, flush=True)
+        print("STATUS:", response.status_code, flush=True)
+
         
         response.raise_for_status()
 
