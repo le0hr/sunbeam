@@ -10,7 +10,6 @@ async def fetch_products(categorySlug, page: int, per_page: int = 12):
             "slug": categorySlug
         }
     )
-    print(categories, flush=True)
     products, pages_data = await wc.get(
         "/products",
         params={
@@ -18,7 +17,7 @@ async def fetch_products(categorySlug, page: int, per_page: int = 12):
             "page": page,
             "per_page": per_page,
             "orderby":"id",
-            "order":"desc",
+            "order":"asc",
         },
         with_pages_data=True
     )
