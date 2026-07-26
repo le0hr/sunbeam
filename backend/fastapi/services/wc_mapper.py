@@ -19,7 +19,6 @@ def extract_attributes_and_meta(matrix):
     sys_classes = set()
     sys_classes_description = {}
     colors = set()
-    print(matrix, flush=True)
     for item in matrix:
         sys_type = item.get("sys_type")
         sys_class = item.get("sys_class")
@@ -57,14 +56,12 @@ def extract_attributes_and_meta(matrix):
             "variation": True,
             "options": list(colors)
         })
-    print( sys_classes_description, flush=True)
     # Формуємо структуру для мета-даних розширених описів
     meta_descriptions = [ {
             "value": sys_cl,
             "description": sys_cl_desc
         } for sys_cl, sys_cl_desc in sys_classes_description.items()
     ]
-    print( meta_descriptions, flush=True)
 
     return attributes, meta_descriptions
 
