@@ -75,8 +75,7 @@ services:
       - wp-content:/var/www/html/wp-content
     networks:
       - app-network
-    ports:
-      - "8080:80"
+
   backend:
     build: 
       context: ./backend
