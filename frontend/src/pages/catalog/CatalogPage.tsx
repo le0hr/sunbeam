@@ -275,7 +275,7 @@ export function CatalogPage() {
         {isLoading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="rounded-[28px] border border-white/10 bg-white/5 p-4 min-h-[24rem] animate-pulse">
+              <div key={index} className="rounded-[28px] border border-white/10 bg-white/5 p-4 min-h-[24rem] animate-pulse grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="h-56 rounded-2xl bg-white/10 mb-4" />
                 <div className="h-4 w-24 bg-white/10 rounded mb-3" />
                 <div className="h-5 w-3/4 bg-white/10 rounded mb-3" />
