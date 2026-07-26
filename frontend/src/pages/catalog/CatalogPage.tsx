@@ -280,20 +280,17 @@ export function CatalogPage() {
                 className="flex flex-col rounded-2xl overflow-hidden border border-white/5 bg-[#1C1C1C] animate-pulse"
               >
                 {/* Image */}
-                <div className="aspect-[4/3] bg-white/10" />
+                <div className="aspect-square bg-white/10" />
 
                 {/* Content */}
                 <div className="flex flex-1 flex-col p-5">
-                  {/* Title */}
-                  <div className="h-4 w-3/4 rounded bg-white/10 mb-2" />
-                  <div className="h-4 w-1/2 rounded bg-white/10 mb-6" />
+                  <div className="mb-2">
+                    <div className="h-3 w-3/4 rounded bg-white/10" />
+                  </div>
 
-                  <div className="mt-auto">
-                    {/* Price */}
-                    <div className="h-5 w-28 rounded bg-white/10 mb-4" />
-
-                    {/* Button */}
-                    <div className="h-4 w-24 rounded bg-white/10" />
+                  <div className="mt-auto flex flex-col items-start gap-2">
+                    <div className="h-5 w-28 rounded bg-white/10" />
+                    <div className="h-4 w-20 rounded bg-white/10" />
                   </div>
                 </div>
               </div>

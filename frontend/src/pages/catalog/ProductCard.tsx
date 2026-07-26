@@ -27,7 +27,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
           <img
             src={product.images[0]}
             alt={product.name}
-            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+            className="block w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </div>
 
