@@ -35,31 +35,31 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         <div className="flex flex-1 flex-col p-5">
           <div className="flex items-start justify-between mb-2">
             <h3
-              className="text-xl leading-tight"
+              className="text-xs leading-tight"
               style={{ fontFamily: "Playfair Display, serif" }}
             >
               {product.name}
             </h3>
           </div>
 
-          <div className="mt-auto flex items-center justify-between">
+          <div className="mt-auto flex flex-col items-start gap-2">
             <div style={{ fontFamily: "Inter, sans-serif" }}>
               {product.price.length > 0 && Number(product.price) > 0 ? (
-                <span className="text-lg text-white font-semibold">
+                <span className="text-[9px] text-white font-semibold">
                   від{" "}
                   <span className="text-[#FFCC00]">
                     {(Number(product.price) * 0.7 * 1.2).toLocaleString('uk-UA', {maximumFractionDigits: 0})} ₴
                   </span>
                 </span>
               ) : (
-                <span className="text-lg text-[#FFCC00] font-semibold">
+                <span className="text-[9px] text-[#FFCC00] font-semibold">
                   Індивідуальна ціна
                 </span>
               )}
             </div>
 
             <button
-              className="flex items-center gap-1 text-[#FFCC00] text-base hover:gap-2 transition-all"
+              className="flex items-center gap-1 text-[#FFCC00] text-[8px] hover:gap-2 transition-all"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               Детальніше <ArrowRight className="w-4 h-4" />
