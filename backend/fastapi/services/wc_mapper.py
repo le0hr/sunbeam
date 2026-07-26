@@ -105,7 +105,6 @@ async def build_product_query(product, slug):
             "manage_stock": False,
             "categories": [{"id": category_id}],  # У WooCommerce категорії передаються як список об'єктів ID
             "attributes": attributes,
-            "images": [{"src": product.img}]
         }
 
         # Додаємо ліміти калькулятора в мета-дані, якщо вони є
@@ -138,7 +137,6 @@ def build_variation_query(product_id, matrix, parent_sku):
     Нова функція: створює модифікатори (варіації) для згенерованої картки товару
     """
     print(f"Починаю генерацію варіацій для товару ID: {product_id}...")
-    print(matrix, flush=True)
         
     variation_attributes = []
     variation_sku_parts = [parent_sku]

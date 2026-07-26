@@ -275,12 +275,27 @@ export function CatalogPage() {
         {isLoading ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="rounded-[28px] border border-white/10 bg-white/5 p-4 min-h-[24rem] animate-pulse">
-                <div className="h-56 rounded-2xl bg-white/10 mb-4" />
-                <div className="h-4 w-24 bg-white/10 rounded mb-3" />
-                <div className="h-5 w-3/4 bg-white/10 rounded mb-3" />
-                <div className="h-4 w-full bg-white/10 rounded mb-2" />
-                <div className="h-4 w-2/3 bg-white/10 rounded" />
+              <div
+                key={index}
+                className="flex flex-col rounded-2xl overflow-hidden border border-white/5 bg-[#1C1C1C] animate-pulse"
+              >
+                {/* Image */}
+                <div className="aspect-[4/3] bg-white/10" />
+
+                {/* Content */}
+                <div className="flex flex-1 flex-col p-5">
+                  {/* Title */}
+                  <div className="h-4 w-3/4 rounded bg-white/10 mb-2" />
+                  <div className="h-4 w-1/2 rounded bg-white/10 mb-6" />
+
+                  <div className="mt-auto">
+                    {/* Price */}
+                    <div className="h-5 w-28 rounded bg-white/10 mb-4" />
+
+                    {/* Button */}
+                    <div className="h-4 w-24 rounded bg-white/10" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
