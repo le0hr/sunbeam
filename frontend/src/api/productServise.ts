@@ -42,9 +42,9 @@ export const productService = {
 
         // 3. Трансформуємо варіації у зручний формат
         const variations: ProductVariation[] = product.variations.map((v: any) => {
-          const color = v.attributes.find((a: any) => a.name === 'Колір')?.option || '';
-          const type = v.attributes.find((a: any) =>  a.name === 'Тип системи')?.option || '';
-          const sysClass = v.attributes.find((a: any) =>  a.name === 'Класс системи')?.option || '';
+          const color = v.attributes.find((a: any) => a.slug === 'колір')?.option || '';
+          const type = v.attributes.find((a: any) =>  a.slug === 'тип-системи')?.option || '';
+          const sysClass = v.attributes.find((a: any) =>  a.slug === 'класс-системи')?.option || '';
   
           return {
             id: v.id,
