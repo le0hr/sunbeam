@@ -34,12 +34,18 @@ async def main():
     print(enriched_products)
     try:
         async with httpx.AsyncClient(follow_redirects=True) as client:
-            response = await client.post(
-                "http://fastapi_backend:8000/internal/products",
-                json=enriched_products,
-            )
-            print(response.status_code)
-        print(response.text)
+            BATCH_SIZE = 20
+
+            for i in range(0, len(enriched_products), BATCH_SIZE):
+                batch = enriched_products[i:i+BATCH_SIZE]
+
+                response = await client.post(
+                    "http://fastapi_backend:8000/internal/products",
+                    json=batch,
+                    timeout=120
+                )
+                print(response.status_code)
+                print(response.text)
         response.raise_for_status()
         print('sended')
     except Exception as e:
