@@ -132,6 +132,7 @@ services:
     
   certbot:
     image: certbot/certbot:latest
+    command: renew --webroot -w /var/www/certbot
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
