@@ -1,7 +1,6 @@
 import requests, time, re, json
 from parse_products import start_parse_products
 from parse_catalog import start_parse_catalog
-from woocommerce_interaction import update_products
 from agent import agent_data
 import httpx
 import asyncio
