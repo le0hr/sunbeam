@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { wpClient } from './clients';
 import { TransformedVariableProduct, ProductVariation } from '../types/product';
 
 type ProductListResponse = {
@@ -10,7 +10,7 @@ type ProductListResponse = {
 export const productService = {
   getProductList: async (categorySlug: string, page:number): Promise<ProductListResponse > => {
     try {
-      const productsResponse = await apiClient.get('/products', { params: { page, categorySlug }, timeout: 60000 });
+      const productsResponse = await wpClient.get('/products', { params: { page, categorySlug }, timeout: 60000 });
       
       console.log(productsResponse.headers["x-total"]);
       console.log(productsResponse.headers["x-total-pages"]);

@@ -1,10 +1,10 @@
 import { PurchaseData } from "../types/product";
-import { apiClient } from "./client";
+import { backendClient } from "./clients";
 
 export const contactService ={
     consultationRequest: async (contactData: any) =>{
         try {
-            const response = await apiClient.post('/contact/consultation', contactData, {timeout: 60000 });
+            const response = await backendClient.post('/contact/consultation', contactData, {timeout: 60000 });
             return response.data;
         } catch (error) {
             console.error(error);
@@ -13,7 +13,7 @@ export const contactService ={
     },
     purchaseRequest: async (purchaseData: PurchaseData) =>{
         try {
-            const response = await apiClient.post('/contact/purchase', purchaseData, {timeout: 60000 });
+            const response = await backendClient.post('/contact/purchase', purchaseData, {timeout: 60000 });
             return response.data;
         } catch (error) {
             console.error(error);

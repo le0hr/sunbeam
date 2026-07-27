@@ -1,3 +1,2 @@
-from .products_service import fetch_products
 from .importer import import_products
 from .contact_service import request_consultation_service, purchase_request_service
