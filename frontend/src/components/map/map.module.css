@@ -267,80 +267,59 @@
 
 /* мобільна версія */
 
-@media(max-width:768px){
+@media (max-width:768px){
 
-
-.wrapper {
-
-    min-height:240px;
-}
-
-
-
-.info {
-
-    left:12px;
-
-    right:12px;
-
-    bottom:12px;
-
-    max-width:none;
-
-    padding:14px;
-}
-
-@media (max-width: 768px) {
-    .info {
-        position: relative;
-        left: auto;
-        right: auto;
-        bottom: auto;
-
-        margin: 12px;
-        width: calc(100% - 24px);
-
-        max-width: none;
+    .wrapper {
+        min-height:240px;
     }
-}
-
-.info h3 {
-
-    font-size:18px;
-}
 
 
+    .info {
 
-.info p {
+        position:absolute;
 
-    font-size:13px;
-}
+        left:12px;
+        right:12px;
+        bottom:12px;
 
+        width:auto;
 
+        margin:0;
 
-.markerWrapper {
+        max-width:none;
 
-    width:48px;
+        padding:14px;
 
-    height:60px;
-}
+        border-radius:16px;
 
-
-
-.marker {
-
-    width:46px;
-
-    height:46px;
-}
+        background:rgba(18,18,18,.88);
+    }
 
 
+    .info h3 {
+        font-size:18px;
+    }
 
-.marker img {
 
-    width:25px;
+    .info p {
+        font-size:13px;
+    }
 
-    height:25px;
-}
 
+    .markerWrapper {
+        width:48px;
+        height:60px;
+    }
+
+
+    .marker {
+        width:46px;
+        height:46px;
+    }
+
+
+    .marker img {
+        width:25px;
+        height:25px;
+    }
 }
