@@ -60,7 +60,6 @@ export function CatalogPage() {
   const [selectedProduct, setSelectedProduct] = useState<TransformedVariableProduct | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0)
   const [totalProducts, setTotalProducts] = useState(0)
   const [isLoading, setIsLoading] = useState(true);
@@ -70,6 +69,11 @@ export function CatalogPage() {
 
   const activeCategory = CATEGORIES.find((v) => v.slug === searchParams.get("category")) ?? CATEGORIES[0];
   const activeProductSlug = searchParams.get("product");
+  
+  const currentPage = Math.max(
+    1,
+    Number(searchParams.get("page")) || 1
+  );
 
   const updateSearchParams = (params: Record<string, string | null>) => {
     const nextParams = new URLSearchParams(searchParams);
@@ -147,9 +151,6 @@ export function CatalogPage() {
     setSelectedProduct(productFromList ?? null);
   }, [activeProductSlug, products]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [activeCategory.slug]);
 
   useEffect(() => {
     setSelectedProduct(null);
@@ -238,7 +239,7 @@ export function CatalogPage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.slug}
-                  onClick={() => updateSearchParams({ category: cat.slug, product: null })}
+                  onClick={() => updateSearchParams({ category: cat.slug, product: null, page:null})}
                   className={`shrink-0 px-3.5 py-2 rounded-xl text-sm transition-all whitespace-nowrap ${
                     activeCategory === cat
                       ? "bg-[#FFCC00] text-[#121212] font-semibold shadow-[0_0_12px_rgba(255,204,0,0.3)]"
@@ -343,7 +344,10 @@ export function CatalogPage() {
               total={totalPages}
               perPage={12}
               totalProducts={totalProducts}
-              onChange={setCurrentPage}
+              onChange={(page) =>
+              updateSearchParams({
+                page: page === 1 ? null : String(page),
+              })}
             />
 
         {/* CTA band */}
