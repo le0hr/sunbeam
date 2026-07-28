@@ -124,7 +124,11 @@ export function CatalogPage() {
         if (requestId !== requestIdRef.current) {
           return;
         }
-
+        console.log(
+          currentPage,
+          activeProductSlug,
+          data.products.some(p => p.slug === activeProductSlug)
+        );
         finishLoading(() => {
           setProducts(data.products);
           setTotalPages(data.totalPages);
