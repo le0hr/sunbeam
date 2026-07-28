@@ -8,5 +8,5 @@ run({
   include: routes,
   puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
   skipThirdPartyRequests: true,
-  waitFor: 1500, 
+  waitFor: 3000, 
 });
