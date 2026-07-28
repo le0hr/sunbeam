@@ -116,7 +116,6 @@ services:
       dockerfile: Dockerfile.builder
     container_name: frontend_builder
     working_dir: /app
-    command: sleep infinity
     volumes:
     - frontend_dist:/app/dist
     networks:
