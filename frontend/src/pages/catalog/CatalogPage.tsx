@@ -156,6 +156,17 @@ export function CatalogPage() {
   }, [activeCategory.slug]);
 
   useEffect(() => {
+  const timer = setTimeout(() => {
+    catalogTopRef.current?.scrollIntoView({
+      behavior: "instant",
+      block: "start",
+    });
+  }, 50);
+
+  return () => clearTimeout(timer);
+}, []);
+
+  useEffect(() => {
     if (currentPage >= 1) {
       catalogTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
