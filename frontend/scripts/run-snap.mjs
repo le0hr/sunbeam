@@ -5,9 +5,12 @@ const routes = JSON.parse(readFileSync('./prerender-routes.json', 'utf-8'));
 
 run({
   source: 'dist',
-  include: ['/'], // тимчасово тільки головна, для дебагу
+  include: ['/catalog/rolety/2/dn-615'], // тимчасово тільки головна, для дебагу
   puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
   skipThirdPartyRequests: false, // тимчасово вимкнути фільтр, щоб побачити ВСІ запити
-  waitFor: 2500,
-  concurrency: 1,
+  waitFor: async (page) => {
+    await page.waitForFunction(() => {
+        return document.title !== "SunBeam | Сонцезахист";
+    });
+    }
 });

@@ -34,7 +34,7 @@ const Root = () => {
         <Outlet />
       </main>
       
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
