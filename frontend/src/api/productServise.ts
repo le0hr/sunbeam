@@ -74,7 +74,10 @@ export const productService = {
           allClasses
         };
       }) 
-
+    console.log({total: productsResponse.headers["x-total"] ,
+          totalPages: productsResponse.headers["x-total-pages"] ,
+    })
+    console.log([productsResponse.headers]);
     return {products,
           total: Number(productsResponse.headers["x-total"] ?? 0),
           totalPages: Number(productsResponse.headers["x-total-pages"] ?? 0),

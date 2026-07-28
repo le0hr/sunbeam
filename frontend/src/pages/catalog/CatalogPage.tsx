@@ -327,7 +327,10 @@ export function CatalogPage() {
             </div>
           </motion.div>
         )}
-
+        <div className="text-red-500">
+          totalPages={totalPages},
+          totalProducts={totalProducts}
+        </div>
         <Pagination
               current={currentPage}
               total={totalPages}
