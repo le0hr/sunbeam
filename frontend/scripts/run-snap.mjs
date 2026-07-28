@@ -5,10 +5,9 @@ const routes = JSON.parse(readFileSync('./prerender-routes.json', 'utf-8'));
 
 run({
   source: 'dist',
-  include: routes,
+  include: ['/'], // тимчасово тільки головна, для дебагу
   puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
-  skipThirdPartyRequests: true,
-  waitFor: 3000, 
-  concurrency: 1,       // строго послідовно, один за одним
-  minifyHtml: false,    // тимчасово вимкнути, щоб не плутати діагностику
+  skipThirdPartyRequests: false, // тимчасово вимкнути фільтр, щоб побачити ВСІ запити
+  waitFor: 2500,
+  concurrency: 1,
 });
