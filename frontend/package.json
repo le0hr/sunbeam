@@ -11,7 +11,7 @@
     "generate-routes": "node scripts/generate-routes.mjs",
     "snap": "node scripts/run-snap.mjs",
 
-    "build:seo": "npm run build && npm run generate-routes && npm run snap"
+    "build:seo": "npm run generate-routes && npm run snap"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

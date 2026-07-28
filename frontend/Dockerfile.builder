@@ -20,4 +20,4 @@ RUN npm ci
 
 COPY . .
 
-CMD ["npm", "run", "build:seo"]
+CMD ["sh", "-c", "npm run build && sleep infinity"]
