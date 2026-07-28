@@ -156,7 +156,7 @@ export function CatalogPage() {
   }, [activeCategory.slug]);
 
   useEffect(() => {
-    if (currentPage > 1) {
+    if (currentPage >= 1) {
       catalogTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [currentPage]);
