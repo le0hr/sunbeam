@@ -9,4 +9,6 @@ run({
   puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
   skipThirdPartyRequests: true,
   waitFor: 3000, 
+  concurrency: 1,       // строго послідовно, один за одним
+  minifyHtml: false,    // тимчасово вимкнути, щоб не плутати діагностику
 });
