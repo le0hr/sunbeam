@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Sun, ArrowLeft, Search, SlidersHorizontal, X, Star,
@@ -9,9 +9,7 @@ import { ProductCard } from "./ProductCard";
 import { ProductDrawer } from "./drawer/ProductDrawer";
 import { productService } from "../../api/productServise";
 import { TransformedVariableProduct } from "../../types/product";
-import { useEffect } from "react";
 import { Pagination } from "./Pagination";
-import { useSearchParams } from "react-router";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -63,30 +61,39 @@ export function CatalogPage() {
   const [totalPages, setTotalPages] = useState(0)
   const [totalProducts, setTotalProducts] = useState(0)
   const [isLoading, setIsLoading] = useState(true);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const params = useParams();
   const requestIdRef = useRef(0);
   const catalogTopRef = useRef<HTMLDivElement | null>(null);
 
-  const activeCategory = CATEGORIES.find((v) => v.slug === searchParams.get("category")) ?? CATEGORIES[0];
-  const activeProductSlug = searchParams.get("product");
-  
-  const currentPage = Math.max(
-    1,
-    Number(searchParams.get("page")) || 1
-  );
+  const activeCategory = CATEGORIES.find((v) => v.slug === params.category) ?? CATEGORIES[0];
+  const activeProductSlug = params.productSlug ?? null;
+  const currentPage = Math.max(1, Number(params.page) || 1);
 
-  const updateSearchParams = (params: Record<string, string | null>) => {
-    const nextParams = new URLSearchParams(searchParams);
+  const updateCatalogPath = ({
+    category,
+    page,
+    product,
+  }: {
+    category?: string | null;
+    page?: number | null;
+    product?: string | null;
+  }) => {
+    const categorySlug = category ?? activeCategory.slug;
+    const normalizedPage = page === undefined ? currentPage : Math.max(1, Number(page) || 1);
+    const productSlug = product === undefined ? activeProductSlug : product;
 
-    Object.entries(params).forEach(([key, value]) => {
-      if (value === null) {
-        nextParams.delete(key);
-      } else {
-        nextParams.set(key, value);
-      }
-    });
+    const segments = ["/catalog", categorySlug];
 
-    setSearchParams(nextParams);
+    if (normalizedPage > 1 || productSlug) {
+      segments.push(String(normalizedPage));
+    }
+
+    if (productSlug) {
+      segments.push(productSlug);
+    }
+
+    navigate(segments.join("/"));
   };
 
   useEffect(() => {
@@ -239,7 +246,7 @@ export function CatalogPage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.slug}
-                  onClick={() => updateSearchParams({ category: cat.slug, product: null, page:null})}
+                  onClick={() => updateCatalogPath({ category: cat.slug, page: 1, product: null })}
                   className={`shrink-0 px-3.5 py-2 rounded-xl text-sm transition-all whitespace-nowrap ${
                     activeCategory === cat
                       ? "bg-[#FFCC00] text-[#121212] font-semibold shadow-[0_0_12px_rgba(255,204,0,0.3)]"
@@ -333,7 +340,7 @@ export function CatalogPage() {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onSelect={() => updateSearchParams({ category: activeCategory.slug, product: product.slug })}
+                  onSelect={() => updateCatalogPath({ category: activeCategory.slug, page: currentPage, product: product.slug })}
                 />
               ))}
             </div>
@@ -345,8 +352,10 @@ export function CatalogPage() {
               perPage={12}
               totalProducts={totalProducts}
               onChange={(page) =>
-              updateSearchParams({
-                page: page === 1 ? null : String(page),
+              updateCatalogPath({
+                category: activeCategory.slug,
+                page,
+                product: null,
               })}
             />
 
@@ -396,7 +405,7 @@ export function CatalogPage() {
           <ProductDrawer 
             product={selectedProduct} 
             onClose={() => {
-              updateSearchParams({ product: null });
+              updateCatalogPath({ category: activeCategory.slug, page: currentPage, product: null });
               setSelectedProduct(null);
             }}
             classesDescription={selectedProduct.classesDescriptionDict} 

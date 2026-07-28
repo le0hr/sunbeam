@@ -32,7 +32,7 @@ export function Header() {
               {navLinks.map(({ label, to }) => {
                 const isActive =
                   to === "/catalog"
-                    ? pathname === "/catalog"
+                    ? pathname === "/catalog" || pathname.startsWith("/catalog/")
                     : pathname === "/" && hash === to.slice(1);
 
                 return (

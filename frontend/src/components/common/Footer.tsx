@@ -105,7 +105,7 @@ export function Footer() {
               >
                 <li>
                   <Link
-                    to="/catalog?category=rolety"
+                    to="/catalog/rolety"
                     className="text-white/60 hover:text-[#D4AF37]"
                   >
                     Ролети
@@ -113,7 +113,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/catalog?category=plise"
+                    to="/catalog/plise"
                     className="text-white/60 hover:text-[#D4AF37]"
                   >
                     Плісе
@@ -121,7 +121,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/catalog?category=zhalyuzi"
+                    to="/catalog/zhalyuzi"
                     className="text-white/60 hover:text-[#D4AF37]"
                   >
                     Жалюзі
@@ -129,7 +129,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/catalog?category=moskitna"
+                    to="/catalog/moskitna"
                     className="text-white/60 hover:text-[#D4AF37]"
                   >
                     Москітні сітки

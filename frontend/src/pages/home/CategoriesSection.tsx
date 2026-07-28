@@ -69,7 +69,7 @@ export function CategoriesSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category, index) => (
             <MotionLink
-              to = {`/catalog?category=${category.categorySlug}`} 
+              to={`/catalog/${category.categorySlug}`}
               key={category.id}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
