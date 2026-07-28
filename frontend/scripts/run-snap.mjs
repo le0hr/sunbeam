@@ -12,13 +12,13 @@ run({
     const parts = location.pathname.split("/").filter(Boolean);
 
     const isProductPage =
-      parts[0] === "catalog" &&
-      parts.length > 3;
+        parts[0] === "catalog" &&
+        parts.length === 4; 
 
-    if (isProductPage) {
-      return document.querySelector("#product") !== null;
+    if (!isProductPage) {
+        return true;
     }
 
-    return new Promise((resolve) => setTimeout(resolve, 1500));
-  },
+    return document.querySelector("#product") !== null;
+    }
 });
