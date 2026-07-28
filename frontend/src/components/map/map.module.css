@@ -290,7 +290,19 @@
     padding:14px;
 }
 
+@media (max-width: 768px) {
+    .info {
+        position: relative;
+        left: auto;
+        right: auto;
+        bottom: auto;
 
+        margin: 12px;
+        width: calc(100% - 24px);
+
+        max-width: none;
+    }
+}
 
 .info h3 {
 
