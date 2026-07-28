@@ -410,14 +410,16 @@ export function CatalogPage() {
       {/* Product detail drawer */}
       <AnimatePresence>
         {productForDrawer && (
-          <ProductDrawer 
-            product={productForDrawer} 
-            onClose={() => {
-              updateCatalogPath({ category: activeCategory.slug, page: currentPage, product: null });
-              setSelectedProduct(null);
-            }}
-            classesDescription={productForDrawer.classesDescriptionDict} 
-          />
+          <div id="product">
+            <ProductDrawer 
+              product={productForDrawer} 
+              onClose={() => {
+                updateCatalogPath({ category: activeCategory.slug, page: currentPage, product: null });
+                setSelectedProduct(null);
+              }}
+              classesDescription={productForDrawer.classesDescriptionDict} 
+            />
+          </div>
         )}
       </AnimatePresence>
     </div>
