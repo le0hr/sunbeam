@@ -8,9 +8,7 @@ run({
   include: ['/catalog/rolety/2/dn-615'], // тимчасово тільки головна, для дебагу
   puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
   skipThirdPartyRequests: false, // тимчасово вимкнути фільтр, щоб побачити ВСІ запити
-  waitFor: async (page) => {
-    await page.waitForFunction(() => {
-        return document.title !== "SunBeam | Сонцезахист";
-    });
-    }
+  waitFor: () => {
+    return document.title !== "SunBeam | Сонцезахист";
+  },
 });
