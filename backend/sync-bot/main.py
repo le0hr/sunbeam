@@ -33,7 +33,7 @@ async def main():
     print("5")
     print(enriched_products)
     try:
-        async with httpx.AsyncClient(follow_redirects=True) as client:
+        async with httpx.AsyncClient(follow_redirects=True, timeout=None) as client:
             BATCH_SIZE = 20
 
             for i in range(0, len(enriched_products), BATCH_SIZE):
@@ -42,12 +42,10 @@ async def main():
                 response = await client.post(
                     "http://fastapi_backend:8000/internal/products",
                     json=batch,
-                    timeout=120
                 )
                 print(response.status_code)
-                print(response.text)
-        response.raise_for_status()
-        print('sended')
+                response.raise_for_status()
+                print('sended')
     except Exception as e:
         print(f"Помилка при відправці запиту: {e}")
         print(type(e))
