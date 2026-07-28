@@ -118,8 +118,7 @@ services:
     working_dir: /app
     command: sleep infinity
     volumes:
-      - ./frontend:/app
-      - frontend_dist:/dist
+    - frontend_dist:/app/dist
     networks:
       - app-network
 
