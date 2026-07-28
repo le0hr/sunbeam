@@ -20,4 +20,4 @@ RUN npm ci
 
 COPY . .
 
-CMD ["npm", "run", "build"]
+CMD ["npm", "run", "build:seo"]
