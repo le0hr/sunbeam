@@ -195,10 +195,10 @@ export function CatalogPage() {
   //   allClasses
   //   } = product
   const productForDrawer = isSnap
-    ? products.find(
-        (p) => p.slug === params.slug
-      )
-    : selectedProduct;
+  ? products.find(
+      (p) => p.slug === activeProductSlug
+    )
+  : selectedProduct;
 
 
   return (
