@@ -32,7 +32,7 @@ async function generateRoutes() {
       totalPages = Number(res.headers['x-total-pages'] ?? 1);
 
       for (const product of products) {
-        routes.push(`/catalog/${page}/${categorySlug}/${product.slug}`);
+        routes.push(`/catalog/${categorySlug}/${page}/${product.slug}`);
       }
 
       page++;
