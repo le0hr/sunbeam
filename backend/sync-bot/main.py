@@ -4,7 +4,7 @@ from parse_catalog import start_parse_catalog
 from agent import agent_data
 import httpx
 import asyncio
-
+import subprocess
 import faulthandler
 import signal
 import sys
@@ -46,6 +46,18 @@ async def main():
                 print(response.status_code)
                 response.raise_for_status()
                 print('sended')
+        subprocess.run(
+            [
+                "docker",
+                "exec",
+                "nginx",
+                "npm",
+                "run",
+                "build:seo"
+            ],
+            check=True,
+        )
+
     except Exception as e:
         print(f"Помилка при відправці запиту: {e}")
         print(type(e))

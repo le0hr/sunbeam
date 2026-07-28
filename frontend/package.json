@@ -7,8 +7,11 @@
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
+
     "generate-routes": "node scripts/generate-routes.mjs",
-    "postbuild": "npm run generate-routes && node scripts/run-snap.mjs"
+    "snap": "node scripts/run-snap.mjs",
+
+    "build:seo": "npm run generate-routes && npm run snap"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
