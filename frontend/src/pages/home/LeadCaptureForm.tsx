@@ -215,7 +215,7 @@ export function LeadCaptureForm() {
                 Пишіть на пошту
               </div>
               <div className="text-sm text-white/60" style={{ fontFamily: 'Inter, sans-serif' }}>
-                info@sunbeam.ua<br />Швидкі відповіді
+                sun.beam.protection@gmail.com<br />Швидкі відповіді
               </div>
             </div>
           </div>

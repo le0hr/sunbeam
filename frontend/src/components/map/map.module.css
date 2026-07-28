@@ -271,22 +271,27 @@
 
     .wrapper {
         min-height:240px;
+        overflow:visible;
+        aspect-ratio:auto;
     }
 
+    .map {
+        height:240px;
+        border-radius:24px;
+        overflow:hidden;
+    }
 
     .info {
+        position:relative;
 
-        position:absolute;
-
-        left:12px;
-        right:12px;
-        bottom:12px;
+        left:auto;
+        right:auto;
+        bottom:auto;
 
         width:auto;
-
-        margin:0;
-
         max-width:none;
+
+        margin-top:12px;
 
         padding:14px;
 
@@ -303,23 +308,5 @@
 
     .info p {
         font-size:13px;
-    }
-
-
-    .markerWrapper {
-        width:48px;
-        height:60px;
-    }
-
-
-    .marker {
-        width:46px;
-        height:46px;
-    }
-
-
-    .marker img {
-        width:25px;
-        height:25px;
     }
 }
