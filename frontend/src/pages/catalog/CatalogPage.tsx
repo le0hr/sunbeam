@@ -10,7 +10,8 @@ import { ProductDrawer } from "./drawer/ProductDrawer";
 import { productService } from "../../api/productServise";
 import { TransformedVariableProduct } from "../../types/product";
 import { Pagination } from "./Pagination";
-
+import { useLocation } from "react-router";
+import { Helmet } from 'react-helmet-async';
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 
@@ -203,10 +204,29 @@ export function CatalogPage() {
       (p) => p.slug === activeProductSlug
     )
   : selectedProduct;
-
+  const location = useLocation();
+  const canonicalUrl = `https://sunbeambe.com${location.pathname}`; 
+  const metaDescription = stripHtmlAndTruncate(
+    productForDrawer?.description ?? ""
+  );
+  const ogImage = productForDrawer?.images?.[0] ?? "";
+  const categoryCanonicalUrl = `https://sunbeambe.com/catalog/${activeCategory.slug}`;
+  const categoryDescription = `Каталог ${activeCategory.name} від SunBeam. Великий вибір, індивідуальне виготовлення, професійний монтаж.`;
 
   return (
     <div className="min-h-screen bg-[#121212] text-white">
+      <Helmet>
+        <title>{activeCategory.name} | SunBeam</title>
+
+        <meta name="description" content={categoryDescription} />
+
+        <link rel="canonical" href={categoryCanonicalUrl} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${activeCategory.name} | SunBeam`} />
+        <meta property="og:description" content={categoryDescription} />
+        <meta property="og:url" content={categoryCanonicalUrl} />
+      </Helmet>
       {/* Hero band */}
       {!isSnap && (<>
         <div className="hidden sm:block relative overflow-hidden bg-gradient-to-b from-[#1C1C1C] to-[#121212] py-14">
@@ -339,6 +359,7 @@ export function CatalogPage() {
               <p className="text-white/30 text-sm mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Спробуйте змінити фільтри або пошуковий запит</p>
             </motion.div>
           ) : (
+            
             <motion.div
               key={`${activeCategory.slug}-${currentPage}`}
               initial={{ opacity: 0, y: 10 }}
@@ -415,6 +436,35 @@ export function CatalogPage() {
       <AnimatePresence>
         {productForDrawer && (
           <div id="product">
+          
+            <Helmet>
+              <title>{productForDrawer.name} | SunBeam</title>
+              <meta name="description" content={metaDescription} />
+              <link rel="canonical" href={canonicalUrl} />
+
+              <meta property="og:type" content="product" />
+              <meta property="og:title" content={`${productForDrawer.name} | SunBeam`} />
+              <meta property="og:description" content={metaDescription} />
+              {ogImage && <meta property="og:image" content={ogImage} />}
+              <meta property="og:url" content={canonicalUrl} />
+
+              <script type="application/ld+json">
+                {JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "Product",
+                  name: productForDrawer.name,
+                  image: productForDrawer.images,
+                  description: metaDescription,
+                  offers: {
+                    "@type": "Offer",
+                    price: productForDrawer.price,
+                    priceCurrency: "UAH",
+                    availability: "https://schema.org/InStock",
+                    url: canonicalUrl,
+                  },
+                })}
+              </script>
+            </Helmet>
             <ProductDrawer 
               product={productForDrawer} 
               onClose={() => {

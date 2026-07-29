@@ -9,8 +9,7 @@ import { OrderStep } from "./OrderStep";
 import { PurchaseData } from "../../../types/product";
 import { contactService } from "../../../api/contactService";
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
-import { useLocation } from "react-router";
-import { Helmet } from 'react-helmet-async';
+
 
 function stripHtmlAndTruncate(html: string, maxLength = 160): string {
   const text = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
@@ -33,42 +32,10 @@ export function ProductDrawer({ product, classesDescription, onClose }: { produc
   const [height, setHeight] = useState(1200);
 
 
-  const location = useLocation();
-
-  const canonicalUrl = `https://sunbeambe.com${location.pathname}`; 
-  const metaDescription = stripHtmlAndTruncate(product.description || '');
-  const ogImage = product.images?.[0] ?? '';
+  
 
   return (
     <AnimatePresence>
-      <Helmet>
-        <title>{product.name} | SunBeam</title>
-        <meta name="description" content={metaDescription} />
-        <link rel="canonical" href={canonicalUrl} />
-
-        <meta property="og:type" content="product" />
-        <meta property="og:title" content={`${product.name} | SunBeam`} />
-        <meta property="og:description" content={metaDescription} />
-        {ogImage && <meta property="og:image" content={ogImage} />}
-        <meta property="og:url" content={canonicalUrl} />
-
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: product.name,
-            image: product.images,
-            description: metaDescription,
-            offers: {
-              "@type": "Offer",
-              price: product.price,
-              priceCurrency: "UAH",
-              availability: "https://schema.org/InStock",
-              url: canonicalUrl,
-            },
-          })}
-        </script>
-      </Helmet>
 
       <motion.div
         initial={{ opacity: 0 }}
