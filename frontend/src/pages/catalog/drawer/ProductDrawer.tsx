@@ -11,10 +11,6 @@ import { contactService } from "../../../api/contactService";
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
 
 
-function stripHtmlAndTruncate(html: string, maxLength = 160): string {
-  const text = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-  return text.length > maxLength ? text.slice(0, maxLength - 1) + '…' : text;
-}
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
