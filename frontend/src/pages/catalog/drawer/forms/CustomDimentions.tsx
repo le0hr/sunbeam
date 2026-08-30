@@ -85,7 +85,8 @@ export default function DimensionsInput({
             </p>
             <p className="text-white/35 text-xs leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
               * розраховано для {width} × {height} мм 
-               &#10;** включає замір в межах Черкас або онлайн 
+              <br />
+              ** включає замір в межах Черкас або онлайн 
             </p>
           </>
         ) : basePrice > 0 ? (
