@@ -84,7 +84,8 @@ export default function DimensionsInput({
               <span className="text-[#FFCC00]">{finalPrice.toLocaleString("uk-UA")} ₴</span>
             </p>
             <p className="text-white/35 text-xs leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
-              * розраховано для {width} × {height} мм · включає замір в межах Черкас або онлайн 
+              * розраховано для {width} × {height} мм 
+               &#10** включає замір в межах Черкас або онлайн 
             </p>
           </>
         ) : basePrice > 0 ? (
